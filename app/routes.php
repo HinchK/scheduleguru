@@ -70,6 +70,12 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 
     # Admin Dashboard
     Route::controller('/', 'AdminDashboardController');
+
+    # Google Auth Hookup
+    Route::get('googleauth',[
+        'as' => 'google_auth_path',
+        'uses' => 'AdminDashboardController@loginWithGoogle'
+    ]);
 });
 
 
@@ -109,3 +115,10 @@ Route::post('{postSlug}', 'BlogController@postView');
 
 # Index Page - Last route, no matches
 Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+
+# Google Authorization
+Route::get('google/authorize', function() {
+    return OAuth::authorize('google');
+});
+
+Route::get('google/login', 'UserController@linkGoogleAcct');

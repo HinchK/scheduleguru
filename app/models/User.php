@@ -104,4 +104,9 @@ class User extends ConfideUser implements UserInterface, RemindableInterface{
         return $this->email;
     }
 
+    public function socialAccounts()
+    {
+        $this->belongsToMany('SocialAccount','oauth_identities');
+    }
+
 }

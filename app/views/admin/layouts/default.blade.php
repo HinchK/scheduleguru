@@ -114,6 +114,9 @@
 		</div>
 		<!-- ./ navbar -->
 
+		<!-- Google Auth Connector -->
+		@include('admin.googleauth')
+
 		<!-- Notifications -->
 		@include('notifications')
 		<!-- ./ notifications -->

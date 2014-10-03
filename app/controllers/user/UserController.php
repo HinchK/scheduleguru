@@ -1,5 +1,9 @@
 <?php
 
+use AdamWathan\EloquentOAuth\Facades\OAuth as OAuth;
+use AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
+use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
+
 class UserController extends BaseController {
 
     /**
@@ -338,5 +342,32 @@ class UserController extends BaseController {
             $redirect .= (empty($url3)? '' : '/' . $url3);
         }
         return $redirect;
+    }
+
+    public function linkGoogleAcct()
+    {
+
+
+          try {
+
+            OAuth::login('google', function($user, $details) {
+                //$user->user_id = Auth::user()->id;
+                $user->nickname = $details->nickname;
+                $user->name = $details->firstName . ' ' . $details->lastName;
+                $user->profile_image = $details->imageUrl;
+                $user->save();
+            });
+
+
+        } catch (ApplicationRejectedException $e) {
+            // User rejected application
+        } catch (InvalidAuthorizationCodeException $e) {
+            // Authorization was attempted with invalid
+            // code,likely forgery attempt
+        }
+
+        // Current user is now available via Auth facade
+        return Redirect::intended();
+
     }
 }

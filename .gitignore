@@ -4,6 +4,7 @@
 
 # Configuration
 /app/config/local
+/app/config/packages/adamwathan
 /app/config/staging
 /app/config/production
 
@@ -23,3 +24,8 @@ _ide_helper.php
 # environment
 .env.*
 php.ini
+
+
+# Auth Keys
+*.p12
+scheduleguru-2947938eb71b.json

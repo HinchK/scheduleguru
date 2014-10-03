@@ -119,7 +119,7 @@ return array(
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
 
         /* Google/OAuth Providers */
-        'Artdarek\OAuth\OAuthServiceProvider',
+        'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
 
     ),
 
@@ -194,7 +194,7 @@ return array(
         'String'          => 'Andrew13\Helpers\String', // String
         'Carbon'          => 'Carbon\Carbon', // Carbon
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
-        'OAuth'         => 'Artdarek\OAuth\Facade\OAuth', //OAuth
+        'OAuth'         => 'AdamWathan\EloquentOAuth\Facades\OAuth', //OAuth
 
     ),
 
