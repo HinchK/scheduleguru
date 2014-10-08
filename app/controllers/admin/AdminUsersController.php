@@ -170,7 +170,10 @@ class AdminUsersController extends AdminController {
     {
         // Validate the inputs
         $validator = Validator::make(Input::all(), $user->getUpdateRules());
-
+        // KDOGG:WERK
+        //dd($validator);
+        //dd(json_decode($user->profiles));
+        //TODO:THIS WILL FAIL IF TRYING TO UPDATE A G-LOGIN'D ACCT WITHOUT CHANGING THE USERNAME
 
         if ($validator->passes())
         {

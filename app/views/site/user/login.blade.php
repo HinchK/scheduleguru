@@ -8,7 +8,7 @@
 
 {{-- Content --}}
 @section('content')
-<div class="page-header">
+<div class="page-header" xmlns="http://www.w3.org/1999/html">
 	<h1>Login into your account</h1>
 </div>
 <form class="form-horizontal" method="POST" action="{{ URL::to('user/login') }}" accept-charset="UTF-8">
@@ -52,6 +52,13 @@
             <div class="col-md-offset-2 col-md-10">
                 <button tabindex="3" type="submit" class="btn btn-primary">{{ Lang::get('confide::confide.login.submit') }}</button>
                 <a class="btn btn-default" href="forgot">{{ Lang::get('confide::confide.login.forgot_password') }}</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-offset-2 col-md-10">
+                </br>
+                <button class="btn btn-lg btn-group-lg"><a href=" {{{ URL::to('a/login/google')  }}}">Login with Google </a></button>
             </div>
         </div>
     </fieldset>

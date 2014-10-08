@@ -117,10 +117,10 @@ return array(
         /* Uncomment for use in development */
         'Way\Generators\GeneratorsServiceProvider', // Generators
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
+        'Barryvdh\Debugbar\ServiceProvider',
 
         /* Google/OAuth Providers */
-        'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
-
+        'Atticmedia\Anvard\AnvardServiceProvider',
     ),
 
     /*
@@ -194,7 +194,7 @@ return array(
         'String'          => 'Andrew13\Helpers\String', // String
         'Carbon'          => 'Carbon\Carbon', // Carbon
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
-        'OAuth'         => 'AdamWathan\EloquentOAuth\Facades\OAuth', //OAuth
+        'Debugbar' => 'Barryvdh\Debugbar\Facade',
 
     ),
 
