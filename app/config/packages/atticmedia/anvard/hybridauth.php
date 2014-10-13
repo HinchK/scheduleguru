@@ -8,7 +8,7 @@ return array(
         "Google" => array (
             "enabled" => true,
             "keys"    => array ( "id" => getenv( 'GOOG_CLIENT_ID'), "secret" => getenv( 'GOOG_CLIENT_SECRET' )),
-            "scope"   => "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email" // optional
+            "scope"   => "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly" // optional
         ),
 
         'Facebook' => array (

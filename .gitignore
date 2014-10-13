@@ -5,6 +5,7 @@
 # Configuration
 /app/config/local
 /app/config/packages/adamwathan
+app/ScheduleGuru/IdeaBin
 /app/config/staging
 /app/config/production
 
@@ -29,3 +30,5 @@ php.ini
 # Auth Keys
 *.p12
 scheduleguru-2947938eb71b.json
+
+app/config/packages/atticmedia/anvard/hybridauth.php

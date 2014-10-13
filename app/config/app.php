@@ -116,11 +116,12 @@ return array(
 
         /* Uncomment for use in development */
         'Way\Generators\GeneratorsServiceProvider', // Generators
-        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
+     // 'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
         'Barryvdh\Debugbar\ServiceProvider',
 
         /* Google/OAuth Providers */
         'Atticmedia\Anvard\AnvardServiceProvider',
+        'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
     ),
 
     /*
@@ -195,6 +196,7 @@ return array(
         'Carbon'          => 'Carbon\Carbon', // Carbon
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
         'Debugbar' => 'Barryvdh\Debugbar\Facade',
+        'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
 
     ),
 

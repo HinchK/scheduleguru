@@ -108,4 +108,9 @@ class User extends ConfideUser implements UserInterface, RemindableInterface{
         return $this->hasMany('Profile');
     }
 
+    public function calendars()
+    {
+        return $this->hasMany('Calendar');
+    }
+
 }

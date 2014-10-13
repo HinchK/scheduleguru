@@ -16,13 +16,15 @@
         "bllim/datatables": "~1.3",
         "google/apiclient": "1.0.*@beta",
         "adamwathan/eloquent-oauth": "dev-master",
-        "atticmedia/anvard": "dev-master"
+        "atticmedia/anvard": "dev-master",
+        "adamwathan/eloquent-oauth": "dev-master"
     },
     "require-dev": {
         "way/generators": "~2.6",
         "phpunit/phpunit": "~4.0",
         "mockery/mockery": "~0.9",
         "summerstreet/woodling": "~0.1.6",
+        "barryvdh/laravel-ide-helper": "~1.11",
         "barryvdh/laravel-debugbar": "1.*"
     },
     "autoload": {
@@ -47,6 +49,7 @@
             "php artisan optimize"
         ],
         "post-update-cmd": [
+            "php artisan ide-helper:generate",
             "php artisan optimize"
         ]
     },

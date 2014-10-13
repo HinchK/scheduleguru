@@ -19,6 +19,14 @@ Route::model('user', 'User');
 Route::model('comment', 'Comment');
 Route::model('post', 'Post');
 Route::model('role', 'Role');
+Route::model('profile', 'Profile');
+
+/**
+ * Experimental model binding for GoogleCalendar spellcasting
+ *
+ * Disabled for now...
+ */
+# Route::model('google_calendar','GoogleCalendar');
 
 /** ------------------------------------------
  *  Route constraint patterns
@@ -70,12 +78,6 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 
     # Admin Dashboard
     Route::controller('/', 'AdminDashboardController');
-
-    # Google Auth Hookup
-    Route::get('googleauth',[
-        'as' => 'google_auth_path',
-        'uses' => 'AdminDashboardController@loginWithGoogle'
-    ]);
 });
 
 
@@ -116,9 +118,84 @@ Route::post('{postSlug}', 'BlogController@postView');
 # Index Page - Last route, no matches
 Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
 
-# Google Authorization
-Route::get('google/authorize', function() {
+
+/**
+ * Route Controller Resources
+ */
+
+
+Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
+    Route::get('google/calendars', [
+        'as' => 'guru_grab_calendars',
+        'uses' => 'GoogleAuthController@setupCalendarServices'
+    ]);
+    Route::resource('google_calendars', 'GoogleCalendarsController');
+});
+
+
+
+
+Route::get('google/login', 'UserController@linkGoogleAcct');
+
+
+
+#https://github.com/adamwathan/eloquent-oauth method
+
+Route::get('google/eloquent/authorize', function() {
     return OAuth::authorize('google');
 });
 
-Route::get('google/login', 'UserController@linkGoogleAcct');
+Route::get('google/oauth/eloquent', function(){
+    try {
+        $user = (new Confide(new ConfideEloquentRepository()))->user();
+        OAuth::login('google', function($user, $details) {
+            $user->nickname = $details->nickname;
+            $user->name = $details->firstName . ' ' . $details->lastName;
+            $user->profile_image = $details->imageUrl;
+            $user->save();
+        });
+    } catch (ApplicationRejectedException $e) {
+        // User rejected application
+        dd($e);
+    } catch (InvalidAuthorizationCodeException $e) {
+        // Authorization was attempted with invalid
+        // code,likely forgery attempt
+        dd($e);
+    }
+
+    // Current user is now available via Auth facade
+    $user = Auth::user();
+
+    return Redirect::intended();
+});
+
+
+//KDOGG:WERK
+//ROUTE-SPROUTING - A MOST VILE HERESEY OF IN THE MOST UNHOLY NAME OF OAUTH 
+//Debugbar::info($object);
+//Debugbar::error("Error!");
+//Debugbar::warning('Watch out..');
+//Debugbar::addMessage('Another message', 'mylabel');
+
+/**
+ * 
+
+ https://accounts.google.com/o/oauth2/auth?response_type=code
+ &redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fadmin%2Fdashboard
+ &client_id=602226060632-9oomeuk9gh1eb0ik8vpnbu9hndb0saq7.apps.googleusercontent.com
+ &scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&access_type=online
+ &approval_prompt=auto
+
+ warning
+
+Error calling GET https://www.googleapis.com/calendar/v3/users/me/calendarList: (401) Login Required
+/home/vagrant/Code/scheduleguru/vendor/google/apiclient/src/Google/Http/REST.php#79
+
+ *
+ */
+
+
+Route::get('google/calendars', function()
+{
+
+});
