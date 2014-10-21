@@ -1,7 +1,7 @@
 <?php
 
 use AdamWathan\EloquentOAuth\Facades\OAuth;
-use ScheduleGuru\Adapters\SessionAdapter;
+use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendarRepo;
 
 class GoogleAuthController extends \BaseController {
@@ -15,7 +15,7 @@ class GoogleAuthController extends \BaseController {
     /**
      * @param GoogleCalendarRepo $calendarRepo
      */
-    function __construct(GoogleCalendarRepo $calendarRepo)
+    function __construct(CalendarRepository $calendarRepo)
     {
         $this->calendarRepo = $calendarRepo;
     }

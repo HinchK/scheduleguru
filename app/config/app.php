@@ -108,20 +108,20 @@ return array(
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Workbench\WorkbenchServiceProvider',
-		
+
         /* Additional Providers */
         'Zizaco\Confide\ConfideServiceProvider', // Confide Provider
         'Zizaco\Entrust\EntrustServiceProvider', // Entrust Provider for roles
         'Bllim\Datatables\DatatablesServiceProvider', // Datatables
 
-        /* Uncomment for use in development */
-        'Way\Generators\GeneratorsServiceProvider', // Generators
-     // 'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
-        'Barryvdh\Debugbar\ServiceProvider',
+        /* extracting biz logic and model presentation */
+        'Laracasts\Commander\CommanderServiceProvider',
+        'Laracasts\Flash\FlashServiceProvider',
 
         /* Google/OAuth Providers */
         'Atticmedia\Anvard\AnvardServiceProvider',
         'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
+
     ),
 
     /*

@@ -1,7 +1,7 @@
 <?php namespace ScheduleGuru\Calendar;
 
 
-class GoogleCalendarRepo {
+class CalendarRepository {
 
 
     /**

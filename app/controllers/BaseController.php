@@ -1,6 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\View;
+use Laracasts\Commander\CommanderTrait;
+
 class BaseController extends Controller {
+
+    use CommanderTrait;
 
     /**
      * Initializer.
@@ -24,6 +29,8 @@ class BaseController extends Controller {
 		{
 			$this->layout = View::make($this->layout);
 		}
+        View::share('localuser', Auth::user());
+//        View::share('google_resources', GCalSvc::calservice();
 	}
 
 }
