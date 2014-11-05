@@ -1,0 +1,1 @@
+/home/vagrant/Code/scheduleguru/app/views/students/show.blade.php

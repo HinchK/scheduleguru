@@ -4,72 +4,43 @@
 class CalendarRepository {
 
 
-    /**
-     * Persist a user
-     *
-     * @param User $user
-     * @return mixed
-     */
-    public function save(User $user)
-    {
-        return $user->save();
+    function createCalendar(&$client) {
+        return new Google_CalendarService($client);
     }
 
-    /**
-     * Get a paginated list of all users
-     * @param int $howMany
-     * @return \Illuminate\Pagination\Paginator
-     * @internal param int $howMany
-     */
-    public function getPaginated($howMany = 25)
-    {
-        return User::orderBy('username', 'asc')->simplePaginate($howMany);
+    function isAuthenticated(Google_Client &$client) {
+        createCalendar($client);
+        if ($client->getAccessToken()) {
+            $_SESSION['token'] = $client->getAccessToken();
+            return true;
+        }
+
+        $authUrl = $client->createAuthUrl();
+        print "<a class='login' href='$authUrl'>Connect Me!</a>";
     }
 
-    /**
-     * Get user object for given username
-     * @param $username
-     * @return mixed
-     */
-    public function findByUsername($username){
+    function listAllCalendars(Google_Client &$client) {
+        if (!isAuthenticated($client))
+            return;
 
-        return User::with('statuses')->whereUsername($username)->first();
-
+        $calList = createCalendar($client)->calendarList->listCalendarList();
+        print "<h1>Calendar List</h1><pre>" . print_r($calList, true) . "</pre>";
     }
 
-    /**
-     * Find a user by ID
-     * @param $id
-     * @return \Illuminate\Support\Collection|static
-     */
-    public function findById($id)
-    {
-
-        return User::findOrFail($id);
+    function getCalendarList($client) {
+        return createCalendar($client)->calendarList->listCalendarList();
     }
 
-    /**
-     * Follow a User
-     *
-     * @param $userIdToFollow
-     * @param User $user
-     * @return mixed
-     */
-    public function follow($userIdToFollow, User $user)
-    {
-        return $user->followedUsers()->attach($userIdToFollow);
+    function getCalendar($client, $id) {
+        return createCalendar($client)->calendars->get($id);
     }
 
-    /**
-     * Unfollow a User
-     *
-     * @param $userIdToFollow
-     * @param User $user
-     * @return mixed
-     */
-    public function unfollow($userIdToUnfollow, User $user)
-    {
-        return $user->followedUsers()->detach($userIdToUnfollow);
+    function getEventList($client, $calendarId) {
+        return createCalendar($client)->events->listEvents(htmlspecialchars($calendarId));
+    }
+
+    function getEvent($client, $eventID) {
+        return createCalendar($client)->events->listEvents(htmlspecialchars($calendarId));
     }
 
 }

@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
-
 /** ------------------------------------------
  *  Route model binding
  *  ------------------------------------------
@@ -81,10 +70,26 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 });
 
 
+
+// Confide routes
+Route::get('users/create', 'UsersController@create');
+Route::post('users', 'UsersController@store');
+Route::get('users/login', 'UsersController@login');
+Route::post('users/login', 'UsersController@doLogin');
+Route::get('users/confirm/{code}', 'UsersController@confirm');
+Route::get('users/forgot_password', 'UsersController@forgotPassword');
+Route::post('users/forgot_password', 'UsersController@doForgotPassword');
+Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
+Route::post('users/reset_password', 'UsersController@doResetPassword');
+Route::get('users/logout', 'UsersController@logout');
+Route::get('user/logout', 'UsersController@logout');
+
 /** ------------------------------------------
- *  Frontend Routes
+ * OLD Confide < 4 Frontend Routes
  *  ------------------------------------------
  */
+/**
+ *
 
 // User reset routes
 Route::get('user/reset/{token}', 'UserController@getReset');
@@ -98,11 +103,22 @@ Route::post('user/login', 'UserController@postLogin');
 
 # User RESTful Routes (Login, Logout, Register, etc)
 Route::controller('user', 'UserController');
-
+ */
 //:: Application Routes ::
 
 # Filter for detect language
 Route::when('contact-us','detectLang');
+
+
+/* TODO:disabled
+# Posts - Second to last set, match slug
+Route::get('{postSlug}', 'BlogController@getView');
+Route::post('{postSlug}', 'BlogController@postView');
+*/
+
+
+# Index Page - Last route, no matches
+Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
 
 # Contact Us Static Page
 Route::get('contact-us', function()
@@ -110,15 +126,6 @@ Route::get('contact-us', function()
     // Return about us page
     return View::make('site/contact-us');
 });
-
-# Posts - Second to last set, match slug
-Route::get('{postSlug}', 'BlogController@getView');
-Route::post('{postSlug}', 'BlogController@postView');
-
-# Index Page - Last route, no matches
-Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
-
-
 /**
  * Route Controller Resources
  */
@@ -126,51 +133,16 @@ Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getInde
 
 Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
     Route::get('google/calendars', [
-        'as' => 'guru_grab_calendars',
-        'uses' => 'GoogleAuthController@setupCalendarServices'
+        'as' => 'guru_authenticate',
+        'uses' => 'GoogleAuthController@setupGoogleConnections'
+    ]);
+    Route::get('g/dashboard', [
+        'as' => 'guru_manager',
+        'uses' => 'GoogleAccountController@index'
     ]);
     Route::resource('google_calendars', 'GoogleCalendarsController');
 });
 
-
-
-
-Route::get('google/login', 'UserController@linkGoogleAcct');
-
-
-
-#https://github.com/adamwathan/eloquent-oauth method
-
-Route::get('google/eloquent/authorize', function() {
-    return OAuth::authorize('google');
-});
-
-Route::get('google/oauth/eloquent', function(){
-    try {
-        $user = (new Confide(new ConfideEloquentRepository()))->user();
-        OAuth::login('google', function($user, $details) {
-            $user->nickname = $details->nickname;
-            $user->name = $details->firstName . ' ' . $details->lastName;
-            $user->profile_image = $details->imageUrl;
-            $user->save();
-        });
-    } catch (ApplicationRejectedException $e) {
-        // User rejected application
-        dd($e);
-    } catch (InvalidAuthorizationCodeException $e) {
-        // Authorization was attempted with invalid
-        // code,likely forgery attempt
-        dd($e);
-    }
-
-    // Current user is now available via Auth facade
-    $user = Auth::user();
-
-    return Redirect::intended();
-});
-
-
-//KDOGG:WERK
 //ROUTE-SPROUTING - A MOST VILE HERESEY OF IN THE MOST UNHOLY NAME OF OAUTH 
 //Debugbar::info($object);
 //Debugbar::error("Error!");
@@ -193,9 +165,73 @@ Error calling GET https://www.googleapis.com/calendar/v3/users/me/calendarList: 
 
  *
  */
+Route::get('/google', 'GoogleAuthController@superUserGoogleLogin');
+
+Route::get('/google/logout', [
+    'as' => 'google_logout',
+    'uses' => 'GoogleAuthController@logout'
+]);
+
+Route::get('/google/logout', [
+    'as' => 'google_logout',
+    'uses' => 'GoogleAuthController@logout'
+]);
+
+Route::get('/google/welcome', [
+    'as' => 'google_welcome',
+    'uses' => 'GoogleAuthController@welcome'
+]);
 
 
-Route::get('google/calendars', function()
+Route::get('/google/dashboard', 'GoogleAuthController@superUserGoogleLogin');
+
+Route::get('google/dashboard', function()
 {
+    // Get the google service (related scope must be set)
+    $service = Googlavel::getService('Calendar');
+
+    // invoke API call
+    $calendarList = $service->calendarList->listCalendarList();
+
+    foreach ( $calendarList as $calendar )
+    {
+        echo "{$calendar->summary} <br>";
+    }
+    echo "<br><---------------------------------------------><br><br>";
+    $gmailService = Googlavel::getService('Gmail');
+
+
+    $gmailThreadList = $gmailService->users_threads->listUsersThreads('me');
+
+    foreach ( $gmailThreadList as $thread )
+    {
+        print 'Thread with ID: ' . $thread->getId() . '<br/>';
+        $getThread = $gmailService->users_threads->get('me', $thread->getId());
+        $messages = $getThread->getMessages();
+        $msgCount = count($messages);
+        echo "#messages in thread: {$msgCount} <br>";
+        foreach ($messages as $message)
+        {
+            echo "     ".print_r($message->id)." |0-0| ".print_r($message->snippet);
+        }
+//        $thread_str = serialize($thread);
+//        echo "Thread: {$thread_str}";
+    }
+
+    return link_to('google/logout', 'Logout');
 
 });
+
+//
+
+// Confide routes
+Route::get('users/create', 'UsersController@create');
+Route::post('users', 'UsersController@store');
+Route::get('users/login', 'UsersController@login');
+Route::post('users/login', 'UsersController@doLogin');
+Route::get('users/confirm/{code}', 'UsersController@confirm');
+Route::get('users/forgot_password', 'UsersController@forgotPassword');
+Route::post('users/forgot_password', 'UsersController@doForgotPassword');
+Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
+Route::post('users/reset_password', 'UsersController@doResetPassword');
+Route::get('users/logout', 'UsersController@logout');

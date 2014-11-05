@@ -8,6 +8,7 @@ class AdminDashboardController extends AdminController {
 	 */
 	public function getIndex()
 	{
+        Debugbar::info("AdminDashboardController.");
         return View::make('admin/dashboard');
 	}
 

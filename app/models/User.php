@@ -3,12 +3,15 @@
 use Zizaco\Confide\ConfideUser;
 use Zizaco\Confide\Confide;
 use Zizaco\Confide\ConfideEloquentRepository;
+use Zizaco\Confide\ConfideUserInterface;
 use Zizaco\Entrust\HasRole;
 use Carbon\Carbon;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class User extends ConfideUser implements UserInterface, RemindableInterface{
+class User extends Eloquent implements ConfideUserInterface
+{
+    use ConfideUser;
     use HasRole;
 
     /**
@@ -89,11 +92,6 @@ class User extends ConfideUser implements UserInterface, RemindableInterface{
         return array($user, $redirectTo);
     }
 
-    public function currentUser()
-    {
-        return (new Confide(new ConfideEloquentRepository()))->user();
-    }
-
     /**
      * Get the e-mail address where password reminders are sent.
      *
@@ -104,13 +102,18 @@ class User extends ConfideUser implements UserInterface, RemindableInterface{
         return $this->email;
     }
 
-    public function profiles() {
-        return $this->hasMany('Profile');
+    public function googleProfiles() {
+        return $this->hasMany('GoogleProfile');
     }
 
     public function calendars()
     {
         return $this->hasMany('Calendar');
+    }
+
+    public function googleAccountManagers()
+    {
+        return $this->hasOne('GoogleAccountManager');
     }
 
 }

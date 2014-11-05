@@ -4,10 +4,10 @@ return array(
     'usermodel' => 'User',
 
     /* The name of the Profile model */
-    'profilemodel' => 'Profile',
+    'profilemodel' => 'GoogleProfile',
 
     /* The hasMany name for the profiles of a given user */
-    'userprofiles' => 'profiles',
+    'userprofiles' => 'GoogleProfiles',
 
     /* The belongsTo name for the user of a given profile */
     'profileuser' => 'user',
@@ -16,7 +16,7 @@ return array(
     'userstable' => 'users',
 
     /* The name of the profiles table */
-    'profilestable' => 'profiles',
+    'profilestable' => 'oauth_profiles',
 
     /* The name of the foreignkey in the profiles table specifying a user */
     'profilestableforeignkey' => 'user_id',
@@ -30,14 +30,14 @@ return array(
 
     /* Rules to override User saving validation (e.g. with Ardent models), for example the password.  Set to NULL to use the default validation rules. */
     'userrules' => array(
-        'password' => NULL,
+        'password' => NULL, //bypass password rules
     ),
 
     /* Specific things to set on new (unsaved) user models, provide a callable if you wish */
     'uservalues' => array(
-        // 'role_id' => 3,
-        // 'username' => function($user, $adapter_profile) {
-        //     return $adapter_profile->email;
-        // }
+//         'role_id' => 3,
+         'username' => function($user, $adapter_profile) {
+             return $adapter_profile->email;
+         }
     ),
 );

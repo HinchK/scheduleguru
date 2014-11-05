@@ -110,7 +110,7 @@ return array(
         'Illuminate\Workbench\WorkbenchServiceProvider',
 
         /* Additional Providers */
-        'Zizaco\Confide\ConfideServiceProvider', // Confide Provider
+        'Zizaco\Confide\ServiceProvider', // Confide Provider
         'Zizaco\Entrust\EntrustServiceProvider', // Entrust Provider for roles
         'Bllim\Datatables\DatatablesServiceProvider', // Datatables
 
@@ -118,10 +118,11 @@ return array(
         'Laracasts\Commander\CommanderServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
 
+        'LeroyMerlin\LaraSniffer\ServiceProvider',
+
         /* Google/OAuth Providers */
         'Atticmedia\Anvard\AnvardServiceProvider',
-        'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
-
+        'Redbaron76\Googlavel\GooglavelServiceProvider'
     ),
 
     /*
@@ -190,13 +191,13 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 
         /* Additional Aliases */
-        'Confide'         => 'Zizaco\Confide\ConfideFacade', // Confide Alias
+        'Confide'         => 'Zizaco\Confide\Facade', // Confide Alias
         'Entrust'         => 'Zizaco\Entrust\EntrustFacade', // Entrust Alias
         'String'          => 'Andrew13\Helpers\String', // String
         'Carbon'          => 'Carbon\Carbon', // Carbon
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
-        'Debugbar' => 'Barryvdh\Debugbar\Facade',
-        'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
+        'Debugbar'        => 'Barryvdh\Debugbar\Facade',
+        'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel'
 
     ),
 

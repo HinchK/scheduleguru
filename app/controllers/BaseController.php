@@ -25,12 +25,14 @@ class BaseController extends Controller {
 	 */
 	protected function setupLayout()
 	{
+
+        Debugbar::info('...inside BaseController: setupLayout method');
 		if ( ! is_null($this->layout))
 		{
 			$this->layout = View::make($this->layout);
 		}
-        View::share('localuser', Auth::user());
-//        View::share('google_resources', GCalSvc::calservice();
+        View::share('currentUser', Auth::user());
+        View::share('access_token');
 	}
 
 }

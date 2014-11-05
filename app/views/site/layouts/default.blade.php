@@ -6,17 +6,17 @@
 		<meta charset="utf-8" />
 		<title>
 			@section('title')
-			Laravel 4 Sample Site
+			Test Prep Gurus: Portal
 			@show
 		</title>
 		@section('meta_keywords')
-		<meta name="keywords" content="your, awesome, keywords, here" />
+		<meta name="keywords" content="TestPrepGurus, SAT, ACT, Tutoring" />
 		@show
 		@section('meta_author')
-		<meta name="author" content="Jon Doe" />
+		<meta name="author" content="Kasey Hinchman" />
 		@show
 		@section('meta_description')
-		<meta name="description" content="Lorem ipsum dolor sit amet, nihil fabulas et sea, nam posse menandri scripserit no, mei." />
+		<meta name="description" content="TestPrepGurus Student Scheduling System Vertical Dashboard" />
                 @show
 		<!-- Mobile Specific Metas
 		================================================== -->
@@ -24,12 +24,15 @@
 
 		<!-- CSS
 		================================================== -->
-        <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}">
-        <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap-theme.min.css')}}">
+        {{--<link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}">--}}
+        {{--<link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap-theme.min.css')}}">--}}
+        <link rel="stylesheet" href="{{ URL::asset('cheaptricks/css/laratricks.min.4.css') }}">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        @yield('styles')
 
 		<style>
         body {
-            padding: 60px 0;
+            padding: 100px 0;
         }
 		@section('styles')
 		@show
@@ -53,43 +56,20 @@
 		<!-- To make sticky footer need to wrap in a div -->
 		<div id="wrap">
 		<!-- Navbar -->
-		<div class="navbar navbar-default navbar-inverse navbar-fixed-top">
-			 <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav">
-						<li {{ (Request::is('/') ? ' class="active"' : '') }}><a href="{{{ URL::to('') }}}">Home</a></li>
-					</ul>
-
-                    <ul class="nav navbar-nav pull-right">
-                        @if (Auth::check())
-                        @if (Auth::user()->hasRole('admin'))
-                        <li><a href="{{{ URL::to('admin') }}}">Admin Panel</a></li>
-                        @endif
-                        <li><a href="{{{ URL::to('user') }}}">Logged in as {{{ Auth::user()->username }}}</a></li>
-                        <li><a href="{{{ URL::to('user/logout') }}}">Logout</a></li>
-                        @else
-                        <li {{ (Request::is('user/login') ? ' class="active"' : '') }}><a href="{{{ URL::to('user/login') }}}">Login</a></li>
-                        <li {{ (Request::is('user/create') ? ' class="active"' : '') }}><a href="{{{ URL::to('user/create') }}}">{{{ Lang::get('site.sign_up') }}}</a></li>
-                        @endif
-                    </ul>
-					<!-- ./ nav-collapse -->
-				</div>
-			</div>
-		</div>
+	    @include('site.partials.nav')
 		<!-- ./ navbar -->
 
 		<!-- Container -->
 		<div class="container">
 			<!-- Notifications -->
 			@include('notifications')
+                @if (Session::has('flash_notification.message'))
+                    <div class="alert alert-{{ Session::get('flash_notification.level') }}">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+
+                        {{ Session::get('flash_notification.message') }}
+                    </div>
+                @endif
 			<!-- ./ notifications -->
 
 			<!-- Content -->
@@ -103,12 +83,7 @@
 		</div>
 		<!-- ./wrap -->
 
-
-	    <div id="footer">
-	      <div class="container">
-	        <p class="muted credit">Laravel 4 Starter Site on <a href="https://github.com/andrew13/Laravel-4-Bootstrap-Starter-Site">Github</a>.</p>
-	      </div>
-	    </div>
+	    @include('site.partials.footer')
 
 		<!-- Javascripts
 		================================================== -->

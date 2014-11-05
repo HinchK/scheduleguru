@@ -1,5 +1,7 @@
 <?php
 
+use ScheduleGuru\Calendar\GoogleCalendar;
+
 class GoogleCalendarsController extends \BaseController {
 
 	/**

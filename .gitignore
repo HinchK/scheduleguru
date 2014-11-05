@@ -33,3 +33,6 @@ php.ini
 scheduleguru-2947938eb71b.json
 
 app/config/packages/atticmedia/anvard/hybridauth.php
+
+frznNodeAdmin_composer.json
+app/config/packages/barryvdh

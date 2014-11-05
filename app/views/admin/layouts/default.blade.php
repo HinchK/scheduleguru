@@ -116,6 +116,7 @@
 
 		<!-- Google Auth Connector -->
 		@include('admin.googleauth')
+		<!-- ./ google_auth -->
 
 		<!-- Notifications -->
 		@include('notifications')

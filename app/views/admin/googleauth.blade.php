@@ -5,3 +5,8 @@
         </article>
     </div>
 </div>
+<div class="page-header">
+    <h3>
+        Congrats, you are in!
+    </h3>
+</div>

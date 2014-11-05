@@ -12,219 +12,109 @@
 
 class GoogleAccountController extends BaseController {
 
+    protected $client;
+
+    function __construct(Google_Client $client){
+        $this->client = $client;
+    }
+
     /**
-     * Displays the form for account creation
+     * Display a listing of googlecalendars
      *
+     * @return Response
+     */
+    public function index()
+    {
+        View::make('session.start');
+    }
+
+    /**
+     * Show the form for creating a new googlecalendar
+     *
+     * @return Response
      */
     public function create()
     {
-        return View::make(Config::get('confide::signup_form'));
+        return View::make('googlecalendars.create');
     }
 
     /**
-     * Stores new account
+     * Store a newly created googlecalendar in storage.
      *
+     * @return Response
      */
     public function store()
     {
-        $user = new User;
+        $validator = Validator::make($data = Input::all(), GoogleCalendar::$rules);
 
-        $user->username = Input::get( 'username' );
-        $user->email = Input::get( 'email' );
-        $user->password = Input::get( 'password' );
-
-        // The password confirmation will be removed from model
-        // before saving. This field will be used in Ardent's
-        // auto validation.
-        $user->password_confirmation = Input::get( 'password_confirmation' );
-
-        // Save if valid. Password field will be hashed before save
-        $user->save();
-
-        if ( $user->getKey() )
+        if ($validator->fails())
         {
-                        $notice = Lang::get('confide::confide.alerts.account_created') . ' ' . Lang::get('confide::confide.alerts.instructions_sent');
-            
-            // Redirect with success message, You may replace "Lang::get(..." for your custom message.
-                        return Redirect::action('GoogleAccountController@login')
-                            ->with( 'notice', $notice );
+            return Redirect::back()->withErrors($validator)->withInput();
         }
-        else
-        {
-            // Get validation errors (see Ardent package)
-            $error = $user->errors()->all(':message');
 
-                        return Redirect::action('GoogleAccountController@create')
-                            ->withInput(Input::except('password'))
-                ->with( 'error', $error );
-        }
+        GoogleCalendar::create($data);
+
+        return Redirect::route('googlecalendars.index');
     }
 
     /**
-     * Displays the login form
+     * Display the specified googlecalendar.
      *
+     * @param  int  $id
+     * @return Response
      */
-    public function login()
+    public function show($id)
     {
-        if( Confide::user() )
-        {
-            // If user is logged, redirect to internal
-            // page, change it to '/admin', '/dashboard' or something
-            return Redirect::to('/');
-        }
-        else
-        {
-            return View::make(Config::get('confide::login_form'));
-        }
+        $googlecalendar = GoogleCalendar::findOrFail($id);
+
+        return View::make('googlecalendars.show', compact('googlecalendar'));
     }
 
     /**
-     * Attempt to do login
+     * Show the form for editing the specified googlecalendar.
      *
+     * @param  int  $id
+     * @return Response
      */
-    public function do_login()
+    public function edit($id)
     {
-        $input = array(
-            'email'    => Input::get( 'email' ), // May be the username too
-            'username' => Input::get( 'email' ), // so we have to pass both
-            'password' => Input::get( 'password' ),
-            'remember' => Input::get( 'remember' ),
-        );
+        $googlecalendar = GoogleCalendar::find($id);
 
-        // If you wish to only allow login from confirmed users, call logAttempt
-        // with the second parameter as true.
-        // logAttempt will check if the 'email' perhaps is the username.
-        // Get the value from the config file instead of changing the controller
-        if ( Confide::logAttempt( $input, Config::get('confide::signup_confirm') ) )
-        {
-            // Redirect the user to the URL they were trying to access before
-            // caught by the authentication filter IE Redirect::guest('user/login').
-            // Otherwise fallback to '/'
-            // Fix pull #145
-            return Redirect::intended('/'); // change it to '/admin', '/dashboard' or something
-        }
-        else
-        {
-            $user = new User;
-
-            // Check if there was too many login attempts
-            if( Confide::isThrottled( $input ) )
-            {
-                $err_msg = Lang::get('confide::confide.alerts.too_many_attempts');
-            }
-            elseif( $user->checkUserExists( $input ) and ! $user->isConfirmed( $input ) )
-            {
-                $err_msg = Lang::get('confide::confide.alerts.not_confirmed');
-            }
-            else
-            {
-                $err_msg = Lang::get('confide::confide.alerts.wrong_credentials');
-            }
-
-                        return Redirect::action('GoogleAccountController@login')
-                            ->withInput(Input::except('password'))
-                ->with( 'error', $err_msg );
-        }
+        return View::make('googlecalendars.edit', compact('googlecalendar'));
     }
 
     /**
-     * Attempt to confirm account with code
+     * Update the specified googlecalendar in storage.
      *
-     * @param    string  $code
+     * @param  int  $id
+     * @return Response
      */
-    public function confirm( $code )
+    public function update($id)
     {
-        if ( Confide::confirm( $code ) )
+        $googlecalendar = GoogleCalendar::findOrFail($id);
+
+        $validator = Validator::make($data = Input::all(), GoogleCalendar::$rules);
+
+        if ($validator->fails())
         {
-            $notice_msg = Lang::get('confide::confide.alerts.confirmation');
-                        return Redirect::action('GoogleAccountController@login')
-                            ->with( 'notice', $notice_msg );
+            return Redirect::back()->withErrors($validator)->withInput();
         }
-        else
-        {
-            $error_msg = Lang::get('confide::confide.alerts.wrong_confirmation');
-                        return Redirect::action('GoogleAccountController@login')
-                            ->with( 'error', $error_msg );
-        }
+
+        $googlecalendar->update($data);
+
+        return Redirect::route('googlecalendars.index');
     }
 
     /**
-     * Displays the forgot password form
+     * Remove the specified googlecalendar from storage.
      *
+     * @param  int  $id
+     * @return Response
      */
-    public function forgot_password()
+    public function destroy($id)
     {
-        return View::make(Config::get('confide::forgot_password_form'));
+        Googlecalendar::destroy($id);
+
+        return Redirect::route('googlecalendars.index');
     }
-
-    /**
-     * Attempt to send change password link to the given email
-     *
-     */
-    public function do_forgot_password()
-    {
-        if( Confide::forgotPassword( Input::get( 'email' ) ) )
-        {
-            $notice_msg = Lang::get('confide::confide.alerts.password_forgot');
-                        return Redirect::action('GoogleAccountController@login')
-                            ->with( 'notice', $notice_msg );
-        }
-        else
-        {
-            $error_msg = Lang::get('confide::confide.alerts.wrong_password_forgot');
-                        return Redirect::action('GoogleAccountController@forgot_password')
-                            ->withInput()
-                ->with( 'error', $error_msg );
-        }
-    }
-
-    /**
-     * Shows the change password form with the given token
-     *
-     */
-    public function reset_password( $token )
-    {
-        return View::make(Config::get('confide::reset_password_form'))
-                ->with('token', $token);
-    }
-
-    /**
-     * Attempt change password of the user
-     *
-     */
-    public function do_reset_password()
-    {
-        $input = array(
-            'token'=>Input::get( 'token' ),
-            'password'=>Input::get( 'password' ),
-            'password_confirmation'=>Input::get( 'password_confirmation' ),
-        );
-
-        // By passing an array with the token, password and confirmation
-        if( Confide::resetPassword( $input ) )
-        {
-            $notice_msg = Lang::get('confide::confide.alerts.password_reset');
-                        return Redirect::action('GoogleAccountController@login')
-                            ->with( 'notice', $notice_msg );
-        }
-        else
-        {
-            $error_msg = Lang::get('confide::confide.alerts.wrong_password_reset');
-                        return Redirect::action('GoogleAccountController@reset_password', array('token'=>$input['token']))
-                            ->withInput()
-                ->with( 'error', $error_msg );
-        }
-    }
-
-    /**
-     * Log the user out of the application.
-     *
-     */
-    public function logout()
-    {
-        Confide::logout();
-
-        return Redirect::to('/');
-    }
-
 }
