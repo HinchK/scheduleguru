@@ -16,7 +16,7 @@
             <ul class="nav navbar-nav pull-right">
                 @if (Auth::check())
                 @if (Auth::user()->hasRole('admin'))
-                <li><a href="{{{ URL::to('admin') }}}">Admin Panel</a></li>
+                <li {{ (Request::is('google/dash') ? ' class="active"' : '') }}><a href="{{{ URL::to('google/dash') }}}">Calendar Dashboard</a></li>
                 @endif
                 <li><a href="{{{ URL::to('user') }}}">Logged in as {{{ Auth::user()->username }}}</a></li>
                 <li><a href="{{{ URL::to('user/logout') }}}">Logout</a></li>

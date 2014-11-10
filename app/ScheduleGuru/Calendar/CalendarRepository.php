@@ -1,7 +1,23 @@
 <?php namespace ScheduleGuru\Calendar;
 
 
+use Googlavel;
+
 class CalendarRepository {
+
+    //Todo: build initial calendar view
+    function buildPrimaryCalendarList(){
+        $service = Googlavel::getService('Calendar');
+        $calendarList = $service->calendarList->listCalendarList();
+
+        return $calendarList;
+        //helpful way to enact method-hints
+        //$cal = new \Google_Service_Calendar($client);
+        //$cal->calendarList->listCalendarList()
+
+
+
+    }
 
 
     function createCalendar(&$client) {

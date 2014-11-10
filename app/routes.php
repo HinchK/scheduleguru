@@ -182,8 +182,16 @@ Route::get('/google/welcome', [
     'uses' => 'GoogleAuthController@welcome'
 ]);
 
+Route::get('/google/dash', [
+    'as' => 'dashboard_primary',
+    'uses' => 'GoogleCalendarsController@index'
+]);
 
-Route::get('/google/dashboard', 'GoogleAuthController@superUserGoogleLogin');
+Route::post('/google/dash', [
+    'as' => 'dashboard_primary',
+    'uses' => 'GoogleCalendarsController@store'
+]);
+//Route::get('/google/dashboard', 'GoogleAuthController@superUserGoogleLogin');
 
 Route::get('google/dashboard', function()
 {

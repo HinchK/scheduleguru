@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateGoogleCalendarsTable extends Migration {
+class AddRefreshTokenToTokenStoreTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,9 @@ class CreateGoogleCalendarsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('google_calendars', function(Blueprint $table)
+		Schema::table('token_store', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->text('cal-id');
-			$table->text('is_a');
-			$table->timestamps();
+            $table->string('refresh_token')->nullable();
 		});
 	}
 
@@ -29,7 +26,10 @@ class CreateGoogleCalendarsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('google_calendars');
+		Schema::table('token_store', function(Blueprint $table)
+		{
+			$table->dropColumn('refresh_token');
+		});
 	}
 
 }

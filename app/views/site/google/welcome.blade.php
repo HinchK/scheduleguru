@@ -66,6 +66,11 @@
             <img class="circle-image" src="{{{ URL::to($userinfo->picture) }}}"  width="100px" size="100px" /><br/>
             <p class="welcome">Welcome <a href="{{{ link_to($userinfo->link) }}}" >{{ $userinfo->name  }}</a></p>
             <p class="oauthemail">{{ $userinfo->email }}</p>
-        <div class='logout'>{{ link_to_route('google_logout', 'Get me outta here!') }}</div>
+        <div class='logout'>{{ link_to_route('google_logout', 'Logout') }}</div>
+        <div class="row">
+            <div class="container">
+                {{ link_to_route('dashboard_primary', 'Take me to the dashboard!') }}
+            </div>
+        </div>
     </div>
 @stop

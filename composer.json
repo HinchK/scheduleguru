@@ -21,7 +21,8 @@
         "google/apiclient": "1.0.*@beta",
         "atticmedia/anvard": "dev-master",
         "league/oauth2-client": "dev-master",
-        "redbaron76/googlavel": "~1.0"
+        "redbaron76/googlavel": "~1.0",
+        "anahkiasen/former": "~3.5"
     },
     "require-dev": {
         "way/generators": "~2.6",

@@ -40,6 +40,9 @@ class GoogleAuthController extends BaseController {
 
     }
 
+    /**
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function superUserGoogleLogin()
     {
 
@@ -67,6 +70,9 @@ class GoogleAuthController extends BaseController {
         //turn link_to($url, 'Login with Google!');
     }
 
+    /**
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function welcome()
     {
         if(Session::has('userinfo')){
@@ -106,12 +112,20 @@ class GoogleAuthController extends BaseController {
 
     }
 
+    /**
+     * Store the token data in the db.
+     * Token must be in json_encoded form when used by Google
+     * @param $user_id
+     * @param $google_id
+     * @return mixed
+     */
     protected function tokenStorage($user_id, $google_id)
     {
         $storage =  new GoogleToken;
         $storage->user_id = $user_id;
         $storage->google_id = $google_id;
-        $session_access_token = Session::pull('access_token');
+
+        $session_access_token = Session::get('access_token');
         $data = json_decode($session_access_token);
         Debugbar::info($data);
         $created = Carbon::createFromTimestamp($data->created);
@@ -122,7 +136,7 @@ class GoogleAuthController extends BaseController {
         $data->created = $created;
         $data->expires_in = $expiretime;
 
-        Session::put('access_token',$data->access_token);
+        Session::put('raw_access_token',$data->access_token);
         Session::put('expires_utc',$expiretime);
         $tokenstore = $this->applyObjectDetailsToProfileRecordModel($data, $storage);
         return $tokenstore;
@@ -274,6 +288,10 @@ class GoogleAuthController extends BaseController {
             dd($token_data);
         }
     }
+
+    /**
+     *
+     */
     public function logout(){
         // perform a logout with redirect
         Confide::logout();

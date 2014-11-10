@@ -119,6 +119,7 @@ return array(
         'Laracasts\Flash\FlashServiceProvider',
 
         'LeroyMerlin\LaraSniffer\ServiceProvider',
+        'Former\FormerServiceProvider',
 
         /* Google/OAuth Providers */
         'Atticmedia\Anvard\AnvardServiceProvider',
@@ -197,7 +198,8 @@ return array(
         'Carbon'          => 'Carbon\Carbon', // Carbon
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
         'Debugbar'        => 'Barryvdh\Debugbar\Facade',
-        'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel'
+        'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel',
+        'Former' => 'Former\Facades\Former'
 
     ),
 

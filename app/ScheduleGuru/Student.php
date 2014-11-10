@@ -1,11 +1,24 @@
 <?php namespace ScheduleGuru;
 
-class Student extends Eloquent {
+use ScheduleGuru\Calendar\GoogleCalendar;
+
+class Student extends \Eloquent {
 	protected $fillable = [];
+
+    public function buildStudentProfile(GoogleCalendar $calref)
+    {
+
+    }
+
 
     public function mathTutor()
     {
         return $this->hasOne('MathTutor');
+    }
+
+    public function Tutor()
+    {
+        return $this->hasMany('Tutor');
     }
 
     public function verbalTutor()
@@ -15,7 +28,7 @@ class Student extends Eloquent {
 
     public function calendar()
     {
-        return $this->hasOne('Calendar');
+        return $this->hasOne('GoogleCalendar');
     }
 
     public function mailMessages()

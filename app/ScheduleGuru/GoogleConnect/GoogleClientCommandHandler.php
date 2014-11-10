@@ -4,13 +4,13 @@ use User;
 use Laracasts\Commander\CommandHandler;
 use Laracasts\Commander\Events\DispatchableTrait;
 
-class GoogleClientCommandHandler implements CommandHandler
+class DataBuilderCommandHandler implements CommandHandler
 {
     use DispatchableTrait;
 
     protected $repository;
 
-    function __construct(GoogleClientRepository $repository)
+    function __construct( $repository)
     {
         $this->repository = $repository;
     }
