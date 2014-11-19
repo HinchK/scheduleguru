@@ -17,21 +17,36 @@ class GoogleCalendar extends \Eloquent {
     /**
      * @param $cal_id
      * @param $is_a
-     * @param $cal_summary
-     * @param $cal_bg_color
+     * @param $accessRole
+     * @param $backgroundColor
+     * @param $colorId
+     * @param $deleted
+     * @param $description
+     * @param $etag
+     * @param $foregroundColor
+     * @param $hidden
+     * @param $kind
+     * @param $location
+     * @param $primary
+     * @param $selected
+     * @param $summary
+     * @param $summaryOverride
+     * @param $timeZone
+     * @internal param $cal_summary
+     * @internal param $cal_bg_color
      * @return static
      */
-    public static function post( $cal_id, $is_a, $cal_summary, $cal_bg_color)
+    public static function post( $cal_id, $is_a, $accessRole, $backgroundColor, $colorId, $deleted, $description, $etag, $foregroundColor, $hidden, $kind, $location, $primary, $selected, $summary, $summaryOverride, $timeZone)
     {
 
-        $calendarReference = GoogleCalendar::create(['cal_id' => $cal_id, 'is_a' => $is_a, 'cal_summary' => $cal_summary, 'cal_bg_color' => $cal_bg_color]);
+        $calendarReference = GoogleCalendar::create(['cal_id' => $cal_id, 'is_a' => $is_a, 'accessRole' => $accessRole, 'backgroundColor' => $backgroundColor, 'colorId' => $colorId, 'deleted' => $deleted, 'description' => $description, 'etag' => $etag, 'foregroundColor' => $foregroundColor, 'hidden' => $hidden, 'kind' => $kind, 'location' => $location, 'primary' => $primary, 'selected' => $selected, 'summary' => $summary, 'summaryOverride' => $summaryOverride, 'timeZone' => $timeZone]);
 
 
         if($is_a === 'TU'){
-            Tutor::buildTutorProfile($cal_id, $cal_summary);
+            Tutor::buildTutorProfile($cal_id, $summary);
         }
         if($is_a === 'ST'){
-            Student::buildStudentProfile($cal_id,  $cal_summary);
+            Student::buildStudentProfile($cal_id,  $summary);
         }
         \Debugbar::info('calendarReference value: ');
         \Debugbar::info($calendarReference);
