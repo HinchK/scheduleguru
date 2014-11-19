@@ -23,6 +23,7 @@ class GoogleCalendar extends \Eloquent {
      */
     public static function post( $cal_id, $is_a, $cal_summary, $cal_bg_color)
     {
+
         $calendarReference = GoogleCalendar::create(['cal_id' => $cal_id, 'is_a' => $is_a, 'cal_summary' => $cal_summary, 'cal_bg_color' => $cal_bg_color]);
 
 

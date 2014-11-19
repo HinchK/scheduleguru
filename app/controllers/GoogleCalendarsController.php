@@ -23,10 +23,13 @@ class GoogleCalendarsController extends \BaseController {
 	 */
 	public function index()
 	{
-        $rawCalendars = $this->calendarRepository->buildPrimaryCalendarList();
+        $gCals = $this->calendarRepository->buildPrimaryCalendarList();
+        $currentCals = GoogleCalendar::all();
 
-        return View::make('site.dashboard.primary')->with('calendars', $rawCalendars);
-		//$googlecalendars = GoogleCalendar::all();
+        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
+
+        //$rawCalendars = $this->calendarRepository->buildPrimaryCalendarList();
+        //return View::make('site.dashboard.primary')->with('calendars', $rawCalendars);
 
 		//return View::make('googlecalendars.index', compact('googlecalendars'));
 	}
@@ -46,6 +49,7 @@ class GoogleCalendarsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
+    //TODO: EXPAND GOOGLE_CALENDARS DB TO INCLUDE EVERYTHING, BUILD ON BRAH!~
 	public function store()
 	{
 		$validator = Validator::make($data = Input::all(), GoogleCalendar::$rules);

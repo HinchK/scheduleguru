@@ -28,11 +28,17 @@ class Tutor extends \Eloquent {
      */
     public static function buildTutorProfile($cal_id, $cal_summary)
     {
-        if(Tutor::has('calendarId','=',$cal_id))
-        {
-            \Log::alert('skipping build tutor, cal_id found');
-            return false;
+        $currentTutorList = Tutor::all();
+        \Debugbar::info($currentTutorList);
+
+        foreach($currentTutorList as $currentTutor){
+            \Debugbar::info($currentTutor);
+            if($currentTutor->calendarId === $cal_id){
+                \Debugbar::info('tutor found in db');
+                return false;
+            }
         }
+
         $newTutor = Tutor::create(['calendarId' => $cal_id,'name' => $cal_summary]);
         return $newTutor;
     }

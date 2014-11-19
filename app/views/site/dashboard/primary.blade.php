@@ -1,20 +1,29 @@
 @extends('site.layouts.default')
 
-{{-- Content --}}
+{{-- Calendar Dasboard Build-Step1-Content --}}
 @section('content')
-    <h2>Let's associate calendars with tutors, students, or special events</h2>
-    {{ Form::open(['route' => 'dashboard_primary']) }}
-        <div class="form-group status-post-submit">
-            {{ Form::submit('Post Status',['class' => 'btn btn-default btn-xs']) }}
-        </div>
-        <div class="row js-trick-container">
-            <div class="form-group">
-                @foreach($calendars as $cal)
-                    @include('site.dashboard.card', ['cal' => $cal])
-                @endforeach
+
+<div class="col-md-9 topics-index main-col">
+    {{--<div class="panel panel-default">--}}
+        <h2>Let's associate calendars with tutors, students, or special events</h2>
+        {{ Form::open(['route' => 'dashboard_primary']) }}
+            <div class="form-group status-post-submit">
+                {{ Form::submit('Post Status',['class' => 'btn btn-default btn-xs']) }}
             </div>
-        </div>
-    {{ Form::close() }}
+            <div class="row js-trick-container">
+                <div class="form-group">
+
+                    @foreach($gCals as $cal)
+                        @include('site.dashboard.card', ['cal' => $cal])
+                    @endforeach
+
+                </div>
+            </div>
+        {{ Form::close() }}
+    {{--</div>--}}
+</div>
+
+@include('site.partials.cal.sidebar', ['currentCals' => $currentCals])
 
 @stop
 
