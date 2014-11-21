@@ -64,7 +64,7 @@
     <div class="heading">You are logged in, Superuser!</div>
         <div class="box">
             <img class="circle-image" src="{{{ URL::to($userinfo->picture) }}}"  width="100px" size="100px" /><br/>
-            <p class="welcome">Welcome <a href="{{{ link_to($userinfo->link) }}}" >{{ $userinfo->name  }}</a></p>
+            <p class="welcome">Welcome {{ link_to($userinfo->link, $userinfo->name) }}</p>
             <p class="oauthemail">{{ $userinfo->email }}</p>
         <div class='logout'>{{ link_to_route('google_logout', 'Logout') }}</div>
         <div class="row">

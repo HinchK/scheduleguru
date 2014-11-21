@@ -110,7 +110,7 @@ Route::controller('user', 'UserController');
 Route::when('contact-us','detectLang');
 
 
-/* TODO:disabled
+/* TODO:disabled - re-enable the blog stuff off a /blog/ path
 # Posts - Second to last set, match slug
 Route::get('{postSlug}', 'BlogController@getView');
 Route::post('{postSlug}', 'BlogController@postView');

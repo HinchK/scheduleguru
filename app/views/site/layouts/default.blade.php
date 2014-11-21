@@ -25,8 +25,8 @@
 		<!-- CSS
 		================================================== -->
         {{--<link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}">--}}
-        {{--<link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap-theme.min.css')}}">--}}
-        <link rel="stylesheet" href="{{ URL::asset('cheaptricks/css/laratricks.min.4.css') }}">
+        <link rel="stylesheet" href="{{{ asset('bootswatch/superhero/bootstrap.min.css') }}}">
+        {{--<link rel="stylesheet" href="{{ URL::asset('cheaptricks/css/laratricks.min.4.css') }}">--}}
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         @yield('styles')
 
