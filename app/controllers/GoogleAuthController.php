@@ -60,6 +60,7 @@ class GoogleAuthController extends BaseController {
                 Session::put('userinfo', $googleProfile);
                 Debugbar::info($googleProfile);
                 return Redirect::route('google_welcome')->with('userinfo', $googleProfile);
+//                return Redirect::route('dashboard_primary')->with('userinfo', $googleProfile);
             }
         }
 
@@ -295,6 +296,7 @@ class GoogleAuthController extends BaseController {
     public function logout(){
         // perform a logout with redirect
         Confide::logout();
+        Flash::success('You have been logged out.');
         return Googlavel::logout('/');
     }
 

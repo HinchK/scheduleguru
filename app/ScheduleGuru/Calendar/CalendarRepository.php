@@ -29,14 +29,15 @@ class CalendarRepository {
             array_push($calarray, $checkcal);
             $calarray[$key] = $checkcal;
             foreach($knownCalendars as $knownCals){
-                if($cal->id === $knownCals->cal_id){
-                    \Debugbar::info('we have a match here in calendar repo, removing!');
-                    \Debugbar::info($cal->summary);
+                if($cal->id === $knownCals->cal_id) {
+//                    \Debugbar::info('we have a match here in calendar repo, removing!');
+//                    \Debugbar::info($cal->summary);
                     unset($calarray[$key]);
-                }else{
-                    \Debugbar::info('not a match print to view');
-                    \Debugbar::info($cal->summary);
                 }
+//                }else{
+//                    \Debugbar::info('not a match print to view');
+//                    \Debugbar::info($cal->summary);
+//                }
 
             }
             $key++;

@@ -25,13 +25,14 @@ class GoogleCalendarsController extends \BaseController {
 	{
         $gCals = $this->calendarRepository->buildPrimaryCalendarList();
         $currentCals = GoogleCalendar::all();
+        $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
 
-        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
+        Debugbar::info('Student cals Eloquent grab:');
+        Debugbar::info($studentCals);
 
-        //$rawCalendars = $this->calendarRepository->buildPrimaryCalendarList();
-        //return View::make('site.dashboard.primary')->with('calendars', $rawCalendars);
+//        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
+        return View::make('site.dashboard.home', compact('gCals','currentCals'));
 
-		//return View::make('googlecalendars.index', compact('googlecalendars'));
 	}
 
 	/**

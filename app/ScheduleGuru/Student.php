@@ -1,15 +1,25 @@
 <?php namespace ScheduleGuru;
 
-use ScheduleGuru\Calendar\GoogleCalendar;
-
 class Student extends \Eloquent {
-	protected $fillable = [];
+	protected $fillable = ['student_id', 'calendarId', 'name'];
 
-    public function buildStudentProfile(GoogleCalendar $calref)
+    public static function buildStudentProfile($cal_id, $cal_summary)
     {
+        $currentStudentList = Student::all();
+        \Debugbar::info($currentStudentList);
 
+        foreach($currentStudentList as $currentStudent){
+            \Debugbar::info($currentStudent);
+            if($currentStudent->calendarId === $cal_id){
+                \Debugbar::info('student found in db');
+                return false;
+            }
+        }
+
+        $studentId = trim(strtolower($cal_summary));
+        $newStudent = Student::create(['student_id' => $studentId, 'calendarId' => $cal_id,'name' => $cal_summary]);
+        return $newStudent;
     }
-
 
     public function mathTutor()
     {
