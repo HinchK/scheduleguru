@@ -2,7 +2,6 @@
 
 
 use Googlavel;
-use ScheduleGuru\Tutor;
 
 class CalendarRepository {
 

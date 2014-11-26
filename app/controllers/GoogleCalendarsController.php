@@ -4,6 +4,7 @@ use Laracasts\Commander\CommanderTrait;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
 use ScheduleGuru\Calendar\PostPersonaBuilderCommand;
+use ScheduleGuru\Tutor;
 
 class GoogleCalendarsController extends \BaseController {
     use CommanderTrait;
@@ -25,13 +26,12 @@ class GoogleCalendarsController extends \BaseController {
 	{
         $gCals = $this->calendarRepository->buildPrimaryCalendarList();
         $currentCals = GoogleCalendar::all();
-        $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
 
-        Debugbar::info('Student cals Eloquent grab:');
-        Debugbar::info($studentCals);
+        $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
+        $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
 //        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
-        return View::make('site.dashboard.home', compact('gCals','currentCals'));
+        return View::make('site.dashboard.home', compact('gCals','currentCals','studentCals','tutorCals'));
 
 	}
 
