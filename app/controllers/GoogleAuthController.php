@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Redirect;
 use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\GoogleCalendarRepo;
 use ScheduleGuru\GoogleConnect\GoogleToken;
@@ -38,6 +39,11 @@ class GoogleAuthController extends BaseController {
 //        $calservice = new Google_Service_Calendar($client);
         $calservice = new Google_Service_Oauth2_Userinfoplus($client);
 
+    }
+
+    public function redirectGoogleLogin()
+    {
+        return Redirect::to('/');
     }
 
     /**
@@ -82,7 +88,7 @@ class GoogleAuthController extends BaseController {
 
             if($profileInfo->email === 'kasey.hinchman@gmail.com'){
                 Auth::loginUsingId(1);
-                Flash::success("Welcome! What will your first sequence of the day be?");
+                Flash::overlay("Welcome! What will your first sequence of the day be?");
 
 
                 $profileCheck = GoogleProfile::where('email',$profileInfo->email);

@@ -67,6 +67,53 @@
                 <div class="box-header">
                     <div class="box-name">
                         <i class="fa fa-table"></i>
+                        <span>Students</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content no-padding">
+                    <div class="bs-callout">
+                        <button class="close" data-dismiss="alert">&times;</button>
+                        <h4>Student Management</h4>
+                        <p>The list of current active students</p>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Link to Student's Page</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($students as $student)
+                            <tr>
+                                <td><a href="{{{ $student->url() }}}">{{ $student->student_id}}</a></td>
+                                <td>{{ date($student->created_at) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-table"></i>
                         <span>Student-Calendars</span>
                     </div>
                     <div class="box-icons">
@@ -85,28 +132,30 @@
                 <div class="box-content no-padding">
                     <div class="bs-callout">
                         <button class="close" data-dismiss="alert">&times;</button>
-                        <h4>Combine some classes to best view</h4>
+                        <h4>Student Calendar Management</h4>
                         <p><code>.table-striped</code>, <code>.table-bordered</code>, <code>.table-hover</code> and <code>.table-heading</code></p>
-                        <p>Also you can use contextual classes to color table rows or individual cells</p>
+                        <p>The list of current active students</p>
                     </div>
                     <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
                         <thead>
                             <tr>
-                                <th>Column #1</th>
-                                <th>Column #2</th>
-                                <th>Column #3</th>
-                                <th>Column #4</th>
-                                <th>Column #5</th>
+                                <th>Summary</th>
+                                <th>Description</th>
+                                <th>ETAG</th>
+                                <th>Calendar Link</th>
+                                <th>Profile Status</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($studentCals as $scal)
                             <tr>
-                                <td>no</td>
-                                <td>class</td>
-                                <td>to</td>
-                                <td>default</td>
-                                <td>view</td>
+                                <td>{{ $scal->summary }}</td>
+                                <td>{{ $scal->description }}</td>
+                                <td>{{ $scal->etag }}</td>
+                                <td><a href="{{ $scal->cal_id }}">Cal Link</a></td>
+                                <td>STATUS - TODO</td>
                             </tr>
+                            @endforeach
                             <tr class="active">
                                 <td>class</td>
                                 <td><code>active</code></td>

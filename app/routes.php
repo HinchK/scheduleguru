@@ -9,6 +9,7 @@ Route::model('comment', 'Comment');
 Route::model('post', 'Post');
 Route::model('role', 'Role');
 Route::model('profile', 'Profile');
+Route::model('student', 'Student');
 
 /**
  * Experimental model binding for GoogleCalendar spellcasting
@@ -142,6 +143,8 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
         'uses' => 'StudentsController@manage'
     ]);
 
+    Route::get('{studentSlug}', 'StudentsController@studentPage');
+
     Route::get('tutors', [
         'as' => 'tutor_management',
         'uses' => 'TutorsController@manage'
@@ -173,6 +176,10 @@ Route::get('contact-us', function()
 });
 
 # TODO: all the buillshit below here has gotta go
+//below is handled in filters.php, can probably go
+
+
+
 
 Route::get('/', 'GoogleAuthController@superUserGoogleLogin');
 

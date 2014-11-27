@@ -2,6 +2,7 @@
 
 
 use Googlavel;
+use Google_Auth_Exception;
 
 class CalendarRepository {
 
@@ -13,8 +14,11 @@ class CalendarRepository {
 
     function buildPrimaryCalendarList(){
         $service = Googlavel::getService('Calendar');
-        $calendarList = $service->calendarList->listCalendarList();
-
+        try {
+            $calendarList = $service->calendarList->listCalendarList();
+        }catch (Google_Auth_Exception $e){
+            return false;
+        }
         $knownCalendars = GoogleCalendar::all();
 //        \Debugbar::info($calendarList);
         \Debugbar::info('begin filtering of cal lists');

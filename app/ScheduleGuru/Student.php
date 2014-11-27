@@ -1,7 +1,28 @@
 <?php namespace ScheduleGuru;
 
+use Illuminate\Support\Facades\URL;
+use Str;
+
 class Student extends \Eloquent {
-	protected $fillable = ['student_id', 'calendarId', 'name'];
+	protected $fillable = ['student_id', 'calendarId', 'name', 'slug'];
+
+    public function tutors()
+    {
+        return $this->hasMany('Tutor');
+    }
+
+    public function tutoringSessions()
+    {
+        return $this->hasMany('ScheduledSession');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function url()
+    {
+        return URL::to('guru/' . $this->slug);
+    }
 
     public static function buildStudentProfile($cal_id, $cal_summary)
     {
@@ -16,8 +37,17 @@ class Student extends \Eloquent {
             }
         }
 
-        $studentId = trim(strtolower($cal_summary));
-        $newStudent = Student::create(['student_id' => $studentId, 'calendarId' => $cal_id,'name' => $cal_summary]);
+        $studentIdmaker = explode('@', str_replace('.', ' ', trim(strtolower($cal_summary))));
+        \Debugbar::info('student id/slug stuff');
+        \Debugbar::info($studentIdmaker);
+        if(is_array($studentIdmaker)){
+            $studentId = $studentIdmaker[0];
+        }else{
+            $studentId = $studentIdmaker;
+        }
+        $slug = Str::slug($studentId);
+        \Debugbar::info('Slug: '.$slug);
+        $newStudent = Student::create(['student_id' => $studentId, 'calendarId' => $cal_id,'name' => $cal_summary, 'slug' => $slug]);
         return $newStudent;
     }
 

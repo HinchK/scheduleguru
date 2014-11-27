@@ -72,7 +72,8 @@
                 </div>
                 @yield('content')
 
-                <div id="ajax-content"></div>
+                <!--devoops ajax loader target-->
+                {{--<div id="ajax-content"></div>--}}
 
             </div>
         </div>
