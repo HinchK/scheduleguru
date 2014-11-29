@@ -1,5 +1,6 @@
 <?php
 
+use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
 use ScheduleGuru\Student;
 use ScheduleGuru\Students\StudentRepository;
@@ -28,8 +29,9 @@ class StudentsController extends \BaseController {
             // 404 error page.
             return App::abort(404);
         }
-        Debugbar::info($student);
-        return View::make('site.dashboard.students.student', compact('student'));
+        $events = CalendarRepository::fetchEvents($student->calendarId);
+        \Debugbar::info($events);
+        return View::make('site.dashboard.students.student', compact('student','events'));
     }
 
     public function manage()

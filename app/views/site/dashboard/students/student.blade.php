@@ -36,6 +36,43 @@
         </div>
         <div class="clearfix visible-xs"></div>
     </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-table"></i>
+                        <span>Tutoring Package for {{ $student->name }}</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+
+                @if (count($events))
+                    <h3>found {{ count($events)  }} events</h3>
+                    @foreach ($events as $event)
+                        <ul>
+                            <li>{{ $event->location }}|{{ Carbon::parse($event->getStart()->dateTime,$event->getStart()->timeZone)->toDayDateTimeString() }}: <a href="{{ $event->htmlLink }}">{{ $event->getSummary() }}</a></li>
+                        </ul>
+                    @endforeach
+                @endif
+
+                </div>
+            </div>
+        </div>
+
+
     <div class="row full-calendar">
         <div class="col-sm-3">
             <div id="add-new-event">

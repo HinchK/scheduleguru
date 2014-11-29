@@ -5,14 +5,16 @@ use Googlavel;
 use Google_Auth_Exception;
 
 class CalendarRepository {
-
-
-    //helpful way to enact method-hints
+    // method-hints with google services
     //$cal = new \Google_Service_Calendar($client);
     //$cal->calendarList->listCalendarList()
 
+    public static function fetchEvents($cal_id, $fetchAfterDate = null)
+    {
+        return Googlavel::getService('Calendar')->events->listEvents($cal_id)->getItems();
+    }
 
-    function buildPrimaryCalendarList(){
+    public function buildPrimaryCalendarList(){
         $service = Googlavel::getService('Calendar');
         try {
             $calendarList = $service->calendarList->listCalendarList();
