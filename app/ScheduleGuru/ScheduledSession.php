@@ -3,6 +3,8 @@
 
 class ScheduledSession extends \Eloquent{
 
+    protected $table = 'tpg_sessions';
+
     public function student()
     {
         return $this->hasOne('Student');

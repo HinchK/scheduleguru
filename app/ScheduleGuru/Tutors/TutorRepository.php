@@ -1,24 +1,15 @@
-<?php namespace ScheduleGuru;
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Andrew
+ * Date: 11/30/2014
+ * Time: 3:13 PM
+ */
 
-class Tutor extends \Eloquent {
-	protected $fillable = [ 'email','calendarId','current_students',
-        'past_students', 'freebusy','message_bag','photo','name',
-        'notes','admin_notes','tutor_type','scheduledAppointments'];
+namespace ScheduleGuru\Tutors;
 
-    public function student()
-    {
-        return $this->belongsToMany('Student');
-    }
 
-    public function calendar()
-    {
-        return $this->hasOne('GoogleCalendar');
-    }
-
-    public function scheduledAppointment()
-    {
-        $this->hasManyThrough('ScheduledAppointment', 'Calendar', 'event_id', 'cal_id');
-    }
+class TutorRepository {
 
     /**
      * @param $cal_id
@@ -40,6 +31,9 @@ class Tutor extends \Eloquent {
         }
 
         $newTutor = Tutor::create(['calendarId' => $cal_id,'name' => $cal_summary]);
+        \Debugbar::info("TUTREPO.buildTutorProfile|static \$newTutor: ");
+        \Debugbar::info($newTutor);
         return $newTutor;
     }
-}
+
+} 

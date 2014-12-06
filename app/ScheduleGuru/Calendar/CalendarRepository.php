@@ -9,9 +9,19 @@ class CalendarRepository {
     //$cal = new \Google_Service_Calendar($client);
     //$cal->calendarList->listCalendarList()
 
+    /**
+     * @param $cal_id
+     * @param null $fetchAfterDate
+     * @return mixed
+     */
     public static function fetchEvents($cal_id, $fetchAfterDate = null)
     {
-        return Googlavel::getService('Calendar')->events->listEvents($cal_id)->getItems();
+        try {
+            $eventObjects = Googlavel::getService('Calendar')->events->listEvents($cal_id)->getItems();
+        }catch (Google_Auth_Exception $e){
+            return false;
+        }
+        return $eventObjects;
     }
 
     public function buildPrimaryCalendarList(){

@@ -32,7 +32,6 @@
         <div class="col-xs-12 col-sm-4 col-md-5">
             <h3>{{ $student->student_id }}</h3>
             <p>FullCal--CalendarID: {{ $student->calendarId }}</p>
-            <p>FullCal--GoogleAPIKey: {{ getenv('GOOG_PUB_KEY') }}</p>
         </div>
         <div class="clearfix visible-xs"></div>
     </div>
@@ -59,8 +58,9 @@
                 </div>
                 <div class="box-content">
 
-                @if(!$convertedTPGevents)
-                    <h4>This student has loose events, would you like to create a TPG-Package for them?</h4>
+                @if(!$scheduledSessions)
+                    <h4>Uh oh, this student doesnt have any events!  Would you like to build a pacage</h4>
+                    <p>TODO: KASEY-LINK TO PACKAGE BUILDER</p>
                     <a href="{{ URL::to('guru/convert-events-for' , $student->slug)  }}"><p>convert to package</p></a>
                 @endif
 

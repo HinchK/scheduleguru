@@ -145,6 +145,8 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
 
     Route::get('{studentSlug}', 'StudentsController@studentPage');
 
+    Route::get('convert-events-for/{studentSlug}', 'StudentsController@convertEventsToPackage');
+
     Route::get('tutors', [
         'as' => 'tutor_management',
         'uses' => 'TutorsController@manage'

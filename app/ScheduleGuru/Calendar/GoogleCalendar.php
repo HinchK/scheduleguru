@@ -1,7 +1,7 @@
 <?php namespace ScheduleGuru\Calendar;
 
-use ScheduleGuru\Tutor;
-use ScheduleGuru\Student;
+use ScheduleGuru\Students\StudentRepository;
+use ScheduleGuru\Tutors\TutorRepository;
 
 class GoogleCalendar extends \Eloquent {
 
@@ -54,10 +54,10 @@ class GoogleCalendar extends \Eloquent {
 
 
         if($is_a === 'Tutor'){
-            Tutor::buildTutorProfile($cal_id, $summary);
+            TutorRepository::buildTutorProfile($cal_id, $summary);
         }
         if($is_a === 'Student'){
-            Student::buildStudentProfile($cal_id,  $summary);
+            StudentRepository::buildStudentProfile($cal_id,  $summary);
         }
         \Debugbar::info('calendarReference value: ');
         \Debugbar::info($calendarReference);

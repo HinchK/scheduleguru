@@ -92,7 +92,7 @@
                         <thead>
                             <tr>
                                 <th>Student Name</th>
-                                <th>Link to Student's Page</th>
+                                <th>Created</th>
                             </tr>
                         </thead>
                         <tbody>
