@@ -147,6 +147,11 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
 
     Route::get('convert-events-for/{studentSlug}', 'StudentsController@convertEventsToPackage');
 
+    Route::post('convert-events-for/{studentSlug}', [
+        'as' => 'convert_package_sessions',
+        'uses' => 'StudentsController@postCreatePackageSessions'
+    ]);
+
     Route::get('tutors', [
         'as' => 'tutor_management',
         'uses' => 'TutorsController@manage'

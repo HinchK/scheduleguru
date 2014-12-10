@@ -2,9 +2,10 @@
 
 {{-- Web site Title --}}
 @section('title')
-{{{ String::title($student->summary) }}} ::
 @parent
+   |  {{{ String::title($student->name) }}}
 @stop
+
 
 @section('content')
     <script type="text/css" src="{{ asset('devoops/plugins/fullcalendar/fullcalendar.css') }}"></script>
@@ -78,7 +79,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
 
     <div class="row full-calendar">
         <div class="col-sm-3">
@@ -114,7 +115,9 @@
             <div id="calendar"></div>
         </div>
     </div>
+
 @stop
+
 @section('scripts')
     <script src="{{ asset('devoops/plugins/fullcalendar/lib/moment.min.js') }}"></script>
     <script src="{{ asset('devoops/plugins/fullcalendar/lib/jquery.min.js') }}"></script>

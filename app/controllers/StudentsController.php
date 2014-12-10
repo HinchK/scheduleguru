@@ -37,6 +37,11 @@ class StudentsController extends \BaseController {
         return View::make('site.dashboard.students.convertpkg', compact('scheduledSessions', 'student'));
     }
 
+    public function postCreatePackageSessions()
+    {
+        // TODO: convert student's events to sessions of a package
+    }
+
     /**
      * @param $slug
      * @return \Illuminate\View\View|void

@@ -2,8 +2,8 @@
 
 {{-- Web site Title --}}
 @section('title')
-{{{ String::title($student->summary) }}} ::
 @parent
+   |  {{{ String::title($student->name) }}}: convert-package
 @stop
 
 @section('content')
@@ -58,79 +58,38 @@
                 </div>
                 <div class="box-content">
 
-                @if(!$scheduledSessions)
-                    <h4>Uh oh, this student doesnt have any events!  Would you like to build a pacage</h4>
-                    <p>TODO: KASEY-LINK TO PACKAGE BUILDER</p>
-                    <a href="{{ URL::to('guru/convert-events-for' , $student->slug)  }}"><p>convert to package</p></a>
-                @endif
+                    @if(!$scheduledSessions)
+                        <h4>Uh oh, this student doesnt have any events!  Would you like to build a pacage</h4>
+                        <p>TODO: KASEY-LINK TO PACKAGE BUILDER</p>
+                        <a href="{{ URL::to('guru/convert-events-for' , $student->slug)  }}"><p>convert to package</p></a>
+                    @endif
 
-                @if (count($events))
-                    <h3>found {{ count($events)  }} events</h3>
-                    <ul>
-                    @foreach ($events as $event)
-                        @if($event->status != 'cancelled')
-                            <li>{{ $event->status }}|{{{  Carbon::parse($event->getStart()->dateTime,$event->getStart()->timeZone)->toDayDateTimeString() }}}: <a href="{{ $event->htmlLink }}">{{ $event->getSummary() }}</a></li>
-                        @endif
-                    @endforeach
-                    </ul>
-                @endif
+                    <h3>found {{ count($scheduledSessions)  }} events</h3>
+
+                    @if(count($scheduledSessions))
+                        @foreach($scheduledSessions as $tpgsession)
+                            <div class="row">
+                                {{ $tpgsession['summary_raw'] }}
+                                {{ Form::open(['route' => 'convert_package_sessions']) }}
+                                    {{ Form::text('tutor_unverified',  $tpgsession['tutor_unverified']) }}
+                                    {{ Form::text('location',  $tpgsession['location']) }}
+                                    {{ Form::text('test_type',  $tpgsession['test_type']) }}
+                                    {{ Form::text('session_type',  $tpgsession['session_type']) }}
+                                    {{ Form::text('start_time',  $tpgsession['start_time']) }}
+                                    {{ Form::hidden('gcal_event_id', $tpgsession['gcal_event_id']) }}
+                                    {{ Form::hidden('gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
+                                    {{ Form::hidden('gcal_event_etag', $tpgsession['gcal_event_etag']) }}
+                                    {{ Form::hidden('gcal_html_link', $tpgsession['gcal_html_link']) }}
+                                    {{ Form::hidden('gcal_event_etag', $tpgsession['gcal_event_etag']) }}
+                                {{ Form::close() }}
+                            </div>
+                        @endforeach
+                    @endif
 
                 </div>
             </div>
-        </div>
-
-
-    <div class="row full-calendar">
-        <div class="col-sm-3">
-            <div id="add-new-event">
-                <h4 class="page-header">Add new event</h4>
-                <div class="form-group">
-                    <label>Event title</label>
-                    <input type="text" id="new-event-title" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Event description</label>
-                    <textarea class="form-control" id="new-event-desc" rows="3"></textarea>
-                </div>
-                <a href="#" id="new-event-add" class="btn btn-primary pull-right">Add event</a>
-                <div class="clearfix"></div>
-            </div>
-            <div id="external-events">
-                <h4 class="page-header" id="events-templates-header">Draggable Events</h4>
-                <div class="external-event">Work time</div>
-                <div class="external-event">Conference</div>
-                <div class="external-event">Meeting</div>
-                <div class="external-event">Restaurant</div>
-                <div class="external-event">Launch</div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="drop-remove"> remove after drop
-                        <i class="fa fa-square-o small"></i>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-9">
-            <div id="calendar"></div>
         </div>
     </div>
-@stop
-@section('scripts')
-    <script src="{{ asset('devoops/plugins/fullcalendar/lib/moment.min.js') }}"></script>
-    <script src="{{ asset('devoops/plugins/fullcalendar/lib/jquery.min.js') }}"></script>
-    <script src="{{ asset('devoops/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('devoops/plugins/fullcalendar/fullcalendar.js') }}"></script>
-    <script  src="{{ asset('devoops/plugins/fullcalendar/gcal.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Set Block Height
-            SetMinBlockHeight($('#calendar'));
-            // Create Calendar
-            DrawGoogleFullCal('{{ $student->calendarId  }}');
-            //Devoops handy cal draw piece
-    //        DrawFullCalendar();
-        });
-    </script>
 @stop
 
 

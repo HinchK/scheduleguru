@@ -98,9 +98,15 @@
         		setTimeout(MessagesMenuWidth, 250);
         	});
         	var ajax_url = location.hash.replace(/^#/, '');
-        	if (ajax_url.length < 1) {
-        		ajax_url = 'ajax/dashboard.html';
-        	}
+            /**
+             * TODO: THE BELOW BREAKS convert-events-for/{studentslug}
+             * creates guru/convert-events-for/ajax/dashboard.html
+             * scripts your trying to load break, etc
+             *
+             */
+//        	if (ajax_url.length < 1) {
+//        		ajax_url = 'ajax/dashboard.html';
+//        	}
         	LoadAjaxContent(ajax_url);
         	$('.main-menu').on('click', 'a', function (e) {
         		var parents = $(this).parents('li');
