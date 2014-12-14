@@ -62,7 +62,7 @@
 
                 @if(!$convertedTPGevents)
                     <h4>This student has loose events, would you like to create a TPG-Package for them?</h4>
-                    <a href="{{ URL::to('guru/convert-events-for' , $student->slug)  }}"><p>convert to package</p></a>
+                    <a href="{{{ $student->convertpkgURL()  }}}"><p>convert to package</p></a>
                 @endif
 
                 @if (count($events))
@@ -132,8 +132,11 @@
             DrawGoogleFullCal('{{ $student->calendarId  }}');
             //Devoops handy cal draw piece
     //        DrawFullCalendar();
+            // Drag-n-Drop feature
+            WinMove();
         });
     </script>
+@parent
 @stop
 
 

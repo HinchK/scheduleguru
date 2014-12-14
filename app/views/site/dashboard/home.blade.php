@@ -224,11 +224,13 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('scripts')
     <script type="text/javascript">
     $(document).ready(function() {
         // Drag-n-Drop feature
         WinMove();
     });
     </script>
-
 @stop

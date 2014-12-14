@@ -37,7 +37,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
 									<div class="avatar">
-										<img src="img/avatar.jpg" class="img-circle" alt="avatar" />
+										<img src="/guru/img/avatar.jpg" class="img-circle" alt="avatar" />
 									</div>
 									<i class="fa fa-angle-down pull-right"></i>
 									<div class="user-mini pull-right">

@@ -23,6 +23,10 @@ class Student extends \Eloquent {
         return URL::to('guru/' . $this->slug);
     }
 
+    public function convertpkgURL()
+    {
+        return URL::to('guru/' . $this->slug . '/convert-events');
+    }
 
 
     public function mathTutor()

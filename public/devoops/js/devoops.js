@@ -62,7 +62,7 @@ function LoadLeafletScript(callback){
 //
 function LoadTimePickerScript(callback){
 	if (!$.fn.timepicker){
-		$.getScript('plugins/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', callback);
+		$.getScript('/devoops/plugins/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -76,7 +76,7 @@ function LoadTimePickerScript(callback){
 //
 function LoadBootstrapValidatorScript(callback){
 	if (!$.fn.bootstrapValidator){
-		$.getScript('plugins/bootstrapvalidator/bootstrapValidator.min.js', callback);
+		$.getScript('/devoops/plugins/bootstrapvalidator/bootstrapValidator.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
@@ -90,7 +90,7 @@ function LoadBootstrapValidatorScript(callback){
 //
 function LoadSelect2Script(callback){
 	if (!$.fn.select2){
-		$.getScript('plugins/select2/select2.min.js', callback);
+		$.getScript('/devoops/plugins/select2/select2.min.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {

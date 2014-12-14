@@ -41,7 +41,7 @@ class StudentRepository {
             $scheduledSessions[$key]['gcal_event_ical_id'] = $tpgevent['iCalUID'];
             $scheduledSessions[$key]['gcal_event_etag'] = $tpgevent['etag'];
             $scheduledSessions[$key]['gcal_html_link'] = $tpgevent['htmlLink'];
-            $scheduledSessions[$key]['gcal_status'] = $tpgevent['etag'];
+            $scheduledSessions[$key]['gcal_status'] = $tpgevent['status'];
             $scheduledSessions[$key]['start_time'] = $tpgevent['startTime'];
             $scheduledSessions[$key]['end_time'] = $tpgevent['endTime'];
             $scheduledSessions[$key]['student_id'] = $student->id;
