@@ -147,7 +147,7 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
 
     Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
 
-    Route::post('{studentSlug}/convert-events', [
+    Route::post('convert-events', [
         'as' => 'convert_package_sessions',
         'uses' => 'StudentsController@postCreatePackageSessions'
     ]);

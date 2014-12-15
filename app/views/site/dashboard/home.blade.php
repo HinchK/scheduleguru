@@ -112,9 +112,9 @@
                                     {{ Form::hidden('summary', $cal['summary']) }}
                                     {{ Form::hidden('summaryOverride', $cal['summaryOverride']) }}
                                     {{ Form::hidden('timeZone', $cal['timeZone']) }}
-                                    {{ Form::submit('Tutor',['class' => 'tag', 'value' =>'TU', 'name' => 'is a']) }}
-                                    {{ Form::submit('Student',['class' => 'tag', 'value' =>'ST', 'name' => 'is a']) }}
-                                    {{ Form::submit('Events',['class' => 'tag', 'value' =>'ST', 'name' => 'is a']) }}</td>
+                                    {{ Form::submit('Tutor',['class' => 'tag btn-warning', 'value' =>'TU', 'name' => 'is a']) }}
+                                    {{ Form::submit('Student',['class' => 'tag btn-primary', 'value' =>'ST', 'name' => 'is a']) }}
+                                    {{ Form::submit('Events',['class' => 'tag btn-default', 'value' =>'ST', 'name' => 'is a']) }}</td>
                                 {{ Form::close() }}
                             </tr>
                         @endforeach

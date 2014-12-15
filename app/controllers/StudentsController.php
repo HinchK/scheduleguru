@@ -40,6 +40,8 @@ class StudentsController extends \BaseController {
     public function postCreatePackageSessions()
     {
         // TODO: convert student's events to sessions of a package
+        $tutoringEvents = Input::all();
+        return var_dump($tutoringEvents);
     }
 
     /**
