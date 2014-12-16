@@ -68,36 +68,42 @@
                             {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
                             @foreach($scheduledSessions as $tpgsession)
 
-                                {{-- */$sessionCount++;/* --}}
-                                <legend>Event #{{ $sessionCount }}</legend>
+
+                                <legend>Event #{{ $sessionCount + 1 }}</legend>
+
+                                <!-- TODO: form2js json organizer -->
+
                                 <div class="form-group has-success has-feedback">
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.student_id', $tpgsession['student_id']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
                                     <label class="col-sm-1 control-label">Scheduled:</label>
                                     <div class="col-sm-3">
-                                        {{ Form::text('session_day', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'datetime_example']) }}
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_day', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'datetime_example']) }}
                                         <span class="fa fa-calendar txt-danger form-control-feedback"></span>
                                     </div>
                                     <label class="col-sm-1 control-label">ending</label>
                                     <div class="col-sm-2">
-                                        {{ Form::text('session_time_end', Carbon::parse($tpgsession['end_time'])->toTimeString(), ['class' => 'form-control', 'id' => 'end_time']) }}
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_time_end', Carbon::parse($tpgsession['end_time'])->toTimeString(), ['class' => 'form-control', 'id' => 'end_time']) }}
                                         <span class="fa fa-clock-o txt-danger form-control-feedback"></span>
                                     </div>
                                     <label class="col-sm-1 control-label">Location:</label>
                                     <div class="col-sm-2">
-                                        {{ Form::text('location',  $tpgsession['location'], ['class' => 'form-control']) }}
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.location',  $tpgsession['location'], ['class' => 'form-control']) }}
                                     </div>
                                 </div>
+
                                 <div class="form-group has-warning has-feedback">
                                     {{ Form::label('tutor_scrape', 'with', ['class' => 'col-md-1 control-label']) }}
                                     <div class="col-sm-2">
-                                        {{ Form::text('tutor_unverified',  $tpgsession['tutor_unverified'], ['class' => 'form-control']) }}
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.tutor_unverified',  $tpgsession['tutor_unverified'], ['class' => 'form-control']) }}
                                     </div>
                                     {{ Form::label('test_label', 'tutoring', ['class' => 'col-md-1 control-label']) }}
                                     <div class="col-sm-2">
-                                        {{ Form::text('session_type',  $tpgsession['session_type'], ['class' => 'form-control']) }}
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_type',  $tpgsession['session_type'], ['class' => 'form-control']) }}
                                     </div>
                                     {{ Form::label('type_label', 'for the', ['class' => 'col-md-1 control-label']) }}
                                     <div class="col-sm-2">
-                                        {{ Form::text('test_type',  $tpgsession['test_type'], ['class' => 'form-control']) }}
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.test_type',  $tpgsession['test_type'], ['class' => 'form-control']) }}
                                     </div>
                                     {{--<div class="col-sm-2">--}}
                                         {{--{{ Form::checkbox('session_check', 'convert_event', true, ['class' => 'fa fa-square-o']) }} convert event--}}
@@ -106,24 +112,24 @@
                                     <div class="col-sm-2">
                                         <div class="toggle-switch toggle-switch-primary">
                                             <label>
-                                                {{ Form::checkbox('session_check', 'convert_event', true) }}
+                                                {{ Form::checkbox('event[' . $sessionCount . ']' . '.session_check', 'convert_event', true) }}
                                                 <div class="toggle-switch-inner"></div>
                                                 <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                             </label>
                                         </div>
 
                                     </div>
-                                    {{ Form::hidden('start_time',  $tpgsession['start_time']) }}
-                                    {{ Form::hidden('start_time',  $tpgsession['start_time']) }}
-                                    {{ Form::hidden('gcal_status',  $tpgsession['gcal_status']) }}
-                                    {{ Form::hidden('gcal_event_id', $tpgsession['gcal_event_id']) }}
-                                    {{ Form::hidden('gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
-                                    {{ Form::hidden('gcal_event_etag', $tpgsession['gcal_event_etag']) }}
-                                    {{ Form::hidden('gcal_html_link', $tpgsession['gcal_html_link']) }}
-                                    {{ Form::hidden('student_id', $tpgsession['student_id']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_status',  $tpgsession['gcal_status']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_etag', $tpgsession['gcal_event_etag']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_html_link', $tpgsession['gcal_html_link']) }}
+
                                     {{--{{{ $tpgsession['summary_raw'] }}}--}}
                                 </div>
-
+                                {{-- */$sessionCount++;/* --}}
                             @endforeach
                             <div class="form-group">
                                 <div class="col-sm-offset-10 col-sm-2">
@@ -160,7 +166,6 @@
                     <div class="no-move"></div>
                 </div>
                 <div class="box-content">
-                    <input
                     <p class="bg-primary">Simple info</p>
                     <p class="bg-success">Message success</p>
                     <p class="bg-info">Message info</p>
@@ -200,6 +205,10 @@
                                     <input type="hidden" id="event-collecter" name="event-collecter" />
                                 </div>
                             </div>
+                            <input type="submit" />
+                            <h2>mode: combine</h2>
+                            <pre><code id="testAreaCombine">
+                                </code></pre>
                         </form>
                     </div>
                 </div>
@@ -209,7 +218,9 @@
 @stop
 
 @section('scripts')
-
+    <script type="text/javascript" src="/assets/js/form2js.js"></script>
+    <script type="text/javascript" src="/assets/js/jquery.toObject.js"></script>
+    <script type="text/javascript" src="/assets/js/json2.js"></script>
     <script type="text/javascript">
         $.fn.serializeObject = function () {
             var o = {};
@@ -236,11 +247,29 @@
             $('#input_time').timepicker({setDate: new Date()});
             $('#end_time').timepicker({setDate: new Date()});
         }
+
+        function test(evt){
+            evt.preventDefault();
+
+//            var selector = $('#selector').val(),
+//                formDataFirst = $(selector).toObject({mode: 'first'}),
+//                formDataAll = $(selector).toObject({mode: 'all'}),
+            var formDataCombine = $('#process_event').toObject({mode: 'combine'});
+
+//            $('#testAreaFirst').html(JSON.stringify(formDataFirst, null, '\t'));
+//            $('#testAreaAll').html(JSON.stringify(formDataAll, null, '\t'));
+            $('#testAreaCombine').html(JSON.stringify(formDataCombine, null, '\t'));
+        }
         $(document).ready(function() {
+
+            $(function(){
+                $('input[type=submit]').click(test);
+            });
             var formData = $('#process_event').serializeObject();
             var result = JSON.stringify(formData);
             $("textarea[name='event-collect']").val(result)
             $('#event-collecter').val(result);
+
             $('convert-btn').on('click', function(e){
                 e.preventDefault();
                 //var eventID = $(this).data('eventdid');
