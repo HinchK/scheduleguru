@@ -3160,8 +3160,14 @@ function CreateAllSliders(){
 //
 function AllTimePickers(){
 	$('#datetime_example').datetimepicker({});
+	$('#session_datetime').datetimepicker({ numberOfMonths: 3, showButtonPanel: true});
 	$('#time_example').timepicker({
 		hourGrid: 4,
+		minuteGrid: 10,
+		timeFormat: 'hh:mm tt'
+	});
+	$('#session_endtime').timepicker({
+		hourGrid: 5,
 		minuteGrid: 10,
 		timeFormat: 'hh:mm tt'
 	});

@@ -84,26 +84,14 @@
                                     {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
                                     {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
                                     <label class="col-sm-1 control-label">Scheduled:</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group session_date" id="session_date">
-                                            {{ Form::text('event[' . $sessionCount . ']' . '.session_day', Carbon::parse($tpgsession['start_time'])->format('Y/m/d'), ['class' => 'form-control']) }}
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="input-group start_time" id="start_time">
-                                            {{ Form::text('event[' . $sessionCount . ']' . '.session_time_start', Carbon::parse($tpgsession['start_time'])->format('h:i a'), ['class' => 'form-control']) }}
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
+                                    <div class="col-sm-3">
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_day', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'session_datetime']) }}
+                                        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
                                     </div>
                                     <label class="col-sm-1 control-label">ending</label>
                                     <div class="col-sm-2">
-                                        <div class="input-group end_time" id="end_time">
-                                            {{ Form::text('event[' . $sessionCount . ']' . '.session_time_end', Carbon::parse($tpgsession['end_time'])->format('h:i a'), ['class' => 'form-control']) }}
-                                            <span class="fa fa-clock-o txt-danger form-control-feedback"></span>
-                                        </div>
+                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_time_end', Carbon::parse($tpgsession['end_time'])->format('h:i a'), ['class' => 'form-control', 'id' => 'session_endtime']) }}
+                                        <span class="fa fa-clock-o txt-danger form-control-feedback"></span>
                                     </div>
                                     <label class="col-sm-1 control-label">Location:</label>
                                     <div class="col-sm-2">
@@ -288,15 +276,8 @@
 
         $(document).ready(function() {
 
-            $('#session_date').datetimepicker();
+            LoadTimePickerScript(AllTimePickers);
 
-            $('#start_time').datetimepicker({
-                pickDate: false
-            });
-
-            $('#end_time').datetimepicker({
-                pickDate: false
-            });
 
             $('input[type=submit]').click(events2json);
 
@@ -328,8 +309,6 @@
             FormLayoutExampleInputLength($( ".slider-style" ));
             // Initialize datepicker
             $('#input_date').datepicker({setDate: new Date()});
-
-            LoadTimePickerScript(AllTimePickers);
             // Add tooltip to form-controls
             $('.form-control').tooltip();
             LoadSelect2Script(DemoSelect2);
