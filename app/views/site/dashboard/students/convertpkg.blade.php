@@ -65,8 +65,9 @@
 
                     @if(count($scheduledSessions))
                         {{-- */$sessionCount = 0;/* --}}
+                            {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
                             @foreach($scheduledSessions as $tpgsession)
-                                {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal']) }}
+
                                 {{-- */$sessionCount++;/* --}}
                                 <legend>Event #{{ $sessionCount }}</legend>
                                 <div class="form-group has-success has-feedback">
@@ -122,16 +123,85 @@
                                     {{ Form::hidden('student_id', $tpgsession['student_id']) }}
                                     {{--{{{ $tpgsession['summary_raw'] }}}--}}
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-10 col-sm-2">
-                                        {{ Form::submit('Convert events!',['class' => 'btn btn-primary']) }}
-                                    </div>
-                                </div>
-                                {{ Form::close() }}
+
                             @endforeach
+                            <div class="form-group">
+                                <div class="col-sm-offset-10 col-sm-2">
+                                    {{ Form::button('Convert',['class' => 'btn btn-primary convert-btn', 'data-eventid' => $tpgsession['gcal_event_id']]) }}
+                                </div>
+                            </div>
+                            {{ Form::close() }}
 
                     @endif
 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-search"></i>
+                        <span>Contextual backgrounds</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+                    <input
+                    <p class="bg-primary">Simple info</p>
+                    <p class="bg-success">Message success</p>
+                    <p class="bg-info">Message info</p>
+                    <p class="bg-warning">Message warning</p>
+                    <p class="bg-danger">Message danger</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-search"></i>
+                        <span>Validator forms</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+                    <div class="form-group">
+                        <h4 class="page-header">pre-submission check</h4>
+                        <form class="form-horizontal" role="form" id="submit_all">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label" for="form-styles">JSON</label>
+                                <div class="col-sm-7">
+                                    <textarea class="form-control" rows="5" id="wysiwig_simple" name="event-collect"></textarea>
+                                    <input type="hidden" id="event-collecter" name="event-collecter" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -141,6 +211,21 @@
 @section('scripts')
 
     <script type="text/javascript">
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+            return o;
+        };
         // Run Select2 plugin on elements
         function DemoSelect2(){
             $('#s2_with_tag').select2({placeholder: "Select OS"});
@@ -152,6 +237,25 @@
             $('#end_time').timepicker({setDate: new Date()});
         }
         $(document).ready(function() {
+            var formData = $('#process_event').serializeObject();
+            var result = JSON.stringify(formData);
+            $("textarea[name='event-collect']").val(result)
+            $('#event-collecter').val(result);
+            $('convert-btn').on('click', function(e){
+                e.preventDefault();
+                //var eventID = $(this).data('eventdid');
+                var url = $('#process_event').attr('action');
+                $.ajax({
+                   url: url,
+                   type: 'POST',
+                   data: $('#submit_all').serialize(),
+                   dataType: 'json',
+                   success: function(){
+                       alert("json ajax post ta-da");
+                   }
+                })
+            });
+
             // Create Wysiwig editor for textare
             TinyMCEStart('#wysiwig_simple', null);
             TinyMCEStart('#wysiwig_full', 'extreme');
