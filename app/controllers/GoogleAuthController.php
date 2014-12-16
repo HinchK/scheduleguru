@@ -64,6 +64,8 @@ class GoogleAuthController extends BaseController {
                 $userProfile = Googlavel::getService('Oauth2');
                 $googleProfile = $userProfile->userinfo->get();
                 Session::put('userinfo', $googleProfile);
+                Session::put('googatar_url', $googleProfile->picture);
+                Session::put('google_name', $googleProfile->name);
                 Debugbar::info($googleProfile);
                 return Redirect::route('google_welcome')->with('userinfo', $googleProfile);
 //                return Redirect::route('dashboard_primary')->with('userinfo', $googleProfile);

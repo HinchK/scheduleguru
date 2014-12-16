@@ -39,3 +39,4 @@ app/config/packages/barryvdh
 gist-form-tricks.tar.gz
 gist-form-tricks
 public/form2js
+bower_components

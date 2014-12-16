@@ -37,12 +37,13 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
 									<div class="avatar">
-										<img src="/guru/img/avatar.jpg" class="img-circle" alt="avatar" />
+										<img src="{{ URL::to(Session::get('googatar_url')) }}" class="img-circle" alt="avatar" />
+										{{--<img src="/devoops/img/avatar.jpg" class="img-circle" alt="avatar" />--}}
 									</div>
 									<i class="fa fa-angle-down pull-right"></i>
 									<div class="user-mini pull-right">
 										<span class="welcome">Welcome,</span>
-										<span>Hingle McKringleBerry</span>
+										<span>{{ Session::get('google_name') }}</span>
 									</div>
 								</a>
 								<ul class="dropdown-menu">
@@ -77,7 +78,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="{{{ link_to_route('google_logout') }}}">
+										<a href="{{ URL::route('google_logout') }}">
 											<i class="fa fa-power-off"></i>
 											<span>Logout</span>
 										</a>

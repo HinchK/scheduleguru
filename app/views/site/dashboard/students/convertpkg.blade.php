@@ -6,6 +6,11 @@
    |  {{{ String::title($student->name) }}}: convert-package
 @stop
 
+@section('styles')
+    <link rel="stylesheet" href="/bs_dtp/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/bs_dtp/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+@stop
+
 @section('content')
     <div class="row">
         <div id="breadcrumb" class="col-xs-12">
@@ -65,26 +70,40 @@
 
                     @if(count($scheduledSessions))
                         {{-- */$sessionCount = 0;/* --}}
-                            {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
+
+                        {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
+
                             @foreach($scheduledSessions as $tpgsession)
 
 
                                 <legend>Event #{{ $sessionCount + 1 }}</legend>
 
-                                <!-- TODO: form2js json organizer -->
-
                                 <div class="form-group has-success has-feedback">
                                     {{ Form::hidden('event[' . $sessionCount . ']' . '.student_id', $tpgsession['student_id']) }}
                                     {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
+                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
                                     <label class="col-sm-1 control-label">Scheduled:</label>
-                                    <div class="col-sm-3">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_day', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'datetime_example']) }}
-                                        <span class="fa fa-calendar txt-danger form-control-feedback"></span>
+                                    <div class="col-sm-2">
+                                        <div class="input-group session_date" id="session_date">
+                                            {{ Form::text('event[' . $sessionCount . ']' . '.session_day', Carbon::parse($tpgsession['start_time'])->format('Y/m/d'), ['class' => 'form-control']) }}
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="input-group start_time" id="start_time">
+                                            {{ Form::text('event[' . $sessionCount . ']' . '.session_time_start', Carbon::parse($tpgsession['start_time'])->format('h:i a'), ['class' => 'form-control']) }}
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
                                     </div>
                                     <label class="col-sm-1 control-label">ending</label>
                                     <div class="col-sm-2">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_time_end', Carbon::parse($tpgsession['end_time'])->toTimeString(), ['class' => 'form-control', 'id' => 'end_time']) }}
-                                        <span class="fa fa-clock-o txt-danger form-control-feedback"></span>
+                                        <div class="input-group end_time" id="end_time">
+                                            {{ Form::text('event[' . $sessionCount . ']' . '.session_time_end', Carbon::parse($tpgsession['end_time'])->format('h:i a'), ['class' => 'form-control']) }}
+                                            <span class="fa fa-clock-o txt-danger form-control-feedback"></span>
+                                        </div>
                                     </div>
                                     <label class="col-sm-1 control-label">Location:</label>
                                     <div class="col-sm-2">
@@ -112,15 +131,14 @@
                                     <div class="col-sm-2">
                                         <div class="toggle-switch toggle-switch-primary">
                                             <label>
-                                                {{ Form::checkbox('event[' . $sessionCount . ']' . '.session_check', 'convert_event', true) }}
+                                                {{ Form::checkbox('event[' . $sessionCount . ']' . '.session_check', 'convert_me', true) }}
                                                 <div class="toggle-switch-inner"></div>
                                                 <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                             </label>
                                         </div>
 
                                     </div>
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
+
                                     {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_status',  $tpgsession['gcal_status']) }}
                                     {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
                                     {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
@@ -218,6 +236,10 @@
 @stop
 
 @section('scripts')
+    {{--<script type="text/javascript" src="/bs_dtp/jquery/jquery.min.js"></script>--}}
+    <script type="text/javascript" src="/bs_dtp/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="/bs_dtp/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/bs_dtp/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="/assets/js/form2js.js"></script>
     <script type="text/javascript" src="/assets/js/jquery.toObject.js"></script>
     <script type="text/javascript" src="/assets/js/json2.js"></script>
@@ -237,6 +259,22 @@
                 });
             return o;
         };
+
+        function events2json(evt){
+            var startofsession = $('#session_datetime').data("DateTimePicker").getDate();
+            alert(startofsession);
+            console.log(startofsession);
+//            var selector = $('#selector').val(),
+//                formDataFirst = $(selector).toObject({mode: 'first'}),
+//                formDataAll = $(selector).toObject({mode: 'all'}),
+            var formDataCombine = $('#process_event').toObject({mode: 'combine'});
+
+//            $('#testAreaFirst').html(JSON.stringify(formDataFirst, null, '\t'));
+//            $('#testAreaAll').html(JSON.stringify(formDataAll, null, '\t'));
+            $('#testAreaCombine').html(JSON.stringify(formDataCombine, null, '\t'));
+            evt.preventDefault();
+        }
+
         // Run Select2 plugin on elements
         function DemoSelect2(){
             $('#s2_with_tag').select2({placeholder: "Select OS"});
@@ -248,26 +286,24 @@
             $('#end_time').timepicker({setDate: new Date()});
         }
 
-        function test(evt){
-            evt.preventDefault();
-
-//            var selector = $('#selector').val(),
-//                formDataFirst = $(selector).toObject({mode: 'first'}),
-//                formDataAll = $(selector).toObject({mode: 'all'}),
-            var formDataCombine = $('#process_event').toObject({mode: 'combine'});
-
-//            $('#testAreaFirst').html(JSON.stringify(formDataFirst, null, '\t'));
-//            $('#testAreaAll').html(JSON.stringify(formDataAll, null, '\t'));
-            $('#testAreaCombine').html(JSON.stringify(formDataCombine, null, '\t'));
-        }
         $(document).ready(function() {
 
-            $(function(){
-                $('input[type=submit]').click(test);
+            $('#session_date').datetimepicker();
+
+            $('#start_time').datetimepicker({
+                pickDate: false
             });
+
+            $('#end_time').datetimepicker({
+                pickDate: false
+            });
+
+            $('input[type=submit]').click(events2json);
+
             var formData = $('#process_event').serializeObject();
             var result = JSON.stringify(formData);
-            $("textarea[name='event-collect']").val(result)
+
+            $("textarea[name='event-collect']").val(result);
             $('#event-collecter').val(result);
 
             $('convert-btn').on('click', function(e){
@@ -287,13 +323,12 @@
 
             // Create Wysiwig editor for textare
             TinyMCEStart('#wysiwig_simple', null);
-            TinyMCEStart('#wysiwig_full', 'extreme');
+            //TinyMCEStart('#wysiwig_full', 'extreme');
             // Add slider for change test input length
             FormLayoutExampleInputLength($( ".slider-style" ));
             // Initialize datepicker
             $('#input_date').datepicker({setDate: new Date()});
-            // Load Timepicker plugin
-            //LoadTimePickerScript(DemoTimePicker);
+
             LoadTimePickerScript(AllTimePickers);
             // Add tooltip to form-controls
             $('.form-control').tooltip();
@@ -301,10 +336,8 @@
             // Load example of form validation
             LoadBootstrapValidatorScript(DemoFormValidator);
             // Add drag-n-drop feature to boxes
+
             WinMove();
         });
     </script>
 @stop
-
-
-
