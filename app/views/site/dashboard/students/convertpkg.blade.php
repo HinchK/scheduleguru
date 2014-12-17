@@ -7,7 +7,6 @@
 @stop
 
 @section('styles')
-    <link rel="stylesheet" href="/bs_dtp/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/bs_dtp/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 @stop
 
@@ -19,7 +18,7 @@
             </a>
             <ol class="breadcrumb pull-left">
                 <li>{{ link_to_route('student_management', 'Students') }}</li>
-                <li><a href="#">Student Management</a></li>
+                <li><a href="{{ URL::to('/guru/'. $student->slug) }}">{{ $student->name }}</a></li>
             </ol>
             <div id="social" class="pull-right">
                 <a href="#"><i class="fa fa-google-plus"></i></a>
@@ -39,119 +38,7 @@
         <div class="clearfix visible-xs"></div>
     </div>
     <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <div class="box-name">
-                        <i class="fa fa-table"></i>
-                        <span>Tutoring Package for {{ $student->name }}</span>
-                    </div>
-                    <div class="box-icons">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="expand-link">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                    <div class="no-move"></div>
-                </div>
-                <div class="box-content">
-
-                    @if(!$scheduledSessions)
-                        <h4>Uh oh, this student doesnt have any events!  Would you like to build a pacage</h4>
-                        <p>TODO: KASEY-LINK TO PACKAGE BUILDER</p>
-                        <a href="{{ $student->convertpkgURL()  }}"><p>convert to package</p></a>
-                    @endif
-                    <h4 class="page-header">found {{ count($scheduledSessions)  }} events for {{ $student->name }}</h4>
-
-                    @if(count($scheduledSessions))
-                        {{-- */$sessionCount = 0;/* --}}
-
-                        {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
-
-                            @foreach($scheduledSessions as $tpgsession)
-
-
-                                <legend>Event #{{ $sessionCount + 1 }}</legend>
-
-                                <div class="form-group has-success has-feedback">
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.student_id', $tpgsession['student_id']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
-                                    <label class="col-sm-1 control-label">Scheduled:</label>
-                                    <div class="col-sm-3">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_day', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'session_datetime']) }}
-                                        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
-                                    </div>
-                                    <label class="col-sm-1 control-label">ending</label>
-                                    <div class="col-sm-2">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_time_end', Carbon::parse($tpgsession['end_time'])->format('h:i a'), ['class' => 'form-control', 'id' => 'session_endtime']) }}
-                                        <span class="fa fa-clock-o txt-danger form-control-feedback"></span>
-                                    </div>
-                                    <label class="col-sm-1 control-label">Location:</label>
-                                    <div class="col-sm-2">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.location',  $tpgsession['location'], ['class' => 'form-control']) }}
-                                    </div>
-                                </div>
-
-                                <div class="form-group has-warning has-feedback">
-                                    {{ Form::label('tutor_scrape', 'with', ['class' => 'col-md-1 control-label']) }}
-                                    <div class="col-sm-2">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.tutor_unverified',  $tpgsession['tutor_unverified'], ['class' => 'form-control']) }}
-                                    </div>
-                                    {{ Form::label('test_label', 'tutoring', ['class' => 'col-md-1 control-label']) }}
-                                    <div class="col-sm-2">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.session_type',  $tpgsession['session_type'], ['class' => 'form-control']) }}
-                                    </div>
-                                    {{ Form::label('type_label', 'for the', ['class' => 'col-md-1 control-label']) }}
-                                    <div class="col-sm-2">
-                                        {{ Form::text('event[' . $sessionCount . ']' . '.test_type',  $tpgsession['test_type'], ['class' => 'form-control']) }}
-                                    </div>
-                                    {{--<div class="col-sm-2">--}}
-                                        {{--{{ Form::checkbox('session_check', 'convert_event', true, ['class' => 'fa fa-square-o']) }} convert event--}}
-                                    {{--</div>--}}
-                                    <label class="col-sm-1 control-label">tutoring:</label>
-                                    <div class="col-sm-2">
-                                        <div class="toggle-switch toggle-switch-primary">
-                                            <label>
-                                                {{ Form::checkbox('event[' . $sessionCount . ']' . '.session_check', 'convert_me', true) }}
-                                                <div class="toggle-switch-inner"></div>
-                                                <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-                                            </label>
-                                        </div>
-
-                                    </div>
-
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_status',  $tpgsession['gcal_status']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_etag', $tpgsession['gcal_event_etag']) }}
-                                    {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_html_link', $tpgsession['gcal_html_link']) }}
-
-                                    {{--{{{ $tpgsession['summary_raw'] }}}--}}
-                                </div>
-                                {{-- */$sessionCount++;/* --}}
-                            @endforeach
-                            <div class="form-group">
-                                <div class="col-sm-offset-10 col-sm-2">
-                                    {{ Form::button('Convert',['class' => 'btn btn-primary convert-btn', 'data-eventid' => $tpgsession['gcal_event_id']]) }}
-                                </div>
-                            </div>
-                            {{ Form::close() }}
-
-                    @endif
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-xs-12 col-sm-5">
             <div class="box">
                 <div class="box-header">
                     <div class="box-name">
@@ -172,6 +59,27 @@
                     <div class="no-move"></div>
                 </div>
                 <div class="box-content">
+
+                    @foreach($scheduledSessions as $tutoringevent)
+
+                        @if($tutoringevent['session_type'] == 'Math')
+                            <p class="bg-danger">
+                                {{ $tutoringevent['test_type'] }}|MATH with {{ $tutoringevent['tutor_unverified']  }}: {{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }} @ at {{ $tutoringevent['location'] }}
+                            </p>
+                        @elseif($tutoringevent['session_type'] == 'Verbal')
+                            <p class="bg-primary">
+                                {{ $tutoringevent['test_type'] }}|VERBAL with {{ $tutoringevent['tutor_unverified']  }}: {{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }} @ at {{ $tutoringevent['location'] }}
+                            </p>
+                        @elseif($tutoringevent['session_type'] == 'EXAM')
+                            <p class="bg-warning">
+                                {{ $tutoringevent['tutor_unverified']  }}: {{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }} @ at {{ $tutoringevent['location'] }}
+                            </p>
+                        @else
+                            <p class="bg-info">!!This event has issues; here's the raw data: {{ $tutoringevent['summary'] }}</p>
+                        @endif
+
+                    @endforeach
+
                     <p class="bg-primary">Simple info</p>
                     <p class="bg-success">Message success</p>
                     <p class="bg-info">Message info</p>
@@ -180,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-8">
+        <div class="col-xs-12 col-sm-7">
             <div class="box">
                 <div class="box-header">
                     <div class="box-name">
@@ -221,6 +129,117 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-table"></i>
+                        <span>Tutoring Package for {{ $student->name }}</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+
+                    @if(!$scheduledSessions)
+                        <h4>Uh oh, this student doesnt have any events!  Would you like to build a pacage</h4>
+                        <p>TODO: KASEY-LINK TO PACKAGE BUILDER</p>
+                        <a href="{{ $student->convertpkgURL()  }}"><p>convert to package</p></a>
+                    @endif
+                    <h4 class="page-header">found {{ count($scheduledSessions)  }} events for {{ $student->name }}</h4>
+
+                    @if(count($scheduledSessions))
+                        {{-- */$sessionCount = 0;/* --}}
+                        {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
+
+                        @foreach($scheduledSessions as $tpgsession)
+
+                                <legend>Event #{{ $sessionCount + 1 }}</legend>
+
+                            <div class="form-group has-success has-feedback">
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.student_id', $tpgsession['student_id']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
+                                <label class="col-sm-1 control-label">Scheduled:</label>
+                                <div class="col-sm-3">
+                                    {{ Form::text('event[' . $sessionCount . ']' . '.session_daytime_start', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'session_datetime['.$sessionCount.']']) }}
+                                    <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                                </div>
+                                <label class="col-sm-1 control-label">ending</label>
+                                <div class="col-sm-2">
+                                    {{ Form::text('event[' . $sessionCount . ']' . '.session_time_end', Carbon::parse($tpgsession['end_time'])->format('h:i a'), ['class' => 'form-control', 'id' => 'session_endtime['.$sessionCount.']']) }}
+                                    <span class="fa fa-clock-o txt-danger form-control-feedback"></span>
+                                </div>
+                                <label class="col-sm-1 control-label">Location:</label>
+                                <div class="col-sm-2">
+                                    {{ Form::text('event[' . $sessionCount . ']' . '.location',  $tpgsession['location'], ['class' => 'form-control']) }}
+                                </div>
+                            </div>
+
+                            <div class="form-group has-warning has-feedback">
+                                {{ Form::label('tutor_scrape', 'with', ['class' => 'col-md-1 control-label']) }}
+                                <div class="col-sm-2">
+                                    {{ Form::text('event[' . $sessionCount . ']' . '.tutor_unverified',  $tpgsession['tutor_unverified'], ['class' => 'form-control']) }}
+                                </div>
+                                {{ Form::label('test_label', 'tutoring', ['class' => 'col-md-1 control-label']) }}
+                                <div class="col-sm-2">
+                                    {{ Form::text('event[' . $sessionCount . ']' . '.session_type',  $tpgsession['session_type'], ['class' => 'form-control']) }}
+                                </div>
+                                {{ Form::label('type_label', 'for the', ['class' => 'col-md-1 control-label']) }}
+                                <div class="col-sm-2">
+                                    {{ Form::text('event[' . $sessionCount . ']' . '.test_type',  $tpgsession['test_type'], ['class' => 'form-control']) }}
+                                </div>
+                                {{--<div class="col-sm-2">--}}
+                                {{--{{ Form::checkbox('session_check', 'convert_event', true, ['class' => 'fa fa-square-o']) }} convert event--}}
+                                {{--</div>--}}
+                                <label class="col-sm-1 control-label">tutoring:</label>
+                                <div class="col-sm-2">
+                                    <div class="toggle-switch toggle-switch-primary">
+                                        <label>
+                                            {{ Form::checkbox('event[' . $sessionCount . ']' . '.session_check', 'convert_me', true) }}
+                                            <div class="toggle-switch-inner"></div>
+                                            <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_status',  $tpgsession['gcal_status']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_etag', $tpgsession['gcal_event_etag']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_html_link', $tpgsession['gcal_html_link']) }}
+
+                                {{--{{{ $tpgsession['summary_raw'] }}}--}}
+                            </div>
+                            {{-- */$sessionCount++;/* --}}
+                        @endforeach
+                        <div class="form-group">
+                            <div class="col-sm-offset-10 col-sm-2">
+                                {{ Form::button('Convert',['class' => 'btn btn-primary convert-btn', 'data-eventid' => $tpgsession['gcal_event_id']]) }}
+                            </div>
+                        </div>
+                        {{ Form::close() }}
+
+                    @endif
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 
 @section('scripts')
@@ -268,16 +287,19 @@
             $('#s2_with_tag').select2({placeholder: "Select OS"});
             $('#s2_country').select2();
         }
-        // Run timepicker
-        function DemoTimePicker(){
-            $('#input_time').timepicker({setDate: new Date()});
-            $('#end_time').timepicker({setDate: new Date()});
-        }
 
         $(document).ready(function() {
 
-            LoadTimePickerScript(AllTimePickers);
+            //Devoops.js timepicker loader
+            //LoadTimePickerScript(AllTimePickers);
 
+            for(var i = 0; i < {{ count($scheduledSessions) }}; i++){
+                $('#session_datetime\\['+i+'\\]').datetimepicker();
+
+                $('#session_endtime\\['+i+'\\]').datetimepicker({
+                    pickDate: false
+                });
+            }
 
             $('input[type=submit]').click(events2json);
 

@@ -23,12 +23,14 @@ class StudentRepository {
             }elseif(strpos($tpgevent['summary'], 'ACT') !== false){
                 $testType = 'ACT';
             }else{
-                $testType = 'unknown';
+                $testType = '-----';
             }
             if(strpos($tpgevent['summary'], 'Math') !== false){
                 $sessionType = 'Math';
             }elseif(strpos($tpgevent['summary'], 'Verbal') !== false){
                 $sessionType = 'Verbal';
+            }elseif(strpos($tpgevent['summary'], 'Practice test') !== false){
+                $sessionType = 'EXAM';
             }else{
                 $sessionType = 'unknown';
             }
