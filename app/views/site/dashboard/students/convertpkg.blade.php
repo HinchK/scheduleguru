@@ -7,7 +7,20 @@
 @stop
 
 @section('styles')
+    <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" href="/bs_dtp/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/js/plugins/select2/select2.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/js/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/js/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/js/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <link href="/assets/metronic/css/components.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/metronic/css/plugins.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/metronic/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+    <link id="style_color" href="/assets/metronic/layout/css/themes/default.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/metronic/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+    <!-- END THEME STYLES -->
 @stop
 
 @section('content')
@@ -38,12 +51,17 @@
         <div class="clearfix visible-xs"></div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-5">
-            <div class="box">
+        <div class="col-sm-3">
+            <div class="portlet box yellow">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-globe"></i>{{ $student->name  }}'s Schedule
+                    </div>
+                </div>
                 <div class="box-header">
                     <div class="box-name">
                         <i class="fa fa-search"></i>
-                        <span>Contextual backgrounds</span>
+                        <span>pre-conversion edits</span>
                     </div>
                     <div class="box-icons">
                         <a class="collapse-link">
@@ -59,32 +77,95 @@
                     <div class="no-move"></div>
                 </div>
                 <div class="box-content">
+                    <div class="portlet-body">
 
-                    @foreach($scheduledSessions as $tutoringevent)
+                        <p>sup yo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="portlet box red-intense">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-globe"></i>{{ $student->name  }}'s Schedule
+                    </div>
+                </div>
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-search"></i>
+                        <span>from Google Calendar Data</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+                    <div class="portlet-body">
 
-                        @if($tutoringevent['session_type'] == 'Math')
-                            <p class="bg-danger">
-                                {{ $tutoringevent['test_type'] }}|MATH with {{ $tutoringevent['tutor_unverified']  }}: {{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }} @ at {{ $tutoringevent['location'] }}
-                            </p>
-                        @elseif($tutoringevent['session_type'] == 'Verbal')
-                            <p class="bg-primary">
-                                {{ $tutoringevent['test_type'] }}|VERBAL with {{ $tutoringevent['tutor_unverified']  }}: {{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }} @ at {{ $tutoringevent['location'] }}
-                            </p>
-                        @elseif($tutoringevent['session_type'] == 'EXAM')
-                            <p class="bg-warning">
-                                {{ $tutoringevent['tutor_unverified']  }}: {{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }} @ at {{ $tutoringevent['location'] }}
-                            </p>
-                        @else
-                            <p class="bg-info">!!This event has issues; here's the raw data: {{ $tutoringevent['summary'] }}</p>
-                        @endif
+                        <table class="table table-striped table-bordered table-hover" id="events_table">
+                        <thead>
+                            <tr style="background: #353535; color: whitesmoke;">
+                                <th>#</th>
+                                <th>Test</th>
+                                <th>Subject</th>
+                                <th>Tutor</th>
+                                <th>Scheduled</th>
+                                <th>Location</th>
+                            </tr>
 
-                    @endforeach
+                        </thead>
+                        <tbody>
+                            {{-- */$count = 1;/* --}}
+                            @foreach($scheduledSessions as $tutoringevent)
 
-                    <p class="bg-primary">Simple info</p>
-                    <p class="bg-success">Message success</p>
-                    <p class="bg-info">Message info</p>
-                    <p class="bg-warning">Message warning</p>
-                    <p class="bg-danger">Message danger</p>
+                                @if($tutoringevent['session_type'] == 'Math')
+
+                                    <tr>
+                                        <td>{{ $count++  }}</td>
+                                        <td>{{ $tutoringevent['test_type'] }}</td>
+                                        <td>{{ $tutoringevent['session_type'] }}</td>
+                                        <td>{{ $tutoringevent['tutor_unverified']  }}</td>
+                                        <td>{{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }} - {{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }}</td>
+                                        <td>{{ $tutoringevent['location'] }}</td>
+                                    </tr>
+
+                                @elseif($tutoringevent['session_type'] == 'Verbal')
+                                    <tr>
+                                        <td>{{ $count++  }}</td>
+                                        <td>{{ $tutoringevent['test_type'] }}</td>
+                                        <td>{{ $tutoringevent['session_type'] }}</td>
+                                        <td>{{ $tutoringevent['tutor_unverified']  }}</td>
+                                        <td>{{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }}</td>
+                                        <td>{{ $tutoringevent['location'] }}</td>
+                                    </tr>
+                                @elseif($tutoringevent['session_type'] == 'EXAM')
+                                    <tr class="warning">
+                                        <td>{{ $count++  }}</td>
+                                        <td>{{ $tutoringevent['test_type'] }}</td>
+                                        <td>{{ $tutoringevent['session_type'] }}</td>
+                                        <td>{{ $tutoringevent['tutor_unverified']  }}</td>
+                                        <td>{{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }}</td>
+                                        <td>{{ $tutoringevent['location'] }}</td>
+                                    </tr>
+                                @else
+                                    <td>{{ $count++  }}</td>
+                                    <p class="bg-danger">!!This event has issues; here's the raw data: {{ $tutoringevent['summary'] }}</p>
+                                @endif
+
+                            @endforeach
+                        </tbody>
+
+                    </table>
                 </div>
             </div>
         </div>
@@ -239,7 +320,7 @@
             </div>
         </div>
     </div>
-
+</div>
 @stop
 
 @section('scripts')
@@ -250,6 +331,16 @@
     <script type="text/javascript" src="/assets/js/form2js.js"></script>
     <script type="text/javascript" src="/assets/js/jquery.toObject.js"></script>
     <script type="text/javascript" src="/assets/js/json2.js"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="/assets/js/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="/assets/js/metronic.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/assets/js/convert-events-table.js"></script>
     <script type="text/javascript">
         $.fn.serializeObject = function () {
             var o = {};
@@ -290,10 +381,7 @@
 
         $(document).ready(function() {
 
-            //Devoops.js timepicker loader
-            //LoadTimePickerScript(AllTimePickers);
-
-            for(var i = 0; i < {{ count($scheduledSessions) }}; i++){
+            for(var i = 0; i < {{ count($scheduledSessions) }}; i++) {
                 $('#session_datetime\\['+i+'\\]').datetimepicker();
 
                 $('#session_endtime\\['+i+'\\]').datetimepicker({
@@ -324,6 +412,7 @@
                 })
             });
 
+
             // Create Wysiwig editor for textare
             TinyMCEStart('#wysiwig_simple', null);
             //TinyMCEStart('#wysiwig_full', 'extreme');
@@ -336,8 +425,13 @@
             LoadSelect2Script(DemoSelect2);
             // Load example of form validation
             LoadBootstrapValidatorScript(DemoFormValidator);
-            // Add drag-n-drop feature to boxes
 
+            // init metronic core components
+            Metronic.init();
+            //Convert-Events-Table: adds the little composible boxes to table
+            ConvertEventsTable.init();
+
+            // Add drag-n-drop feature to boxes
             WinMove();
         });
     </script>
