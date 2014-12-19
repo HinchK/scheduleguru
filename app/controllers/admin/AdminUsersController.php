@@ -201,7 +201,7 @@ class AdminUsersController extends AdminController {
                 unset($user->password_confirmation);
             }
             
-            if($user->confirmed == null) {
+            if($user->confirmed === null) {
                 $user->confirmed = $oldUser->confirmed;
             }
 

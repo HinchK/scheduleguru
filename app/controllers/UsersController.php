@@ -1,6 +1,4 @@
 <?php
-use Illuminate\Support\Facades\Session;
-
 
 /**
  * UsersController Class

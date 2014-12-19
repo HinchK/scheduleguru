@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Redirect;
 use Laracasts\Flash\Flash;
-use ScheduleGuru\Calendar\GoogleCalendarRepo;
 use ScheduleGuru\GoogleConnect\GoogleToken;
 use ScheduleGuru\GoogleProfile;
 
