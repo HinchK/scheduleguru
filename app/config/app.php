@@ -118,10 +118,6 @@ return array(
         'Laracasts\Commander\CommanderServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
 
-//
-//        'LeroyMerlin\LaraSniffer\ServiceProvider',
-//        'Former\FormerServiceProvider',
-
         /* Google/OAuth Provider */
         'Redbaron76\Googlavel\GooglavelServiceProvider'
     ),
