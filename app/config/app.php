@@ -118,11 +118,11 @@ return array(
         'Laracasts\Commander\CommanderServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
 
-        'LeroyMerlin\LaraSniffer\ServiceProvider',
-        'Former\FormerServiceProvider',
+//
+//        'LeroyMerlin\LaraSniffer\ServiceProvider',
+//        'Former\FormerServiceProvider',
 
-        /* Google/OAuth Providers */
-        'Atticmedia\Anvard\AnvardServiceProvider',
+        /* Google/OAuth Provider */
         'Redbaron76\Googlavel\GooglavelServiceProvider'
     ),
 
@@ -198,11 +198,10 @@ return array(
         'Carbon'          => 'Carbon\Carbon', // Carbon
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
         'Debugbar'        => 'Barryvdh\Debugbar\Facade',
-        'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel',
-        'Former' => 'Former\Facades\Former'
+        'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel'
 
     ),
 
-    'available_language' => array('en', 'pt', 'es'),
+    'available_language' => array('en'),
 
 );

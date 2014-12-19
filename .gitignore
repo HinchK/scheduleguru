@@ -37,6 +37,7 @@ app/config/packages/atticmedia/anvard/hybridauth.php
 # Todo: metronic, j$plugin trimming
 *.png
 *.img
+*.yaml
 
 
 frznNodeAdmin_composer.json
@@ -48,3 +49,5 @@ bower_components
 public/assets/js/plugins/datatables/media/images
 public/assets/metronic
 xX-Tricks-n-Trash-Xx
+public/bs_dtp
+public/devoops/plugins

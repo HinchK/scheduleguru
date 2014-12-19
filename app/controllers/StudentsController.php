@@ -39,8 +39,12 @@ class StudentsController extends \BaseController {
 
     public function postCreatePackageSessions()
     {
-        // TODO: convert student's events to sessions of a package
         $tutoringEvents = Input::all();
+
+        \Debugbar::info('StudentController.postCreatePackageSessions:');
+        \Debugbar::info($tutoringEvents);
+
+        return Redirect::back();
         return var_dump($tutoringEvents);
     }
 
