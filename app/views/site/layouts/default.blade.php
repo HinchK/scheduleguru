@@ -89,6 +89,8 @@
 		================================================== -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
+		<script src="/assets/js/plugins/jquery-notific8/jquery.notific8.min.js"></script>
+		<script src="/assets/js/ui-notific8.js"></script>
 
         @yield('scripts')
 	</body>

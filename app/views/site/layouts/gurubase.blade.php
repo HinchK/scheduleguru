@@ -33,6 +33,7 @@
 		<link href="{{ asset('devoops/plugins/justified-gallery/justifiedGallery.css') }}" rel="stylesheet">
 		<link href="{{ asset('devoops/css/style_v2.css') }}" rel="stylesheet">
 		<link href="{{ asset('devoops/plugins/chartist/chartist.min.css') }} " rel="stylesheet">
+			<link rel="stylesheet" type="text/css" href="/assets/js/plugins/jquery-notific8/jquery.notific8.min.css"/>
 		@yield('styles')
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -90,6 +91,8 @@
     <script src="{{ asset('devoops/plugins/tinymce/jquery.tinymce.min.js') }}"></script>
     <!-- All functions for this theme + document.ready processing -->
     <script src="{{ asset('devoops/js/devoops.js') }}"></script>
+	<script src="/assets/js/plugins/jquery-notific8/jquery.notific8.min.js"></script>
+	<script src="/assets/js/ui-notific8.js"></script>
     <script>
         $(document).ready(function () {
         	$('body').on('click', '.show-sidebar', function (e) {

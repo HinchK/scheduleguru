@@ -7,17 +7,29 @@
 @endif
 
 @if ($message = Session::get('success'))
-<div class="alert alert-success alert-block">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<h4>Success</h4>
     @if(is_array($message))
         @foreach ($message as $m)
-            {{ $m }}
+            <script>
+            $(document).ready(function () {
+                $.notific8('{{ $m }}', {
+                    heading: 'Success!',
+                    theme: 'amethyst',
+                    life: '5000'
+                });
+            }
+            </script>
         @endforeach
     @else
-        {{ $message }}
+        <script>
+        $(document).ready(function () {
+            $.notific8('{{ $message }}', {
+                heading: 'Success!',
+                theme: 'amethyst',
+                life: '5000'
+            });
+        }
+        </script>
     @endif
-</div>
 @endif
 
 @if ($message = Session::get('error'))
@@ -49,15 +61,28 @@
 @endif
 
 @if ($message = Session::get('info'))
-<div class="alert alert-info alert-block">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
-	<h4>Info</h4>
+    <script>
     @if(is_array($message))
-    @foreach ($message as $m)
-    {{ $m }}
-    @endforeach
+        @foreach ($message as $m)
+            $.notific8('{{ $m }}', {
+                heading: 'INFO!',
+                theme: 'tangerine',
+                sticky: true,
+                zindex: '500',
+                verticalEdge: 'left',
+                horizontalEdge: 'bottom'
+            });
+             $.notific8('zindex', 11500);
+        @endforeach
     @else
-    {{ $message }}
+        $.notific8('{{ $message }}', {
+            heading: 'Welcome!',
+            theme: 'tangerine',
+            sticky: true,
+            verticalEdge: 'left',
+            horizontalEdge: 'bottom'
+        });
+        $.notific8('zindex', 11500);
     @endif
-</div>
+    </script>
 @endif

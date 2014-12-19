@@ -40,19 +40,13 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{{ asset('assets/ico/apple-touch-icon-72-precomposed.png') }}}">
         <link rel="apple-touch-icon-precomposed" href="{{{ asset('assets/ico/apple-touch-icon-57-precomposed.png') }}}">
         <link rel="shortcut icon" href="{{{ asset('assets/ico/favicon.png') }}}">
+            <link rel="stylesheet" type="text/css" href="/assets/js/plugins/jquery-notific8/jquery.notific8.min.css"/>
 	</head>
     <body>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="/assets/js/plugins/jquery-notific8/jquery.notific8.min.js"></script>
+        <script src="/assets/js/ui-notific8.js"></script>
         <div class="container-fluid">
-            <!-- Notifications -->
-                @include('notifications')
-                    @if (Session::has('flash_notification.message'))
-                        <div class="alert alert-{{ Session::get('flash_notification.level') }}">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-
-                            {{ Session::get('flash_notification.message') }}
-                        </div>
-                    @endif
-			<!-- ./ notifications -->
             <div id="page-login" class="row">
                 <div class="col-xs-12 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                     <div class="text-right">
@@ -71,5 +65,38 @@
                 </div>
             </div>
         </div>
+        @include('notifications')
+    {{--<script>--}}
+        {{--@if ($message = Session::get('success') || $message = Session::get('flash_notification.message'))--}}
+            {{--@if(is_array($message))--}}
+                {{--@foreach ($message as $m)--}}
+                    {{--$.notific8('{{ $m }}', {--}}
+                        {{--heading: 'Welcome!',--}}
+                        {{--theme: 'tangerine',--}}
+                        {{--sticky: true,--}}
+                        {{--zindex: '500',--}}
+                        {{--life: '6000'--}}
+
+{{--//                        verticalEdge: 'left',--}}
+{{--//                        horizontalEdge: 'bottom'--}}
+                    {{--});--}}
+
+                    {{--$.notific8('zindex', 11500);--}}
+                {{--@endforeach--}}
+            {{--@else--}}
+                {{--$.notific8('{{ $message }}', {--}}
+                    {{--heading: 'Welcome!',--}}
+                    {{--theme: 'tangerine',--}}
+                    {{--sticky: true,--}}
+                    {{--zindex: '10',--}}
+                    {{--life: '6000'--}}
+{{--//                    verticalEdge: 'left'--}}
+{{--//                    horizontalEdge: 'bottom'--}}
+                    {{--});--}}
+                {{--$.notific8('zindex', 11500);--}}
+            {{--@endif--}}
+        {{--@endif--}}
+    {{--</script>--}}
+    {{--@yield('scripts')--}}
     </body>
 </html>

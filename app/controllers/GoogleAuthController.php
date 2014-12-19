@@ -23,24 +23,6 @@ class GoogleAuthController extends BaseController {
         $this->clientRepository = $gclient;
     }
 
-    /**
-     *
-     */
-    public function setupGoogleConnections()
-    {
-//        $googleConnector = new GoogleClientRepository();
-//        View::share('authToken');
-        return $this->clientRepository->buildGoogleClient();
-
-
-//        return Redirect::home();
-
-//        Debugbar::info($client);
-//        $calservice = new Google_Service_Calendar($client);
-        $calservice = new Google_Service_Oauth2_Userinfoplus($client);
-
-    }
-
     public function redirectGoogleLogin()
     {
         return Redirect::to('/');
@@ -71,7 +53,6 @@ class GoogleAuthController extends BaseController {
 //                return Redirect::route('dashboard_primary')->with('userinfo', $googleProfile);
             }
         }
-
         // get auth url
         $url = Googlavel::authUrl();
 
@@ -168,45 +149,6 @@ class GoogleAuthController extends BaseController {
             $profileRecord->$k = $v;
         }
         return $profileRecord;
-    }
-
-    public function dashboardSetup()
-    {
-        // Get the google service (related scope must be set)
-        $service = Googlavel::getService('Calendar');
-
-        // invoke API call
-        $calendarList = $service->calendarList->listCalendarList();
-
-        foreach ( $calendarList as $calendar )
-        {
-            echo "{$calendar->summary} <br>";
-        }
-
-        echo "<br><---------------------------------------------><br><br>";
-        $gmailService = Googlavel::getService('Gmail');
-
-
-        $gmailThreadList = $gmailService->users_threads->listUsersThreads('me');
-
-        foreach ( $gmailThreadList as $thread )
-        {
-            print 'Thread with ID: ' . $thread->getId() . '<br/>';
-            $getThread = $gmailService->users_threads->get('me', $thread->getId());
-            $messages = $getThread->getMessages();
-            $msgCount = count($messages);
-            echo "#messages in thread: {$msgCount} <br>";
-            foreach ($messages as $message)
-            {
-                echo "     ".print_r($message->id)." |0-0| ".print_r($message->snippet);
-            }
-//        $thread_str = serialize($thread);
-//        echo "Thread: {$thread_str}";
-        }
-
-        link_to('google/logout', 'Logout');
-
-        View::make('site.google.dashboard');
     }
 
     public function authenticate()

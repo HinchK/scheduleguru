@@ -198,44 +198,6 @@ Route::get('/', 'GoogleAuthController@superUserGoogleLogin');
 //Route::get('/google/dashboard', 'GoogleAuthController@superUserGoogleLogin');
 Route::get('/google', 'GoogleAuthController@superUserGoogleLogin');
 
-Route::get('google/dashboard', function()
-{
-    // Get the google service (related scope must be set)
-    $service = Googlavel::getService('Calendar');
-
-    // invoke API call
-    $calendarList = $service->calendarList->listCalendarList();
-
-    foreach ( $calendarList as $calendar )
-    {
-        echo "{$calendar->summary} <br>";
-    }
-    echo "<br><---------------------------------------------><br><br>";
-    $gmailService = Googlavel::getService('Gmail');
-
-
-    $gmailThreadList = $gmailService->users_threads->listUsersThreads('me');
-
-    foreach ( $gmailThreadList as $thread )
-    {
-        print 'Thread with ID: ' . $thread->getId() . '<br/>';
-        $getThread = $gmailService->users_threads->get('me', $thread->getId());
-        $messages = $getThread->getMessages();
-        $msgCount = count($messages);
-        echo "#messages in thread: {$msgCount} <br>";
-        foreach ($messages as $message)
-        {
-            echo "     ".print_r($message->id)." |0-0| ".print_r($message->snippet);
-        }
-//        $thread_str = serialize($thread);
-//        echo "Thread: {$thread_str}";
-    }
-
-    return link_to('google/logout', 'Logout');
-
-});
-
-
 Route::get('/google/logout', [
     'as' => 'google_logout',
     'uses' => 'GoogleAuthController@logout'
