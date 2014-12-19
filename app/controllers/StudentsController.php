@@ -45,7 +45,6 @@ class StudentsController extends \BaseController {
         \Debugbar::info($tutoringEvents);
 
         return Redirect::back();
-        return var_dump($tutoringEvents);
     }
 
     /**

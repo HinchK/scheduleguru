@@ -21,6 +21,8 @@ class CalendarRepository {
         }catch (Google_Auth_Exception $e){
             return false;
         }
+        \Debugbar::info("Let's use this \$fetchAfterDate");
+        \Debugbar::info($fetchAfterDate);
         return $eventObjects;
     }
 
@@ -32,9 +34,6 @@ class CalendarRepository {
             return false;
         }
         $knownCalendars = GoogleCalendar::all();
-//        \Debugbar::info($calendarList);
-        \Debugbar::info('begin filtering of cal lists');
-
         $calarray = [];
 
         $key = 0;
@@ -67,42 +66,8 @@ class CalendarRepository {
         return new Google_CalendarService($client);
     }
 
-    function isAuthenticated(Google_Client &$client) {
-        createCalendar($client);
-        if ($client->getAccessToken()) {
-            $_SESSION['token'] = $client->getAccessToken();
-            return true;
-        }
 
-        $authUrl = $client->createAuthUrl();
-        print "<a class='login' href='$authUrl'>Connect Me!</a>";
-    }
-
-    function listAllCalendars(Google_Client &$client) {
-        if (!isAuthenticated($client))
-            return;
-
-        $calList = createCalendar($client)->calendarList->listCalendarList();
-        print "<h1>Calendar List</h1><pre>" . print_r($calList, true) . "</pre>";
-    }
-
-    function getCalendarList($client) {
-        return createCalendar($client)->calendarList->listCalendarList();
-    }
-
-    function getCalendar($client, $id) {
-        return createCalendar($client)->calendars->get($id);
-    }
-
-    function getEventList($client, $calendarId) {
-        return createCalendar($client)->events->listEvents(htmlspecialchars($calendarId));
-    }
-
-    function getEvent($client, $eventID) {
-        return createCalendar($client)->events->listEvents(htmlspecialchars($eventID));
-    }
-
-    // ---------------------------------------------------------
+// ---------------------------------------------------------
 // ----- object_to_array_recusive --- function (PHP) ------
 // --------------------------------------------------------
 // -- arg1:  $object  =  (PHP Object with Children)
