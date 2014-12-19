@@ -1,3 +1,4 @@
+* text=auto
 # Declare files that will always have CRLF line endings on checkout.
 *.css text eol=crlf
 *.html text eol=crlf
