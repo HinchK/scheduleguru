@@ -5,9 +5,13 @@ use Googlavel;
 use Google_Auth_Exception;
 
 class CalendarRepository {
-    // method-hints with google services
-    //$cal = new \Google_Service_Calendar($client);
-    //$cal->calendarList->listCalendarList()
+
+    /**
+     * ..: method-hints with google services :..
+     *
+     * $cal = new \Google_Service_Calendar($client);
+     * $cal->calendarList->listCalendarList()
+     */
 
     /**
      * @param $cal_id
@@ -60,12 +64,6 @@ class CalendarRepository {
         return array_values($calarray);
 //        return $calendarList;
     }
-
-
-    function createCalendar(&$client) {
-        return new Google_CalendarService($client);
-    }
-
 
 // ---------------------------------------------------------
 // ----- object_to_array_recusive --- function (PHP) ------

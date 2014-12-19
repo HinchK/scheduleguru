@@ -1,6 +1,8 @@
 <?php namespace ScheduleGuru;
 
 
+use String;
+
 class ScheduledSession extends \Eloquent{
 
     protected $table = 'tpg_sessions';
