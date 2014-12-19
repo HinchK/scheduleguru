@@ -20,7 +20,7 @@ var Datatable = function () {
         } else {
             $('.table-group-actions > span', tableWrapper).text("");
         }
-    }
+    };
 
     return {
 

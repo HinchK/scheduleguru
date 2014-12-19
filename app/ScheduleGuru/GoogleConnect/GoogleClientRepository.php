@@ -30,7 +30,7 @@ class GoogleClientRepository
          * From: https://github.com/google/google-api-php-client   /
          * [blob/master/examples/idtoken.php]
          ************************************************/
-        $refreshToken = null;
+        // $refreshToken = null;    //TODO: get refreshies working
 
         $client = new Google_Client();
         $client->setApplicationName("ScheduleGuru - TestPrepGuru Dashboard");

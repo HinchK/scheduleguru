@@ -135,11 +135,11 @@ var google_data = [['Date', 'Rate']];
 // Load Flot plot and callback to CoinDeskGraph
 var flot_graph = function(){
 	LoadFlotScripts(CoinDeskGraph);
-}
+};
 // Load Sparkline plot and callback Flot
 var spark_graph = function(){
 	LoadSparkLineScript(flot_graph);
-}
+};
 // Load xChart and callback Sparkline
 function DrawAllCoindeskGraph(){
 	LoadXChartScript(spark_graph);

@@ -44,7 +44,7 @@ var Metronic = function () {
         if (isIE10 || isIE9 || isIE8) {
             $('html').addClass('ie'); // detect IE10 version
         }
-    }
+    };
 
     // runs callback functions set by Metronic.addResponsiveHandler().
     var _runResizeHandlers = function () {
@@ -53,7 +53,7 @@ var Metronic = function () {
             var each = resizeHandlers[i];
             each.call();
         }
-    }
+    };
 
     // handle the layout reinitialization on window resize
     var handleOnResize = function () {
@@ -82,7 +82,7 @@ var Metronic = function () {
                 }, 50); // wait 50ms until window resize finishes.
             });
         }
-    }
+    };
 
     // Handles portlet tools & actions
     var handlePortletTools = function () {
@@ -145,7 +145,7 @@ var Metronic = function () {
                 el.slideDown(200);
             }
         });
-    }
+    };
 
     // Handles custom checkboxes & radios using jQuery Uniform plugin
     var handleUniform = function () {
@@ -161,21 +161,21 @@ var Metronic = function () {
                 }
             });
         }
-    }
+    };
 
     var handleBootstrapSwitch = function () {
         if (!$().bootstrapSwitch) {
             return;
         }
         $('.make-switch').bootstrapSwitch();
-    }
+    };
 
     // Handles Bootstrap Accordions.
     var handleAccordions = function () {
         $('body').on('shown.bs.collapse', '.accordion.scrollable', function (e) {
             Metronic.scrollTo($(e.target));
         });
-    }
+    };
 
     // Handles Bootstrap Tabs.
     var handleTabs = function () {
@@ -188,7 +188,7 @@ var Metronic = function () {
             });            
             $('a[href="#' + tabid + '"]').click();
         }
-    }
+    };
 
     // Handles Bootstrap Modals.
     var handleModals = function () {
@@ -210,12 +210,12 @@ var Metronic = function () {
         $('body').on('hide.bs.modal', '.modal', function () {
             $('body').removeClass("modal-open-noscroll");
         });
-    }
+    };
 
     // Handles Bootstrap Tooltips.
     var handleTooltips = function () {
        $('.tooltips').tooltip();
-    }
+    };
 
     // Handles Bootstrap Dropdowns
     var handleDropdowns = function () {
@@ -225,19 +225,19 @@ var Metronic = function () {
         $('body').on('click', '.dropdown-menu.hold-on-click', function (e) {
             e.stopPropagation();
         });
-    }
+    };
 
     var handleAlerts = function () {
         $('body').on('click', '[data-close="alert"]', function(e){
             $(this).parent('.alert').hide();
             e.preventDefault();
         });
-    }
+    };
 
     // Handle Hower Dropdowns
     var handleDropdownHover = function () {
         $('[data-hover="dropdown"]').dropdownHover();
-    }
+    };
 
     // Handles Bootstrap Popovers
 
@@ -254,12 +254,12 @@ var Metronic = function () {
                 lastPopedPopover.popover('hide');
             }
         });
-    }
+    };
 
     // Handles scrollable contents using jQuery SlimScroll plugin.
     var handleScrollers = function () {
         Metronic.initSlimScroll('.scroller');
-    }
+    };
 
     // Handles Image Preview using jQuery Fancybox plugin
     var handleFancybox = function () {
@@ -280,7 +280,7 @@ var Metronic = function () {
                 }
             });
         }
-    }
+    };
 
     // Fix input placeholder issue for IE8 and IE9
     var handleFixInputPlaceholderForIE = function () {
@@ -307,7 +307,7 @@ var Metronic = function () {
                 });
             });
         }
-    }
+    };
 
     // Handle Select2 Dropdowns
     var handleSelect2 = function() {
@@ -317,7 +317,7 @@ var Metronic = function () {
                 allowClear: true
             });
         }
-    }
+    };
 
     //* END:CORE HANDLERS *//
 
@@ -335,7 +335,7 @@ var Metronic = function () {
             handleUniform(); // hanfle custom radio & checkboxes
             handleBootstrapSwitch(); // handle bootstrap switch plugin
             handleScrollers(); // handles slim scrolling contents 
-            handleFancybox() // handle fancy box
+            handleFancybox(); // handle fancy box
             handleSelect2(); // handle custom Select2 dropdowns
             handlePortletTools(); // handles portlet action bar functionality(refresh, configure, toggle, remove)
             handleAlerts(); //handle closabled alerts
@@ -360,7 +360,7 @@ var Metronic = function () {
             handleAccordions(); //handles accordions 
             handleUniform(); // hanfle custom radio & checkboxes     
             handleBootstrapSwitch(); // handle bootstrap switch plugin
-            handleDropdownHover() // handles dropdown hover       
+            handleDropdownHover(); // handles dropdown hover
         },
         
         //public function to remember last opened popover that needs to be closed on click
@@ -557,9 +557,9 @@ var Metronic = function () {
 
             var id = Metronic.getUniqueID("Metronic_alert");
 
-            var html = '<div id="'+id+'" class="Metronic-alerts alert alert-'+options.type+' fade in">' + (options.close ? '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' : '' ) + (options.icon != "" ? '<i class="fa-lg fa fa-'+options.icon + '"></i>  ' : '') + options.message+'</div>'
+            var html = '<div id="'+id+'" class="Metronic-alerts alert alert-'+options.type+' fade in">' + (options.close ? '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' : '' ) + (options.icon != "" ? '<i class="fa-lg fa fa-'+options.icon + '"></i>  ' : '') + options.message+'</div>';
 
-            if (options.reset) {0
+            if (options.reset) {0;
                 $('.Metronic-alerts').remove();
             }
 

@@ -108,9 +108,6 @@ class AdminRolesController extends AdminController {
 
             // Redirect to the new role page
             return Redirect::to('admin/roles/create')->with('error', Lang::get('admin/roles/messages.create.error'));
-
-            // Redirect to the role create page
-            return Redirect::to('admin/roles/create')->withInput()->with('error', Lang::get('admin/roles/messages.' . $error));
         }
 
         // Form validation failed

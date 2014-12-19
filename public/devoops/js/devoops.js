@@ -1014,7 +1014,7 @@ function DrawChartistChart2(){
 		return data;
 	}, {
 		labels: [],
-		series: times(4).map(function() { return new Array() })
+		series: times(4).map(function() { return [] })
 	});
 	var options = {
 		showLine: false,
@@ -1351,7 +1351,7 @@ function DrawKnob(elem){
 	var i=0;
 	var $idir = $("div.idir");
 	var $ival = $("div.ival");
-	var incr = function() { i++; $idir.show().html("+").fadeOut(); $ival.html(i); }
+	var incr = function() { i++; $idir.show().html("+").fadeOut(); $ival.html(i); };
 	var decr = function() { i--; $idir.show().html("-").fadeOut(); $ival.html(i); };
 	$("input.infinite").knob(
 		{

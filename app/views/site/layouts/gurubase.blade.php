@@ -236,7 +236,7 @@
         	});
         	$('.about').on('click', function(){
         		$('#about').toggleClass('about-h');
-        	})
+        	});
         	$('#about').on('mouseleave', function(){
         		$('#about').removeClass('about-h');
         	})
