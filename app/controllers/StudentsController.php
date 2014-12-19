@@ -1,86 +1,93 @@
 <?php
 
+use Laracasts\Flash\Flash;
+use ScheduleGuru\Calendar\CalendarRepository;
+use ScheduleGuru\Calendar\GoogleCalendar;
+use ScheduleGuru\Students\Student;
+use ScheduleGuru\Students\StudentRepository;
+
 class StudentsController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /students
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
+    protected $studentRepository;
 
-	/**
-	 * Show the form for creating a new resource.
-	 * GET /students/create
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+    protected $student;
 
-	/**
-	 * Store a newly created resource in storage.
-	 * POST /students
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+    function __construct(StudentRepository $studentRepository, Student $student, CalendarRepository $calendarRepository)
+    {
+        parent::__construct();
+        $this->calendarRepository = $calendarRepository;
+        $this->studentRepository = $studentRepository;
+        $this->student = $student;
+    }
 
-	/**
-	 * Display the specified resource.
-	 * GET /students/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    public function convertEventsToPackage($studentslug)
+    {
+        $student = $this->student->where('slug', '=', $studentslug)->first();
+        if (is_null($student))
+        {
+            // If we ended up in here, it means that
+            // a page or a blog post didn't exist.
+            // So, this means that it is time for
+            // 404 error page.
+            return App::abort(404);
+        }
+        $events = $this->calendarRepository->fetchEvents($student->calendarId);
+        $scheduledSessions = $this->studentRepository->buildEventSessionConversionArray($events, $student);
 
-	/**
-	 * Show the form for editing the specified resource.
-	 * GET /students/{id}/edit
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+        return View::make('site.dashboard.students.convertpkg', compact('scheduledSessions', 'student'));
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 * PUT /students/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+    public function postCreatePackageSessions()
+    {
+        // TODO: convert student's events to sessions of a package
+        $tutoringEvents = Input::all();
+        return var_dump($tutoringEvents);
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 * DELETE /students/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+    /**
+     * @param $slug
+     * @return \Illuminate\View\View|void
+     */
+    public function studentPage($slug)
+    {
+        $student = $this->student->where('slug', '=', $slug)->first();
+        if (is_null($student))
+        {
+            // If we ended up in here, it means that
+            // a page or a blog post didn't exist.
+            // So, this means that it is time for
+            // 404 error page.
+            return App::abort(404);
+        }
+        $events = $this->calendarRepository->fetchEvents($student->calendarId);
+
+        if( ! $events){
+            Confide::logout();
+            Flash::error('Inactivity timeout, please login again (google_auth_exception)');
+            return Googlavel::logout('/');
+        }
+
+        if($student->packageid){
+            \Debugbar::info($student->packageid);
+        }else{
+            $convertedTPGevents = false;
+            \Debugbar::info('NO PACKAGEID FOR STUDENT');
+        }
+
+
+        return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
+    }
+
+    public function manage()
+    {
+        $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
+        $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
+        $students = Student::all();
+
+        \Debugbar::info('Student cals Eloquent grab:');
+        \Debugbar::info($studentCals);
+
+        return View::make('site.dashboard.students.index', compact('studentCals', 'tutorCals', 'students'));
+    }
 
 }

@@ -19,8 +19,6 @@
         "zizaco/entrust": "1.2.*@dev",
         "bllim/datatables": "~1.3",
         "google/apiclient": "1.0.*@beta",
-        "atticmedia/anvard": "dev-master",
-        "league/oauth2-client": "dev-master",
         "redbaron76/googlavel": "~1.0",
         "anahkiasen/former": "~3.5"
     },

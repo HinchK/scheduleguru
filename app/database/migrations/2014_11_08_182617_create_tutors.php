@@ -15,8 +15,8 @@ class CreateTutors extends Migration {
 		Schema::create('tutors', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->string('email')->unique();
             $table->string('calendarId')->unique();
+            $table->text('email')->nullable();
             $table->text('current_students');
             $table->text('past_students');
             $table->text('freebusy');

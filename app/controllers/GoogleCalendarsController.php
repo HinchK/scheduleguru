@@ -1,9 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Redirect;
 use Laracasts\Commander\CommanderTrait;
+use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
 use ScheduleGuru\Calendar\PostPersonaBuilderCommand;
+use ScheduleGuru\Tutor;
 
 class GoogleCalendarsController extends \BaseController {
     use CommanderTrait;
@@ -24,14 +27,20 @@ class GoogleCalendarsController extends \BaseController {
 	public function index()
 	{
         $gCals = $this->calendarRepository->buildPrimaryCalendarList();
+        //will return false if google auth disconnect
+        if( ! $gCals){
+            Confide::logout();
+            Flash::error('Inactivity timeout, please login again (google_auth_exception)');
+            return Googlavel::logout('/');
+        }
         $currentCals = GoogleCalendar::all();
 
-        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
+        $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
+        $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
-        //$rawCalendars = $this->calendarRepository->buildPrimaryCalendarList();
-        //return View::make('site.dashboard.primary')->with('calendars', $rawCalendars);
+//        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
+        return View::make('site.dashboard.home', compact('gCals','currentCals','studentCals','tutorCals'));
 
-		//return View::make('googlecalendars.index', compact('googlecalendars'));
 	}
 
 	/**

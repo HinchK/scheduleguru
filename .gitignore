@@ -34,5 +34,17 @@ scheduleguru-2947938eb71b.json
 
 app/config/packages/atticmedia/anvard/hybridauth.php
 
+# Todo: metronic, j$plugin trimming
+*.png
+*.img
+
+
 frznNodeAdmin_composer.json
 app/config/packages/barryvdh
+gist-form-tricks.tar.gz
+gist-form-tricks
+public/form2js
+bower_components
+public/assets/js/plugins/datatables/media/images
+public/assets/metronic
+xX-Tricks-n-Trash-Xx

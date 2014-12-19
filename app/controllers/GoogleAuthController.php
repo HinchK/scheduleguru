@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Redirect;
 use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\GoogleCalendarRepo;
 use ScheduleGuru\GoogleConnect\GoogleToken;
@@ -22,22 +23,9 @@ class GoogleAuthController extends BaseController {
         $this->clientRepository = $gclient;
     }
 
-    /**
-     *
-     */
-    public function setupGoogleConnections()
+    public function redirectGoogleLogin()
     {
-//        $googleConnector = new GoogleClientRepository();
-//        View::share('authToken');
-        return $this->clientRepository->buildGoogleClient();
-
-
-//        return Redirect::home();
-
-//        Debugbar::info($client);
-//        $calservice = new Google_Service_Calendar($client);
-        $calservice = new Google_Service_Oauth2_Userinfoplus($client);
-
+        return Redirect::to('/');
     }
 
     /**
@@ -58,11 +46,13 @@ class GoogleAuthController extends BaseController {
                 $userProfile = Googlavel::getService('Oauth2');
                 $googleProfile = $userProfile->userinfo->get();
                 Session::put('userinfo', $googleProfile);
+                Session::put('googatar_url', $googleProfile->picture);
+                Session::put('google_name', $googleProfile->name);
                 Debugbar::info($googleProfile);
                 return Redirect::route('google_welcome')->with('userinfo', $googleProfile);
+//                return Redirect::route('dashboard_primary')->with('userinfo', $googleProfile);
             }
         }
-
         // get auth url
         $url = Googlavel::authUrl();
 
@@ -81,7 +71,7 @@ class GoogleAuthController extends BaseController {
 
             if($profileInfo->email === 'kasey.hinchman@gmail.com'){
                 Auth::loginUsingId(1);
-                Flash::success("Welcome! What will your first sequence of the day be?");
+                Flash::overlay("Welcome! What will your first sequence of the day be?");
 
 
                 $profileCheck = GoogleProfile::where('email',$profileInfo->email);
@@ -159,45 +149,6 @@ class GoogleAuthController extends BaseController {
             $profileRecord->$k = $v;
         }
         return $profileRecord;
-    }
-
-    public function dashboardSetup()
-    {
-        // Get the google service (related scope must be set)
-        $service = Googlavel::getService('Calendar');
-
-        // invoke API call
-        $calendarList = $service->calendarList->listCalendarList();
-
-        foreach ( $calendarList as $calendar )
-        {
-            echo "{$calendar->summary} <br>";
-        }
-
-        echo "<br><---------------------------------------------><br><br>";
-        $gmailService = Googlavel::getService('Gmail');
-
-
-        $gmailThreadList = $gmailService->users_threads->listUsersThreads('me');
-
-        foreach ( $gmailThreadList as $thread )
-        {
-            print 'Thread with ID: ' . $thread->getId() . '<br/>';
-            $getThread = $gmailService->users_threads->get('me', $thread->getId());
-            $messages = $getThread->getMessages();
-            $msgCount = count($messages);
-            echo "#messages in thread: {$msgCount} <br>";
-            foreach ($messages as $message)
-            {
-                echo "     ".print_r($message->id)." |0-0| ".print_r($message->snippet);
-            }
-//        $thread_str = serialize($thread);
-//        echo "Thread: {$thread_str}";
-        }
-
-        link_to('google/logout', 'Logout');
-
-        View::make('site.google.dashboard');
     }
 
     public function authenticate()
@@ -295,6 +246,7 @@ class GoogleAuthController extends BaseController {
     public function logout(){
         // perform a logout with redirect
         Confide::logout();
+        Flash::success('You have been logged out.');
         return Googlavel::logout('/');
     }
 

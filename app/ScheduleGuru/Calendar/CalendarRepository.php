@@ -2,20 +2,35 @@
 
 
 use Googlavel;
-use ScheduleGuru\Tutor;
+use Google_Auth_Exception;
 
 class CalendarRepository {
-
-
-    //helpful way to enact method-hints
+    // method-hints with google services
     //$cal = new \Google_Service_Calendar($client);
     //$cal->calendarList->listCalendarList()
 
+    /**
+     * @param $cal_id
+     * @param null $fetchAfterDate
+     * @return mixed
+     */
+    public static function fetchEvents($cal_id, $fetchAfterDate = null)
+    {
+        try {
+            $eventObjects = Googlavel::getService('Calendar')->events->listEvents($cal_id)->getItems();
+        }catch (Google_Auth_Exception $e){
+            return false;
+        }
+        return $eventObjects;
+    }
 
-    function buildPrimaryCalendarList(){
+    public function buildPrimaryCalendarList(){
         $service = Googlavel::getService('Calendar');
-        $calendarList = $service->calendarList->listCalendarList();
-
+        try {
+            $calendarList = $service->calendarList->listCalendarList();
+        }catch (Google_Auth_Exception $e){
+            return false;
+        }
         $knownCalendars = GoogleCalendar::all();
 //        \Debugbar::info($calendarList);
         \Debugbar::info('begin filtering of cal lists');
@@ -29,14 +44,15 @@ class CalendarRepository {
             array_push($calarray, $checkcal);
             $calarray[$key] = $checkcal;
             foreach($knownCalendars as $knownCals){
-                if($cal->id === $knownCals->cal_id){
-                    \Debugbar::info('we have a match here in calendar repo, removing!');
-                    \Debugbar::info($cal->summary);
+                if($cal->id === $knownCals->cal_id) {
+//                    \Debugbar::info('we have a match here in calendar repo, removing!');
+//                    \Debugbar::info($cal->summary);
                     unset($calarray[$key]);
-                }else{
-                    \Debugbar::info('not a match print to view');
-                    \Debugbar::info($cal->summary);
                 }
+//                }else{
+//                    \Debugbar::info('not a match print to view');
+//                    \Debugbar::info($cal->summary);
+//                }
 
             }
             $key++;

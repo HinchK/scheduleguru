@@ -1,26 +1,26 @@
-@extends('site.layouts.default')
+@extends('site.layouts.kickoff')
 @section('styles')
 @parent
     <style>
-    .box {
-        font-family: Arial, sans-serif;
-        background-color: #F1F1F1;
-        border: 0;
-        width: 340px;
-        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-        margin: 0 auto 25px;
-        text-align: center;
-        padding: 10px 0;
-    }
-    .box img {
-        padding: 10px 0;
-    }
-    .box a {
-        color: #427fed;
-        cursor: pointer;
-        text-decoration: none;
-    }
+    /*.box {*/
+        /*font-family: Arial, sans-serif;*/
+        /*background-color: #F1F1F1;*/
+        /*border: 0;*/
+        /*width: 340px;*/
+        /*-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);*/
+        /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);*/
+        /*margin: 0 auto 25px;*/
+        /*text-align: center;*/
+        /*padding: 10px 0;*/
+    /*}*/
+    /*.box img {*/
+        /*padding: 10px 0;*/
+    /*}*/
+    /*.box a {*/
+        /*color: #427fed;*/
+        /*cursor: pointer;*/
+        /*text-decoration: none;*/
+    /*}*/
     .heading {
         text-align:center;
         padding:10px;
@@ -58,19 +58,17 @@
     </style>
 @stop
 @section('content')
+    @include('notifications')
     <div class="page-header" xmlns="http://www.w3.org/1999/html">
        <h1 class="page-title">Welcome!</h1>
     </div>
-    <div class="heading">You are logged in, Superuser!</div>
-        <div class="box">
-            <img class="circle-image" src="{{{ URL::to($userinfo->picture) }}}"  width="100px" size="100px" /><br/>
-            <p class="welcome">Welcome <a href="{{{ link_to($userinfo->link) }}}" >{{ $userinfo->name  }}</a></p>
-            <p class="oauthemail">{{ $userinfo->email }}</p>
-        <div class='logout'>{{ link_to_route('google_logout', 'Logout') }}</div>
-        <div class="row">
-            <div class="container">
-                {{ link_to_route('dashboard_primary', 'Take me to the dashboard!') }}
-            </div>
-        </div>
+    <div class="heading">You are logged in, Superuser</div>
+    <img class="circle-image" src="{{{ URL::to($userinfo->picture) }}}"  width="100px" size="100px" /><br/>
+    <p class="welcome">Welcome {{ link_to($userinfo->link, $userinfo->name) }}</p>
+    <p class="oauthemail">{{ $userinfo->email }}</p>
+    <b>{{ link_to_route('dashboard_primary', 'Take me to the dashboard!') }}</b>
+    <div class='logout'>{{ link_to_route('google_logout', 'Logout') }}</div>
+    <div class="row">
+    <div class="container"></div>
     </div>
 @stop

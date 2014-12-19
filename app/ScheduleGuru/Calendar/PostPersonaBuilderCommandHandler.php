@@ -12,7 +12,11 @@ class PostPersonaBuilderCommandHandler implements CommandHandler {
      */
     public function handle($command)
     {
-        $calref = GoogleCalendar::post($command->cal_id, $command->is_a, $command->cal_summary, $command->cal_bg_color);
+        $calref = GoogleCalendar::post($command->cal_id, $command->is_a, $command->accessRole,
+            $command->backgroundColor, $command->colorId, $command->deleted, $command->description,
+            $command->etag, $command->foregroundColor, $command->hidden, $command->kind,
+            $command->location, $command->primary, $command->selected, $command->summary,
+            $command->summaryOverride, $command->timeZone);
         return $calref;
     }
 

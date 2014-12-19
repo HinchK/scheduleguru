@@ -9,6 +9,7 @@ Route::model('comment', 'Comment');
 Route::model('post', 'Post');
 Route::model('role', 'Role');
 Route::model('profile', 'Profile');
+Route::model('student', 'Student');
 
 /**
  * Experimental model binding for GoogleCalendar spellcasting
@@ -110,15 +111,69 @@ Route::controller('user', 'UserController');
 Route::when('contact-us','detectLang');
 
 
-/* TODO:disabled
+/* TODO:disabled - re-enable the blog stuff off a /blog/ path
 # Posts - Second to last set, match slug
 Route::get('{postSlug}', 'BlogController@getView');
-Route::post('{postSlug}', 'BlogController@postView');
+Route::post('{postSlug}', 'BlogController@p ostView');
 */
 
+/*
+ * TODO: WRAP CONNECTING TO APP WITH AUTH
+ */
+# Authenticated using the "Neo" Account? lets fire up some  google/pages
+Route::group(array('prefix' => 'google', 'before' => 'auth'), function()
+{
 
-# Index Page - Last route, no matches
-Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+});
+
+Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
+
+    Route::get('dash', [
+        'as' => 'dashboard_primary',
+        'uses' => 'GoogleCalendarsController@index'
+    ]);
+
+	Route::post('dash', [
+		'as' => 'dashboard_primary',
+		'uses' => 'GoogleCalendarsController@store'
+	]);
+
+    Route::get('students', [
+        'as' => 'student_management',
+        'uses' => 'StudentsController@manage'
+    ]);
+
+    Route::get('{studentSlug}', 'StudentsController@studentPage');
+
+    Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
+
+    Route::post('convert-events', [
+        'as' => 'convert_package_sessions',
+        'uses' => 'StudentsController@postCreatePackageSessions'
+    ]);
+
+    Route::get('tutors', [
+        'as' => 'tutor_management',
+        'uses' => 'TutorsController@manage'
+    ]);
+
+    Route::get('events', [
+        'as' => 'event_management',
+        'uses' => 'GoogleCalendarsController@events'
+    ]);
+    Route::resource('google_calendars', 'GoogleCalendarsController');
+});
+
+
+Route::get('/google/welcome', [
+    'as' => 'google_welcome',
+    'uses' => 'GoogleAuthController@welcome'
+]);
+
+//Route::get('/ajax/dashboard', 'GoogleCalendarsController@index');
+
+# (old-blog)  Index Page - Last route, no matches
+//Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
 
 # Contact Us Static Page
 Route::get('contact-us', function()
@@ -126,120 +181,24 @@ Route::get('contact-us', function()
     // Return about us page
     return View::make('site/contact-us');
 });
-/**
- * Route Controller Resources
- */
+
+# TODO: all the buillshit below here has gotta go
+//below is handled in filters.php, can probably go
 
 
-Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
-    Route::get('google/calendars', [
-        'as' => 'guru_authenticate',
-        'uses' => 'GoogleAuthController@setupGoogleConnections'
-    ]);
-    Route::get('g/dashboard', [
-        'as' => 'guru_manager',
-        'uses' => 'GoogleAccountController@index'
-    ]);
-    Route::resource('google_calendars', 'GoogleCalendarsController');
-});
+
+
+Route::get('/', 'GoogleAuthController@superUserGoogleLogin');
 
 //ROUTE-SPROUTING - A MOST VILE HERESEY OF IN THE MOST UNHOLY NAME OF OAUTH 
 //Debugbar::info($object);
 //Debugbar::error("Error!");
 //Debugbar::warning('Watch out..');
 //Debugbar::addMessage('Another message', 'mylabel');
-
-/**
- * 
-
- https://accounts.google.com/o/oauth2/auth?response_type=code
- &redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fadmin%2Fdashboard
- &client_id=602226060632-9oomeuk9gh1eb0ik8vpnbu9hndb0saq7.apps.googleusercontent.com
- &scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&access_type=online
- &approval_prompt=auto
-
- warning
-
-Error calling GET https://www.googleapis.com/calendar/v3/users/me/calendarList: (401) Login Required
-/home/vagrant/Code/scheduleguru/vendor/google/apiclient/src/Google/Http/REST.php#79
-
- *
- */
+//Route::get('/google/dashboard', 'GoogleAuthController@superUserGoogleLogin');
 Route::get('/google', 'GoogleAuthController@superUserGoogleLogin');
 
 Route::get('/google/logout', [
     'as' => 'google_logout',
     'uses' => 'GoogleAuthController@logout'
 ]);
-
-Route::get('/google/logout', [
-    'as' => 'google_logout',
-    'uses' => 'GoogleAuthController@logout'
-]);
-
-Route::get('/google/welcome', [
-    'as' => 'google_welcome',
-    'uses' => 'GoogleAuthController@welcome'
-]);
-
-Route::get('/google/dash', [
-    'as' => 'dashboard_primary',
-    'uses' => 'GoogleCalendarsController@index'
-]);
-
-Route::post('/google/dash', [
-    'as' => 'dashboard_primary',
-    'uses' => 'GoogleCalendarsController@store'
-]);
-//Route::get('/google/dashboard', 'GoogleAuthController@superUserGoogleLogin');
-
-Route::get('google/dashboard', function()
-{
-    // Get the google service (related scope must be set)
-    $service = Googlavel::getService('Calendar');
-
-    // invoke API call
-    $calendarList = $service->calendarList->listCalendarList();
-
-    foreach ( $calendarList as $calendar )
-    {
-        echo "{$calendar->summary} <br>";
-    }
-    echo "<br><---------------------------------------------><br><br>";
-    $gmailService = Googlavel::getService('Gmail');
-
-
-    $gmailThreadList = $gmailService->users_threads->listUsersThreads('me');
-
-    foreach ( $gmailThreadList as $thread )
-    {
-        print 'Thread with ID: ' . $thread->getId() . '<br/>';
-        $getThread = $gmailService->users_threads->get('me', $thread->getId());
-        $messages = $getThread->getMessages();
-        $msgCount = count($messages);
-        echo "#messages in thread: {$msgCount} <br>";
-        foreach ($messages as $message)
-        {
-            echo "     ".print_r($message->id)." |0-0| ".print_r($message->snippet);
-        }
-//        $thread_str = serialize($thread);
-//        echo "Thread: {$thread_str}";
-    }
-
-    return link_to('google/logout', 'Logout');
-
-});
-
-//
-
-// Confide routes
-Route::get('users/create', 'UsersController@create');
-Route::post('users', 'UsersController@store');
-Route::get('users/login', 'UsersController@login');
-Route::post('users/login', 'UsersController@doLogin');
-Route::get('users/confirm/{code}', 'UsersController@confirm');
-Route::get('users/forgot_password', 'UsersController@forgotPassword');
-Route::post('users/forgot_password', 'UsersController@doForgotPassword');
-Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
-Route::post('users/reset_password', 'UsersController@doResetPassword');
-Route::get('users/logout', 'UsersController@logout');
