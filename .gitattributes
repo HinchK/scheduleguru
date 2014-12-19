@@ -1,0 +1,5 @@
+# Declare files that will always have CRLF line endings on checkout.
+*.css text eol=crlf
+*.html text eol=crlf
+*.js text eol=crlf
+*.php text eol=crlf
