@@ -64,46 +64,4 @@ class CalendarRepository {
         return array_values($calarray);
 //        return $calendarList;
     }
-
-// ---------------------------------------------------------
-// ----- object_to_array_recusive --- function (PHP) ------
-// --------------------------------------------------------
-// -- arg1:  $object  =  (PHP Object with Children)
-// -- arg2:  $assoc   =  (TRUE / FALSE) - optional
-// -- arg3:  $empty   =  ('' or NULL) - optional
-// --------------------------------------------------------
-// ----- return: Array from Object --- (associative) ------
-// --------------------------------------------------------
-
-    function object_to_array_recusive ( $object, $assoc=1, $empty='' )
-    {
-        $out_arr = array();
-        $assoc = (!empty($assoc)) ? TRUE : FALSE;
-
-        if (!empty($object)) {
-
-            $arrObj = is_object($object) ? get_object_vars($object) : $object;
-
-            $i=0;
-            foreach ($arrObj as $key => $val) {
-                // $key changed from $akey....
-                $key = ($assoc !== FALSE) ? $key : $i;
-                if (is_array($val) || is_object($val)) {
-                    $out_arr[$key] = (empty($val)) ? $empty : object_to_array_recusive($val);
-                }
-                else {
-                    $out_arr[$key] = (empty($val)) ? $empty : (string)$val;
-                }
-                $i++;
-            }
-
-        }
-
-        return $out_arr;
-    }
-
-// --------------------------------------------------------
-// --------------------------------------------------------
-
-
 }
