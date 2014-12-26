@@ -51,17 +51,17 @@
         <div class="clearfix visible-xs"></div>
     </div>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="portlet box yellow">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-globe"></i>{{ $student->name  }}'s Schedule
+                        <i class="fa fa-globe"></i>{{ $student->name  }}'s TPG Package
                     </div>
                 </div>
                 <div class="box-header">
                     <div class="box-name">
                         <i class="fa fa-search"></i>
-                        <span>pre-conversion edits</span>
+                        <span>package data</span>
                     </div>
                     <div class="box-icons">
                         <a class="collapse-link">
@@ -77,18 +77,62 @@
                     <div class="no-move"></div>
                 </div>
                 <div class="box-content">
-                    <div class="portlet-body">
-
-                        <p>sup yo</p>
+                    @if(!$scheduledSessions)
+                        <h4>Uh oh, this student doesnt have any events!  Would you like to build a pacage</h4>
+                        <p>TODO: KASEY-LINK TO PACKAGE BUILDER</p>
+                        <a href="{{ $student->convertpkgURL()  }}"><p>convert to package</p></a>
+                    @endif
+                    <h4 class="page-header">found {{ count($scheduledSessions)  }} events for {{ $student->name }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-search"></i>
+                        <span>Validator forms</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+                    <div class="form-group">
+                        <h4 class="page-header">pre-submission check</h4>
+                        <form class="form-horizontal" role="form" id="submit_all">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label" for="form-styles">JSON</label>
+                                <div class="col-sm-11">
+                                    <textarea class="form-control" rows="5" id="wysiwig_simple" name="event-collect"></textarea>
+                                    <input type="hidden" id="event-collecter" name="event-collecter" />
+                                </div>
+                            </div>
+                            <input type="submit" />
+                            <h2>mode: combine</h2>
+                            <pre><code id="testAreaCombine">
+                                </code></pre>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-9">
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <div class="portlet box red-intense">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-globe"></i>{{ $student->name  }}'s Schedule
+                        <i class="fa fa-globe"></i>{{ $student->name  }}'s Google Calendar
                     </div>
                 </div>
                 <div class="box-header">
@@ -125,42 +169,21 @@
 
                         </thead>
                         <tbody>
-                            {{-- */$count = 1;/* --}}
-                            @foreach($scheduledSessions as $tutoringevent)
-
-                                @if($tutoringevent['session_type'] == 'Math')
-
-                                    <tr>
-                                        <td>{{ $count++  }}</td>
-                                        <td>{{ $tutoringevent['test_type'] }}</td>
-                                        <td>{{ $tutoringevent['session_type'] }}</td>
-                                        <td>{{ $tutoringevent['tutor_unverified']  }}</td>
-                                        <td>{{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }} - {{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }}</td>
-                                        <td>{{ $tutoringevent['location'] }}</td>
-                                    </tr>
-
-                                @elseif($tutoringevent['session_type'] == 'Verbal')
-                                    <tr>
-                                        <td>{{ $count++  }}</td>
-                                        <td>{{ $tutoringevent['test_type'] }}</td>
-                                        <td>{{ $tutoringevent['session_type'] }}</td>
-                                        <td>{{ $tutoringevent['tutor_unverified']  }}</td>
-                                        <td>{{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }}</td>
-                                        <td>{{ $tutoringevent['location'] }}</td>
-                                    </tr>
-                                @elseif($tutoringevent['session_type'] == 'EXAM')
-                                    <tr class="warning">
-                                        <td>{{ $count++  }}</td>
-                                        <td>{{ $tutoringevent['test_type'] }}</td>
-                                        <td>{{ $tutoringevent['session_type'] }}</td>
-                                        <td>{{ $tutoringevent['tutor_unverified']  }}</td>
-                                        <td>{{ Carbon::parse($tutoringevent['start_time'])->toDayDateTimeString() }}-{{ Carbon::parse($tutoringevent['end_time'])->format('h:i a') }}</td>
-                                        <td>{{ $tutoringevent['location'] }}</td>
-                                    </tr>
-                                @else
-                                    <td>{{ $count++  }}</td>
-                                    <p class="bg-danger">!!This event has issues; here's the raw data: {{ $tutoringevent['summary'] }}</p>
-                                @endif
+                            {{-- */$sessionCount = 0;/* --}}
+                            {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
+                            @foreach($scheduledSessions as $tpgsession)
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.student_id', $tpgsession['student_id']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
+                                <tr>
+                                    <td>{{ $sessionCount++  }}</td>
+                                    <td>{{ Form::text('event[' . $sessionCount . ']' . '.test_type',  $tpgsession['test_type'], ['class' => 'form-control']) }}</td>
+                                    <td>{{ Form::text('event[' . $sessionCount . ']' . '.session_type',  $tpgsession['session_type'], ['class' => 'form-control']) }}</td>
+                                    <td>{{ Form::text('event[' . $sessionCount . ']' . '.tutor_unverified',  $tpgsession['tutor_unverified'], ['class' => 'form-control']) }}</td>
+                                    <td>{{ Form::text('event[' . $sessionCount . ']' . '.session_daytime_start', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'session_datetime['.$sessionCount.']']) }}</td>
+                                    <td>{{ Form::text('event[' . $sessionCount . ']' . '.location',  $tpgsession['location'], ['class' => 'form-control']) }}</td>
+                                </tr>
 
                             @endforeach
                         </tbody>
@@ -169,46 +192,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-7">
-            <div class="box">
-                <div class="box-header">
-                    <div class="box-name">
-                        <i class="fa fa-search"></i>
-                        <span>Validator forms</span>
-                    </div>
-                    <div class="box-icons">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="expand-link">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                    <div class="no-move"></div>
-                </div>
-                <div class="box-content">
-                    <div class="form-group">
-                        <h4 class="page-header">pre-submission check</h4>
-                        <form class="form-horizontal" role="form" id="submit_all">
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label" for="form-styles">JSON</label>
-                                <div class="col-sm-7">
-                                    <textarea class="form-control" rows="5" id="wysiwig_simple" name="event-collect"></textarea>
-                                    <input type="hidden" id="event-collecter" name="event-collecter" />
-                                </div>
-                            </div>
-                            <input type="submit" />
-                            <h2>mode: combine</h2>
-                            <pre><code id="testAreaCombine">
-                                </code></pre>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
+
     </div>
     <div class="row">
         <div class="col-xs-12">
@@ -436,3 +421,4 @@
         });
     </script>
 @stop
+
