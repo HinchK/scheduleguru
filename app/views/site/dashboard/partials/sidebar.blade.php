@@ -9,16 +9,13 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle">
                 <i class="fa fa-bar-chart-o"></i>
-                <span class="hidden-xs">Charts</span>
+                <span class="hidden-xs">Students</span>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="ajax-link" href="ajax/charts_xcharts.html">xCharts</a></li>
-                <li><a class="ajax-link" href="ajax/charts_flot.html">Flot Charts</a></li>
-                <li><a class="ajax-link" href="ajax/charts_google.html">Google Charts</a></li>
-                <li><a class="ajax-link" href="ajax/charts_morris.html">Morris Charts</a></li>
-                <li><a class="ajax-link" href="ajax/charts_amcharts.html">AmCharts</a></li>
-                <li><a class="ajax-link" href="ajax/charts_chartist.html">Chartist</a></li>
-                <li><a class="ajax-link" href="ajax/charts_coindesk.html">CoinDesk realtime</a></li>
+                <li><a  href="{{ URL::route('student_management') }}">Student Management</a></li>
+                <li><a class="ajax-link" href="ajax/charts_flot.html">New Student</a></li>
+                <li><a class="ajax-link" href="ajax/charts_google.html">Student Index</a></li>
+                <li><a class="ajax-link" href="ajax/charts_morris.html">Sessions this week</a></li>
             </ul>
         </li>
         <li class="dropdown">

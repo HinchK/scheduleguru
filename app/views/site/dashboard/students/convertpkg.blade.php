@@ -177,15 +177,17 @@
                                 {{ Form::hidden('event[' . $sessionCount . ']' . '.start_time',  $tpgsession['start_time']) }}
                                 {{ Form::hidden('event[' . $sessionCount . ']' . '.end_time',  $tpgsession['end_time']) }}
                                 <tr>
-                                    <td>{{ $sessionCount++  }}</td>
+                                    <td>{{ $sessionCount + 1  }}</td>
                                     <td>{{ Form::text('event[' . $sessionCount . ']' . '.test_type',  $tpgsession['test_type'], ['class' => 'form-control']) }}</td>
                                     <td>{{ Form::text('event[' . $sessionCount . ']' . '.session_type',  $tpgsession['session_type'], ['class' => 'form-control']) }}</td>
                                     <td>{{ Form::text('event[' . $sessionCount . ']' . '.tutor_unverified',  $tpgsession['tutor_unverified'], ['class' => 'form-control']) }}</td>
-                                    <td>{{ Form::text('event[' . $sessionCount . ']' . '.session_daytime_start', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'session_datetime['.$sessionCount.']']) }}</td>
+                                    <td>{{ Form::text('event[' . $sessionCount . ']' . '.session_daytime_start', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'session_datetime']) }}</td>
+                                    {{--<td>{{ Form::text('event[' . $sessionCount . ']' . '.session_daytime_start', Carbon::parse($tpgsession['start_time'])->toDayDateTimeString(), ['class' => 'form-control', 'id' => 'session_datetime['.$sessionCount.']']) }}</td>--}}
                                     <td>{{ Form::text('event[' . $sessionCount . ']' . '.location',  $tpgsession['location'], ['class' => 'form-control']) }}</td>
                                 </tr>
-
+                                {{-- */ $sessionCount++; /* --}}
                             @endforeach
+                            {{ Form::close() }}
                         </tbody>
 
                     </table>
@@ -227,7 +229,7 @@
 
                     @if(count($scheduledSessions))
                         {{-- */$sessionCount = 0;/* --}}
-                        {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event']) }}
+                        {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event_form']) }}
 
                         @foreach($scheduledSessions as $tpgsession)
 
@@ -344,18 +346,24 @@
         };
 
         function events2json(evt){
-            var startofsession = $('#session_datetime').data("DateTimePicker").getDate();
-            alert(startofsession);
-            console.log(startofsession);
+            evt.preventDefault();
+            for(var i = 0; i < {{ count($scheduledSessions) }}; i++) {
+                console.log($('#session_datetime\\[' + i + '\\]').data("DateTimePicker").getDate());
+            }
+//            var startofsession = $('#session_datetime').data("DateTimePicker").getDate();
+//            alert(startofsession);
+//            console.log(startofsession);
 //            var selector = $('#selector').val(),
 //                formDataFirst = $(selector).toObject({mode: 'first'}),
 //                formDataAll = $(selector).toObject({mode: 'all'}),
-            var formDataCombine = $('#process_event').toObject({mode: 'combine'});
+            var formDataCombine = $('#process_event_form').toObject({mode: 'combine'});
+            console.log('formDataCombine: ');
+            console.log(formDataCombine);
 
 //            $('#testAreaFirst').html(JSON.stringify(formDataFirst, null, '\t'));
 //            $('#testAreaAll').html(JSON.stringify(formDataAll, null, '\t'));
             $('#testAreaCombine').html(JSON.stringify(formDataCombine, null, '\t'));
-            evt.preventDefault();
+
         }
 
         // Run Select2 plugin on elements
@@ -376,7 +384,7 @@
 
             $('input[type=submit]').click(events2json);
 
-            var formData = $('#process_event').serializeObject();
+            var formData = $('#process_event_form').serializeObject();
             var result = JSON.stringify(formData);
 
             $("textarea[name='event-collect']").val(result);
@@ -421,4 +429,3 @@
         });
     </script>
 @stop
-
