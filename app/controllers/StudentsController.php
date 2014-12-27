@@ -12,6 +12,11 @@ class StudentsController extends \BaseController {
 
     protected $student;
 
+    /**
+     * @param StudentRepository $studentRepository
+     * @param Student $student
+     * @param CalendarRepository $calendarRepository
+     */
     function __construct(StudentRepository $studentRepository, Student $student, CalendarRepository $calendarRepository)
     {
         parent::__construct();
@@ -20,6 +25,10 @@ class StudentsController extends \BaseController {
         $this->student = $student;
     }
 
+    /**
+     * @param $studentslug
+     * @return \Illuminate\View\View|void
+     */
     public function convertEventsToPackage($studentslug)
     {
         $student = $this->student->where('slug', '=', $studentslug)->first();
@@ -37,10 +46,14 @@ class StudentsController extends \BaseController {
         return View::make('site.dashboard.students.convertpkg', compact('scheduledSessions', 'student'));
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postCreatePackageSessions()
     {
         $tutoringEvents = Input::all();
 
+       dd($tutoringEvents);
         \Debugbar::info('StudentController.postCreatePackageSessions:');
         \Debugbar::info($tutoringEvents);
 
@@ -81,6 +94,9 @@ class StudentsController extends \BaseController {
         return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function manage()
     {
         $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
@@ -94,3 +110,4 @@ class StudentsController extends \BaseController {
     }
 
 }
+

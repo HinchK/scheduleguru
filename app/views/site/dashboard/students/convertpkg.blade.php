@@ -296,7 +296,7 @@
                         @endforeach
                         <div class="form-group">
                             <div class="col-sm-offset-10 col-sm-2">
-                                {{ Form::button('Convert',['class' => 'btn btn-primary convert-btn', 'data-eventid' => $tpgsession['gcal_event_id']]) }}
+                                {{ Form::button('Convert',['class' => 'btn btn-primary convert-btn', 'data-eventid' => $tpgsession['gcal_event_id'], 'id' => 'convert_events_btn']) }}
                             </div>
                         </div>
                         {{ Form::close() }}
@@ -390,14 +390,15 @@
             $("textarea[name='event-collect']").val(result);
             $('#event-collecter').val(result);
 
-            $('convert-btn').on('click', function(e){
+            $('#convert_events_btn').on('click', function(e){
                 e.preventDefault();
                 //var eventID = $(this).data('eventdid');
-                var url = $('#process_event').attr('action');
+                var url = $('#process_event_form').attr('action');
+                var eventData = JSON.stringify($('#process_event_form').toObject({mode: 'combine'}));
                 $.ajax({
                    url: url,
                    type: 'POST',
-                   data: $('#submit_all').serialize(),
+                   data: eventData,
                    dataType: 'json',
                    success: function(){
                        alert("json ajax post ta-da");
