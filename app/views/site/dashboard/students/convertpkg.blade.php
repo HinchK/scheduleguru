@@ -117,7 +117,7 @@
                                     <input type="hidden" id="event-collecter" name="event-collecter" />
                                 </div>
                             </div>
-                            <input type="submit" />
+                            <input type="button" id="json-tester"/>
                             <h2>mode: combine</h2>
                             <pre><code id="testAreaCombine">
                                 </code></pre>
@@ -230,7 +230,7 @@
                     @if(count($scheduledSessions))
                         {{-- */$sessionCount = 0;/* --}}
                         {{ Form::open(['route' => 'convert_package_sessions', 'class' => 'form-horizontal', 'id' => 'process_event_form']) }}
-
+                        {{ Form::hidden('eventsJSON', 'NO_ACTION', [ 'id' => 'jsonTarget']) }}
                         @foreach($scheduledSessions as $tpgsession)
 
                                 <legend>Event #{{ $sessionCount + 1 }}</legend>
@@ -285,10 +285,11 @@
                                 </div>
 
                                 {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_status',  $tpgsession['gcal_status']) }}
-                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
+
                                 {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
                                 {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_etag', $tpgsession['gcal_event_etag']) }}
                                 {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_html_link', $tpgsession['gcal_html_link']) }}
+                                {{ Form::hidden('event[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
 
                                 {{--{{{ $tpgsession['summary_raw'] }}}--}}
                             </div>
@@ -296,7 +297,7 @@
                         @endforeach
                         <div class="form-group">
                             <div class="col-sm-offset-10 col-sm-2">
-                                {{ Form::button('Convert',['class' => 'btn btn-primary convert-btn', 'data-eventid' => $tpgsession['gcal_event_id'], 'id' => 'convert_events_btn']) }}
+                                {{ Form::submit('Convert',['class' => 'btn btn-primary convert-btn', 'data-eventid' => $tpgsession['gcal_event_id'], 'id' => 'convert_events_btn']) }}
                             </div>
                         </div>
                         {{ Form::close() }}
@@ -345,24 +346,27 @@
             return o;
         };
 
+
+
         function events2json(evt){
             evt.preventDefault();
+            var sessStartDT = [];
+
             for(var i = 0; i < {{ count($scheduledSessions) }}; i++) {
-                console.log($('#session_datetime\\[' + i + '\\]').data("DateTimePicker").getDate());
+                sessStartDT[i] =  $('#session_datetime\\[' + i + '\\]').data("DateTimePicker").getDate();
             }
-//            var startofsession = $('#session_datetime').data("DateTimePicker").getDate();
-//            alert(startofsession);
-//            console.log(startofsession);
+            console.log(sessStartDT);
 //            var selector = $('#selector').val(),
 //                formDataFirst = $(selector).toObject({mode: 'first'}),
 //                formDataAll = $(selector).toObject({mode: 'all'}),
             var formDataCombine = $('#process_event_form').toObject({mode: 'combine'});
             console.log('formDataCombine: ');
-            console.log(formDataCombine);
+            console.log(JSON.stringify(formDataCombine));
 
 //            $('#testAreaFirst').html(JSON.stringify(formDataFirst, null, '\t'));
 //            $('#testAreaAll').html(JSON.stringify(formDataAll, null, '\t'));
             $('#testAreaCombine').html(JSON.stringify(formDataCombine, null, '\t'));
+            $('#jsonTarget').val(JSON.stringify(formDataCombine, null, '\t'));
 
         }
 
@@ -382,7 +386,8 @@
                 });
             }
 
-            $('input[type=submit]').click(events2json);
+//            $('input[type=submit]').click(events2json);
+            $('#json-tester').on('click', events2json);
 
             var formData = $('#process_event_form').serializeObject();
             var result = JSON.stringify(formData);
@@ -390,11 +395,14 @@
             $("textarea[name='event-collect']").val(result);
             $('#event-collecter').val(result);
 
-            $('#convert_events_btn').on('click', function(e){
-                e.preventDefault();
+            $('#convert_events_btn').submit(function(e){
+                events2json(e);
+                //e.preventDefault();
                 //var eventID = $(this).data('eventdid');
                 var url = $('#process_event_form').attr('action');
                 var eventData = JSON.stringify($('#process_event_form').toObject({mode: 'combine'}));
+                console.log('eventData: ' + eventData);
+
                 $.ajax({
                    url: url,
                    type: 'POST',

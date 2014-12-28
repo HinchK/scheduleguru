@@ -51,9 +51,11 @@ class StudentsController extends \BaseController {
      */
     public function postCreatePackageSessions()
     {
-        $tutoringEvents = Input::all();
+        $allData = Input::all();
+        $tutoringEvents = Input::get('event');
 
-       dd($tutoringEvents);
+        //$eventStr = json_decode($tutoringEvents);
+        dd($tutoringEvents);
         \Debugbar::info('StudentController.postCreatePackageSessions:');
         \Debugbar::info($tutoringEvents);
 
