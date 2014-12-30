@@ -12,7 +12,7 @@ class Student extends \Eloquent {
 
     public function tutoringSessions()
     {
-        return $this->hasMany('ScheduledSession');
+        return $this->hasMany('ScheduledTutorSession');
     }
 
     /**

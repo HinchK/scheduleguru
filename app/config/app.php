@@ -38,7 +38,7 @@ return array(
 	| ahead and set this to a sensible default for you out of the box.
 	|
 	*/
-
+//	TODO: change TZ to 'America/Los_Angeles'
 	'timezone' => 'UTC',
 
 	/*
@@ -67,7 +67,7 @@ return array(
 
 	'key' => '8YWsN3nfigvuy0Td5LlkWljO7anGThD3',
 
-	'cipher' => MCRYPT_RIJNDAEL_128,	
+	'cipher' => MCRYPT_RIJNDAEL_128,
 
 	/*
 	|--------------------------------------------------------------------------

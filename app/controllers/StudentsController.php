@@ -3,6 +3,7 @@
 use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
+use ScheduleGuru\Events\TutorSessionEventRepository;
 use ScheduleGuru\Students\Student;
 use ScheduleGuru\Students\StudentRepository;
 
@@ -10,19 +11,23 @@ class StudentsController extends \BaseController {
 
     protected $studentRepository;
 
+    protected $tutorSessionRepository;
+
     protected $student;
 
     /**
      * @param StudentRepository $studentRepository
      * @param Student $student
      * @param CalendarRepository $calendarRepository
+     * @param TutorSessionEventRepository $tutorSessionRepository
      */
-    function __construct(StudentRepository $studentRepository, Student $student, CalendarRepository $calendarRepository)
+    function __construct(StudentRepository $studentRepository, Student $student, CalendarRepository $calendarRepository, TutorSessionEventRepository $tutorSessionRepository)
     {
         parent::__construct();
         $this->calendarRepository = $calendarRepository;
         $this->studentRepository = $studentRepository;
         $this->student = $student;
+        $this->tutorSessionRepository = $tutorSessionRepository;
     }
 
     /**
@@ -51,22 +56,23 @@ class StudentsController extends \BaseController {
      */
     public function postCreatePackageSessions()
     {
-        $allData = Input::all();
-        $tutoringEvents = Input::get('event');
 
-        //$eventStr = json_decode($tutoringEvents);
-        dd($tutoringEvents);
-        \Debugbar::info('StudentController.postCreatePackageSessions:');
-        \Debugbar::info($tutoringEvents);
+        $tutoringEvents = Input::get('eventsJSON');
+        $events = json_decode($tutoringEvents);
+        $studentID =  $events->pkgStudentId;
+        $package =  $this->tutorSessionRepository->convertExistingEventsToPackage($events, $studentID);
 
-        return Redirect::back();
+        $slug = $this->student->findOrFail($studentID)->get()->slug;
+
+
+        return Redirect::action('StudentsController@studentPage', $slug)->with(['package_id' => $package->id]);
     }
 
     /**
      * @param $slug
      * @return \Illuminate\View\View|void
      */
-    public function studentPage($slug)
+    public function studentPage($slug, $pkg = null)
     {
         $student = $this->student->where('slug', '=', $slug)->first();
         if (is_null($student))
@@ -85,8 +91,12 @@ class StudentsController extends \BaseController {
             return Googlavel::logout('/');
         }
 
-        if($student->packageid){
-            \Debugbar::info($student->packageid);
+        //TODO: NEEDS TO CHECK IF STUDENT HAS PKG, NOT IF PKG
+//        if($student->packageid){
+        if($pkg){
+            $convertedTPGevents = true;
+            \Debugbar::info('PACKAGE!!!!!!');
+            \Debugbar::info($pkg);
         }else{
             $convertedTPGevents = false;
             \Debugbar::info('NO PACKAGEID FOR STUDENT');
@@ -112,4 +122,3 @@ class StudentsController extends \BaseController {
     }
 
 }
-

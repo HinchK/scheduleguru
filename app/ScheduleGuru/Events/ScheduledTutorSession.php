@@ -1,9 +1,9 @@
-<?php namespace ScheduleGuru;
+<?php namespace ScheduleGuru\Events;
 
 
 use String;
 
-class ScheduledSession extends \Eloquent{
+class ScheduledTutorSession extends \Eloquent{
 
     protected $table = 'tpg_sessions';
 
@@ -25,4 +25,4 @@ class ScheduledSession extends \Eloquent{
         return String::date($date);
     }
 
-} 
+}

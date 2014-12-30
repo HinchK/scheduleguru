@@ -15,7 +15,7 @@ class CreateTpgSessionsTable extends Migration {
 		Schema::create('tpg_sessions', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->string('session_id');
+            $table->string('package_id');
             $table->string('gcal_event_id');
             $table->string('gcal_event_ical_id');
             $table->string('gcal_event_etag');
