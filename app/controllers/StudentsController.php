@@ -62,7 +62,8 @@ class StudentsController extends \BaseController {
         $studentID =  $events->pkgStudentId;
         $package =  $this->tutorSessionRepository->convertExistingEventsToPackage($events, $studentID);
 
-        $slug = $this->student->findOrFail($studentID)->get()->slug;
+        $slug = $this->student->findOrFail($studentID)->slug;
+        Session::put('package_id',$package->id);
 
 
         return Redirect::action('StudentsController@studentPage', $slug)->with(['package_id' => $package->id]);
@@ -72,7 +73,7 @@ class StudentsController extends \BaseController {
      * @param $slug
      * @return \Illuminate\View\View|void
      */
-    public function studentPage($slug, $pkg = null)
+    public function studentPage($slug)
     {
         $student = $this->student->where('slug', '=', $slug)->first();
         if (is_null($student))
@@ -93,10 +94,10 @@ class StudentsController extends \BaseController {
 
         //TODO: NEEDS TO CHECK IF STUDENT HAS PKG, NOT IF PKG
 //        if($student->packageid){
-        if($pkg){
-            $convertedTPGevents = true;
+        if(Session::has('package_id')){
+            $convertedTPGevents = Session::get('package_id');
             \Debugbar::info('PACKAGE!!!!!!');
-            \Debugbar::info($pkg);
+            \Debugbar::info($convertedTPGevents);
         }else{
             $convertedTPGevents = false;
             \Debugbar::info('NO PACKAGEID FOR STUDENT');
