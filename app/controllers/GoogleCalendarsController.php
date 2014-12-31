@@ -39,8 +39,8 @@ class GoogleCalendarsController extends \BaseController {
         $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
 //        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
-        return View::make('site.dashboard.home', compact('gCals','currentCals','studentCals','tutorCals'));
-
+//        return View::make('site.dashboard.home', compact('gCals','currentCals','studentCals','tutorCals'));
+        return View::make('main.home', compact('gCals','currentCals','studentCals','tutorCals'));
 	}
 
 	/**
