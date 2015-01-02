@@ -24,7 +24,7 @@ var TableManaged = function () {
                 [5, 15, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 5,
             "pagingType": "bootstrap_full_number",
             "language": {
                 "lengthMenu": "  _MENU_ records",
@@ -169,6 +169,7 @@ var TableManaged = function () {
         //main function to initiate the module
         init: function () {
             if (!jQuery().dataTable) {
+                console.log('table-managed.js: not a datatable!');
                 return;
             }
 

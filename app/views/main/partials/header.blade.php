@@ -3,7 +3,8 @@
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="index.html">
-                <img src="../../assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
+                ScheduleGURU
+                {{--<img src="../../assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>--}}
             </a>
             <div class="menu-toggler sidebar-toggler hide">
                 <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
@@ -363,9 +364,9 @@
                 <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown dropdown-user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                        <img alt="" class="img-circle hide1" src="../../assets/admin/layout/img/avatar3_small.jpg"/>
+                        <img alt="" class="img-circle hide1" src="{{ URL::to(Session::get('googatar_url')) }}"/>
                         <span class="username username-hide-on-mobile">
-                        Bob </span>
+                        {{ Session::get('google_name') }} </span>
                         <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
@@ -396,7 +397,7 @@
                                 <i class="icon-lock"></i> Lock Screen </a>
                         </li>
                         <li>
-                            <a href="login.html">
+                            <a href="{{ URL::route('google_logout') }}">
                                 <i class="icon-key"></i> Log Out </a>
                         </li>
                     </ul>

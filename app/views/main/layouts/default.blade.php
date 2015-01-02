@@ -74,13 +74,15 @@ Metronic Version: 3.1.3
 </div>
 <!-- CONTAINER -->
 <div class="page-container">
-    <!-- SIDEBAR -->
+     <!--SIDEBAR -->
 
     @include('main.partials.sidebar')
 
     <!-- BEGIN CONTENT -->
     <div class="page-content-wrapper">
         <div class="page-content">
+
+            @include('main.partials.dashconfig')
 
             @yield('content')
 
@@ -152,6 +154,7 @@ Metronic Version: 3.1.3
 {{ HTML::script('metro/pages/scripts/index.js') }}
 {{ HTML::script('metro/pages/scripts/tasks.js') }}
 <!-- END PAGE LEVEL SCRIPTS -->
+{{-- TODO: Consistant propagation of $(doc).ready... --}}
 <script>
     jQuery(document).ready(function() {
         Metronic.init(); // init metronic core componets
@@ -169,6 +172,7 @@ Metronic Version: 3.1.3
         Tasks.initDashboardWidget();
     });
 </script>
+@yield('scripts')
 <!-- END JAVASCRIPTS -->
 <!-- NOPE
 <script>

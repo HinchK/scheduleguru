@@ -130,7 +130,7 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
 
     Route::get('dash', [
         'as' => 'dashboard_primary',
-        'uses' => 'GoogleCalendarsController@index'
+        'uses' => 'GoogleCalendarsController@indexGuru'
     ]);
 
 	Route::post('dash', [
@@ -148,6 +148,44 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
     Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
 
     Route::post('convert-events', [
+        'as' => 'convert_package_sessions',
+        'uses' => 'StudentsController@postCreatePackageSessions'
+    ]);
+
+    Route::get('tutors', [
+        'as' => 'tutor_management',
+        'uses' => 'TutorsController@manage'
+    ]);
+
+    Route::get('events', [
+        'as' => 'event_management',
+        'uses' => 'GoogleCalendarsController@events'
+    ]);
+    Route::resource('google_calendars', 'GoogleCalendarsController');
+});
+
+Route::group(array('prefix' => 'dash', 'before' => 'auth'), function() {
+
+    Route::get('/', [
+        'as' => 'dash_primary',
+        'uses' => 'GoogleCalendarsController@index'
+    ]);
+
+    Route::post('/', [
+        'as' => 'dash_primary',
+        'uses' => 'GoogleCalendarsController@store'
+    ]);
+
+    Route::get('students', [
+        'as' => 'student_management',
+        'uses' => 'StudentsController@manage'
+    ]);
+
+    Route::get('{studentSlug}', 'StudentsController@studentPage');
+
+    Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
+
+    Route::post('svc/convert', [
         'as' => 'convert_package_sessions',
         'uses' => 'StudentsController@postCreatePackageSessions'
     ]);
@@ -190,7 +228,7 @@ Route::get('contact-us', function()
 
 Route::get('/', 'GoogleAuthController@superUserGoogleLogin');
 
-//ROUTE-SPROUTING - A MOST VILE HERESEY OF IN THE MOST UNHOLY NAME OF OAUTH 
+//ROUTE-SPROUTING - A MOST VILE HERESEY OF IN THE MOST UNHOLY NAME OF OAUTH
 //Debugbar::info($object);
 //Debugbar::error("Error!");
 //Debugbar::warning('Watch out..');

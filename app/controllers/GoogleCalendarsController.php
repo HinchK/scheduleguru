@@ -38,12 +38,29 @@ class GoogleCalendarsController extends \BaseController {
         $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
         $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
-//        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
-//        return View::make('site.dashboard.home', compact('gCals','currentCals','studentCals','tutorCals'));
         return View::make('main.home', compact('gCals','currentCals','studentCals','tutorCals'));
 	}
+//TODO: this is the old-style linked up TAG::REMOVE
+    public function indexGuru()
+    {
+        $gCals = $this->calendarRepository->buildPrimaryCalendarList();
+        //will return false if google auth disconnect
+        if( ! $gCals){
+            Confide::logout();
+            Flash::error('Inactivity timeout, please login again (google_auth_exception)');
+            return Googlavel::logout('/');
+        }
+        $currentCals = GoogleCalendar::all();
+        $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
+        $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
-	/**
+//        return View::make('site.dashboard.primary', compact('gCals','currentCals'));
+//        return View::make('site.dashboard.home', compact('gCals','currentCals','studentCals','tutorCals'));
+        return View::make('site.dashboard.home', compact('gCals','currentCals','studentCals','tutorCals'));
+    }
+
+
+    /**
 	 * Show the form for creating a new googlecalendar
 	 *
 	 * @return Response
