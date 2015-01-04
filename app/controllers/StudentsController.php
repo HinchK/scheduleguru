@@ -119,7 +119,8 @@ class StudentsController extends \BaseController {
         \Debugbar::info('Student cals Eloquent grab:');
         \Debugbar::info($studentCals);
 
-        return View::make('site.dashboard.students.index', compact('studentCals', 'tutorCals', 'students'));
+//OLD   return View::make('site.dashboard.students.index', compact('studentCals', 'tutorCals', 'students'));
+        return View::make('students.index', compact('studentCals', 'tutorCals', 'students'));
     }
 
 }

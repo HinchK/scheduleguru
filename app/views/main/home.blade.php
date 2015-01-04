@@ -1,37 +1,22 @@
 @extends('main.layouts.default')
 
 @section('content')
-
-
-    <!-- BEGIN PAGE HEADER-->
+    <!-- PAGE HEADER-->
     <h3 class="page-title">
         TestPrepGurus <small>dashboard & statistics</small>
     </h3>
 
     <div class="page-bar">
-        <ul class="page-breadcrumb">
-            <li>
-                <i class="fa fa-home"></i>
-                <a href="index.html">Home</a>
-                {{--TODO: target--}}
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a href="#">Dashboard</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a href="#">Dashboard</a>
-            </li>
-        </ul>
+        @section('breadcrumbs', Breadcrumbs::render('home'))
+        @yield('breadcrumbs')
         <div class="page-toolbar">
             <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height grey-salt" data-placement="top" data-original-title="Change dashboard date range">
                 <i class="icon-calendar"></i>&nbsp; <span class="thin uppercase visible-lg-inline-block"></span>&nbsp; <i class="fa fa-angle-down"></i>
             </div>
         </div>
     </div>
-    <!-- END PAGE HEADER-->
-    <!-- BEGIN DASHBOARD STATS -->
+
+    <!-- DASHBOARD STATS -->
     {{-- TODO: BREADCRUMB ROUTES--}}
     @include('main.partials.statheader')
     <!-- END DASHBOARD STATS -->
@@ -40,7 +25,7 @@
     <!-- BEGIN PAGE CONTENT-->
     <div class="row">
         <div class="col-md-12">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <!-- BEGIN EXAMPLE TABLE PORTLET -->
             <div class="portlet box yellow">
                 <div class="portlet-title">
                     <div class="caption">

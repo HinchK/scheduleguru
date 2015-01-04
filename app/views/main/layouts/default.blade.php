@@ -82,7 +82,7 @@ Metronic Version: 3.1.3
     <div class="page-content-wrapper">
         <div class="page-content">
 
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
             @include('main.partials.dashconfig')
 
              <!-- BEGIN STYLE CUSTOMIZER -->

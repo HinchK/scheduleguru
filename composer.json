@@ -41,7 +41,8 @@
         "laravel/framework": "4.2.*",
         "redbaron76/googlavel": "~1.0",
         "zizaco/confide": "~4.0@dev",
-        "zizaco/entrust": "1.2.*@dev"
+        "zizaco/entrust": "1.2.*@dev",
+        "davejamesmiller/laravel-breadcrumbs": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "1.*",

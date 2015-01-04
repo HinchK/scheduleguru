@@ -114,9 +114,13 @@ return array(
         'Zizaco\Entrust\EntrustServiceProvider', // Entrust Provider for roles
         'Bllim\Datatables\DatatablesServiceProvider', // Datatables
 
-        /* extracting biz logic and model presentation */
+        /* extracting biz logic */
         'Laracasts\Commander\CommanderServiceProvider',
+
+		/* view.blade.facilitators */
         'Laracasts\Flash\FlashServiceProvider',
+		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
+
 
         /* Google/OAuth Provider */
         'Redbaron76\Googlavel\GooglavelServiceProvider'
@@ -194,8 +198,8 @@ return array(
         'Carbon'          => 'Carbon\Carbon', // Carbon
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
         'Debugbar'        => 'Barryvdh\Debugbar\Facade',
-        'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel'
-
+        'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel',
+		'Breadcrumbs'	  => 'DaveJamesMiller\Breadcrumbs\Facade'
     ),
 
     'available_language' => array('en'),
