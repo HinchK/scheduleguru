@@ -129,17 +129,17 @@ Route::group(array('prefix' => 'google', 'before' => 'auth'), function()
 Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
 
     Route::get('dash', [
-        'as' => 'dashboard_primary',
+        'as' => 'old_dashboard_primary',
         'uses' => 'GoogleCalendarsController@indexGuru'
     ]);
 
 	Route::post('dash', [
-		'as' => 'dashboard_primary',
+		'as' => 'old_dashboard_primary',
 		'uses' => 'GoogleCalendarsController@store'
 	]);
 
     Route::get('students', [
-        'as' => 'student_management',
+        'as' => 'student_management_old',
         'uses' => 'StudentsController@manage'
     ]);
 
@@ -148,17 +148,17 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
     Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
 
     Route::post('convert-events', [
-        'as' => 'convert_package_sessions',
+        'as' => 'convert_package_sessions_old',
         'uses' => 'StudentsController@postCreatePackageSessions'
     ]);
 
     Route::get('tutors', [
-        'as' => 'tutor_management',
+        'as' => 'tutor_management_old',
         'uses' => 'TutorsController@manage'
     ]);
 
     Route::get('events', [
-        'as' => 'event_management',
+        'as' => 'event_management_old',
         'uses' => 'GoogleCalendarsController@events'
     ]);
     Route::resource('google_calendars', 'GoogleCalendarsController');
@@ -167,12 +167,12 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
 Route::group(array('prefix' => 'dash', 'before' => 'auth'), function() {
 
     Route::get('/', [
-        'as' => 'dash_primary',
+        'as' => 'dashboard_primary',
         'uses' => 'GoogleCalendarsController@index'
     ]);
 
     Route::post('/', [
-        'as' => 'dash_primary',
+        'as' => 'dashboard_primary',
         'uses' => 'GoogleCalendarsController@store'
     ]);
 

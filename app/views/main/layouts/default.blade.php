@@ -4,8 +4,8 @@
 
 Metronic Version: 3.1.3
 -->
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if IE 8]><html lang="en" class="ie8 no-js"><![endif]-->
+<!--[if IE 9]><html lang="en" class="ie9 no-js"><![endif]-->
 <!--[if !IE]><!-->
 <html lang="en" class="no-js">
 <!--<![endif]-->
@@ -82,7 +82,11 @@ Metronic Version: 3.1.3
     <div class="page-content-wrapper">
         <div class="page-content">
 
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
             @include('main.partials.dashconfig')
+
+             <!-- BEGIN STYLE CUSTOMIZER -->
+            @include('main.partials.stylecustomizer')
 
             @yield('content')
 

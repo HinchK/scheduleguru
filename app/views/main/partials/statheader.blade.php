@@ -12,7 +12,7 @@
                     Tutors
                 </div>
             </div>
-            <a class="more" href="#">
+            <a class="more" href="{{ URL::route('tutor_management') }}">
                 View more <i class="m-icon-swapright m-icon-white"></i>
             </a>
         </div>
@@ -30,7 +30,7 @@
                     Students
                 </div>
             </div>
-            <a class="more" href="#">
+            <a class="more" href="{{ URL::route('student_management') }}">
                 View more <i class="m-icon-swapright m-icon-white"></i>
             </a>
         </div>
@@ -45,10 +45,10 @@
                     549
                 </div>
                 <div class="desc">
-                    New Orders
+                    Special Events
                 </div>
             </div>
-            <a class="more" href="#">
+            <a class="more" href="{{ URL::route('event_management') }}">
                 View more <i class="m-icon-swapright m-icon-white"></i>
             </a>
         </div>

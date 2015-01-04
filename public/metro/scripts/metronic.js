@@ -11,9 +11,9 @@ var Metronic = function () {
 
     var resizeHandlers = [];
 
-    var assetsPath = '../../assets/';
+    var assetsPath = 'metro/';
 
-    var globalImgPath = assetsPath + 'global/img/';
+    var globalImgPath = assetsPath + 'img/';
 
     // theme layout color set
 
@@ -40,7 +40,7 @@ var Metronic = function () {
         if (isIE10) {
             $('html').addClass('ie10'); // detect IE10 version
         }
-        
+
         if (isIE10 || isIE9 || isIE8) {
             $('html').addClass('ie'); // detect IE10 version
         }
@@ -69,7 +69,7 @@ var Metronic = function () {
                 }
                 resize = setTimeout(function () {
                     _runResizeHandlers();
-                }, 50); // wait 50ms until window resize finishes.                
+                }, 50); // wait 50ms until window resize finishes.
                 currheight = document.documentElement.clientHeight; // store last body client height
             });
         } else {
@@ -103,8 +103,8 @@ var Metronic = function () {
                     cache: false,
                     url: url,
                     dataType: "html",
-                    success: function(res) 
-                    {                        
+                    success: function(res)
+                    {
                         Metronic.unblockUI(el);
                         el.html(res);
                     },
@@ -128,7 +128,7 @@ var Metronic = function () {
                 window.setTimeout(function () {
                     Metronic.unblockUI(el);
                 }, 1000);
-            }            
+            }
         });
 
         // load ajax data on page init
@@ -184,15 +184,15 @@ var Metronic = function () {
             var tabid = location.hash.substr(1);
             $('a[href="#' + tabid + '"]').parents('.tab-pane:hidden').each(function(){
                 var tabid = $(this).attr("id");
-                $('a[href="#' + tabid + '"]').click();    
-            });            
+                $('a[href="#' + tabid + '"]').click();
+            });
             $('a[href="#' + tabid + '"]').click();
         }
     };
 
     // Handles Bootstrap Modals.
     var handleModals = function () {
-        // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
+        // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class.
         $('body').on('hide.bs.modal', function () {
            if ($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') == false) {
               $('html').addClass('modal-open');
@@ -200,11 +200,11 @@ var Metronic = function () {
               $('html').removeClass('modal-open');
            }
         });
-            
+
         $('body').on('show.bs.modal', '.modal', function () {
             if ($(this).hasClass("modal-scroll")) {
                 $('body').addClass("modal-open-noscroll");
-            } 
+            }
         });
 
         $('body').on('hide.bs.modal', '.modal', function () {
@@ -220,7 +220,7 @@ var Metronic = function () {
     // Handles Bootstrap Dropdowns
     var handleDropdowns = function () {
         /*
-          Hold dropdown on click  
+          Hold dropdown on click
         */
         $('body').on('click', '.dropdown-menu.hold-on-click', function (e) {
             e.stopPropagation();
@@ -329,12 +329,12 @@ var Metronic = function () {
 
             //Core handlers
             handleInit(); // initialize core variables
-            handleOnResize(); // set and handle responsive    
-            
-            //UI Component handlers            
+            handleOnResize(); // set and handle responsive
+
+            //UI Component handlers
             handleUniform(); // hanfle custom radio & checkboxes
             handleBootstrapSwitch(); // handle bootstrap switch plugin
-            handleScrollers(); // handles slim scrolling contents 
+            handleScrollers(); // handles slim scrolling contents
             handleFancybox(); // handle fancy box
             handleSelect2(); // handle custom Select2 dropdowns
             handlePortletTools(); // handles portlet action bar functionality(refresh, configure, toggle, remove)
@@ -343,7 +343,7 @@ var Metronic = function () {
             handleTabs(); // handle tabs
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
-            handleAccordions(); //handles accordions 
+            handleAccordions(); //handles accordions
             handleModals(); // handle modals
 
             // Hacks
@@ -352,17 +352,17 @@ var Metronic = function () {
 
         //main function to initiate core javascript after ajax complete
         initAjax: function () {
-            handleScrollers(); // handles slim scrolling contents 
+            handleScrollers(); // handles slim scrolling contents
             handleSelect2(); // handle custom Select2 dropdowns
             handleDropdowns(); // handle dropdowns
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
-            handleAccordions(); //handles accordions 
-            handleUniform(); // hanfle custom radio & checkboxes     
+            handleAccordions(); //handles accordions
+            handleUniform(); // hanfle custom radio & checkboxes
             handleBootstrapSwitch(); // handle bootstrap switch plugin
             handleDropdownHover(); // handles dropdown hover
         },
-        
+
         //public function to remember last opened popover that needs to be closed on click
         setLastPopedPopover: function (el) {
             lastPopedPopover = el;
@@ -375,24 +375,24 @@ var Metronic = function () {
 
         //public functon to call _runresizeHandlers
         runResizeHandlers: function() {
-            _runResizeHandlers();   
+            _runResizeHandlers();
         },
-        
+
         // wrMetronicer function to scroll(focus) to an element
         scrollTo: function (el, offeset) {
             var pos = (el && el.size() > 0) ? el.offset().top : 0;
 
              if (el) {
-                if ($('body').hasClass('page-header-fixed')) { 
-                    pos = pos - $('.page-header').height(); 
-                }            
+                if ($('body').hasClass('page-header-fixed')) {
+                    pos = pos - $('.page-header').height();
+                }
                 pos = pos + (offeset ? offeset : -1 * el.height());
             }
 
             $('html,body').animate({
                 scrollTop: pos
             }, 'slow');
-        }, 
+        },
 
         initSlimScroll: function(el) {
             $(el).each(function () {
@@ -426,8 +426,8 @@ var Metronic = function () {
             $(el).each(function () {
                 if ($(this).attr("data-initialized") === "1") { // destroy existing instance before updating the height
                     $(this).removeAttr("data-initialized");
-                    $(this).removeAttr("style"); 
- 
+                    $(this).removeAttr("style");
+
                     var attrList = {};
 
                     // store the custom attribures so later we will reassign.
@@ -450,14 +450,14 @@ var Metronic = function () {
                     $(this).slimScroll({
                         wrapperClass: ($(this).attr("data-wrapper-class")  ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
                         destroy: true
-                    });  
+                    });
 
-                    var the = $(this);            
-                    
+                    var the = $(this);
+
                     // reassign custom attributes
                     $.each(attrList, function (key, value) {
                         the.attr(key, value);
-                    });      
+                    });
                 }
             });
         },
@@ -475,7 +475,7 @@ var Metronic = function () {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""></div>';
             } else if (options.textOnly) {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
-            } else {    
+            } else {
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '')+'"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
             }
 
@@ -483,7 +483,7 @@ var Metronic = function () {
                 var el = $(options.target);
                 if (el.height() <= ($(window).height())) {
                     options.cenrerY = true;
-                }            
+                }
                 el.block({
                     message: html,
                     baseZ: options.zIndex ? options.zIndex : 1000,
@@ -496,7 +496,7 @@ var Metronic = function () {
                     },
                     overlayCSS: {
                         backgroundColor: options.overlayColor ? options.overlayColor : '#000',
-                        opacity: options.boxed ? 0.05 : 0.1, 
+                        opacity: options.boxed ? 0.05 : 0.1,
                         cursor: 'wait'
                     }
                 });
@@ -515,7 +515,7 @@ var Metronic = function () {
                         cursor: 'wait'
                     }
                 });
-            }            
+            }
         },
 
         // wrMetronicer function to  un-block element(finish loading)
@@ -545,7 +545,7 @@ var Metronic = function () {
 
             options = $.extend(true, {
                 container: "", // alerts parent container(by default placed after the page breadcrumbs)
-                place: "append", // append or prepent in container 
+                place: "append", // append or prepent in container
                 type: 'success',  // alert's type
                 message: "",  // alert's message
                 close: true, // make alert closable
@@ -681,7 +681,7 @@ var Metronic = function () {
 
         getAssetsPath: function () {
             return assetsPath;
-        },    
+        },
 
         setAssetsPath: function(path) {
             assetsPath = path;

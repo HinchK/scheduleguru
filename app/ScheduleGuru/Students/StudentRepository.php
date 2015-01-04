@@ -2,7 +2,6 @@
 
 
 use Illuminate\Support\Str;
-use ScheduleGuru\Student;
 
 class StudentRepository {
 

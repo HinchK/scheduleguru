@@ -2,8 +2,7 @@
 
 @section('content')
 
-    <!-- BEGIN STYLE CUSTOMIZER -->
-    @include('main.partials.stylecustomizer')
+
     <!-- BEGIN PAGE HEADER-->
     <h3 class="page-title">
         TestPrepGurus <small>dashboard & statistics</small>
@@ -90,55 +89,66 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-striped table-bordered table-hover" id="sample_1">
-                        <thead>
-                            <tr>
-                                <th class="table-checkbox">
-                                    <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes"/>
-                                </th>
-                                <th>Summary</th>
-                                <th>Google ID</th>
-                                <th>Is a...</th>
-                                <th>Converted</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($gCals as $cal)
-                                <tr class="odd gradeX">
-                                    <td>
-                                        <input type="checkbox" class="checkboxes" value="1"/>
-                                    </td>
-                                    {{ Form::open(['route' => 'dashboard_primary']) }}
-                                    <td>{{{ $cal['summary'] }}}</td>
-                                    <td>{{{ $cal['id'] }}}</td>
-                                    <td>{{ Form::hidden('cal_id', $cal['id']) }}
-                                        {{ Form::hidden('accessRole', $cal['accessRole']) }}
-                                        {{ Form::hidden('backgroundColor', $cal['backgroundColor']) }}
-                                        {{ Form::hidden('colorId', $cal['colorId']) }}
-                                        {{ Form::hidden('deleted', $cal['deleted']) }}
-                                        {{ Form::hidden('description', $cal['description']) }}
-                                        {{ Form::hidden('etag', $cal['etag']) }}
-                                        {{ Form::hidden('foregroundColor', $cal['foregroundColor']) }}
-                                        {{ Form::hidden('hidden', $cal['hidden']) }}
-                                        {{ Form::hidden('kind', $cal['kind']) }}
-                                        {{ Form::hidden('location', $cal['location']) }}
-                                        {{ Form::hidden('primary', $cal['primary']) }}
-                                        {{ Form::hidden('selected', $cal['selected']) }}
-                                        {{ Form::hidden('summary', $cal['summary']) }}
-                                        {{ Form::hidden('summaryOverride', $cal['summaryOverride']) }}
-                                        {{ Form::hidden('timeZone', $cal['timeZone']) }}
-                                        {{ Form::submit('Tutor',['class' => 'tag btn-warning', 'value' =>'TU', 'name' => 'is a']) }}
-                                        {{ Form::submit('Student',['class' => 'tag btn-primary', 'value' =>'ST', 'name' => 'is a']) }}
-                                        {{ Form::submit('Events',['class' => 'tag btn-default', 'value' =>'ST', 'name' => 'is a']) }}</td>
-                                    {{ Form::close() }}
-                                    <td>
-                                            <span class="label label-sm label-success">
-                                            Approved </span>
-                                    </td>
+                    {{--<div id="site_statistics_loading">--}}
+                    <div id="gcal_import_loading">
+                        {{--<img src="{{ asset('metro/layout/img/loading.gif')}}" alt="loading"/>--}}
+                        {{ HTML::image('metro/layout/img/loading.gif', 'loading', null)  }}
+                    </div>
+                    <div id="gcal_import_content" class="display-none">
+                        <table class="table table-striped table-bordered table-hover" id="gcal_importer">
+                            <thead>
+                                <tr>
+                                    <th class="table-checkbox">
+                                        <input type="checkbox" class="group-checkable" data-set="#gcal_importer .checkboxes"/>
+                                    </th>
+                                    <th>Google Summary</th>
+                                    <th>Is a...</th>
+                                    <th>Converted</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach($gCals as $cal)
+                                    <tr class="odd gradeX">
+                                        <td>
+                                            <input type="checkbox" class="checkboxes" value="1"/>
+                                        </td>
+                                        {{ Form::open(['route' => 'dashboard_primary']) }}
+                                        <td>{{ HTML::link('https://www.google.com/calendar/embed?src=' . urlencode($cal['id']), $cal['summary']) }}
+                                        </td>
+                                        <td>{{ Form::hidden('cal_id', $cal['id']) }}
+                                            {{ Form::hidden('accessRole', $cal['accessRole']) }}
+                                            {{ Form::hidden('backgroundColor', $cal['backgroundColor']) }}
+                                            {{ Form::hidden('colorId', $cal['colorId']) }}
+                                            {{ Form::hidden('deleted', $cal['deleted']) }}
+                                            {{ Form::hidden('description', $cal['description']) }}
+                                            {{ Form::hidden('etag', $cal['etag']) }}
+                                            {{ Form::hidden('foregroundColor', $cal['foregroundColor']) }}
+                                            {{ Form::hidden('hidden', $cal['hidden']) }}
+                                            {{ Form::hidden('kind', $cal['kind']) }}
+                                            {{ Form::hidden('location', $cal['location']) }}
+                                            {{ Form::hidden('primary', $cal['primary']) }}
+                                            {{ Form::hidden('selected', $cal['selected']) }}
+                                            {{ Form::hidden('summary', $cal['summary']) }}
+                                            {{ Form::hidden('summaryOverride', $cal['summaryOverride']) }}
+                                            {{ Form::hidden('timeZone', $cal['timeZone']) }}
+                                            <div class="btn-toolbar margin-bottom-10">
+                                                <div class="btn-group btn-group-sm btn-group-solid">
+                                                    {{ Form::submit('Tutor',['class' => 'btn blue', 'value' =>'TU', 'name' => 'is a']) }}
+                                                    {{ Form::submit('Student',['class' => 'btn red', 'value' =>'ST', 'name' => 'is a']) }}
+                                                    {{ Form::submit('Events',['class' => 'btn green', 'value' =>'ST', 'name' => 'is a']) }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        {{ Form::close() }}
+                                        <td>
+                                                <span class="label label-sm label-success">
+                                                Approved </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <!-- END EXAMPLE TABLE PORTLET-->
@@ -2181,10 +2191,20 @@
 @stop
 @section('scripts')
     {{--<script src="../../assets/admin/pages/scripts/table-managed.js"></script>--}}
+    {{--JS_PLUGINS--}}
+    {{ HTML::script('metro/plugins/select2/select2.min.js') }}
+    {{ HTML::script('metro/plugins/datatables/media/js/jquery.dataTables.min.js') }}
+    {{ HTML::script('metro/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js') }}
+    {{--JS_CUSTOM_SCRIPTS--}}
     {{ HTML::script('metro/pages/scripts/table-managed.js') }}
     <script>
         jQuery(document).ready(function() {
             TableManaged.init();
+            if ($('#gcal_importer').size() != 0) {
+                $('#gcal_import_loading').hide();
+                $('#gcal_import_content').show();
+            }
+
         });
     </script>
 @stop
