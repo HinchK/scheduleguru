@@ -9,14 +9,19 @@ Breadcrumbs::register('students', function($breadcrumbs) {
     $breadcrumbs->push('Students', route('student_management'));
 });
 
-Breadcrumbs::register('category', function($breadcrumbs, $category) {
-    $breadcrumbs->parent('blog');
+//Breadcrumbs::register('category', function($breadcrumbs, $category) {
+//    $breadcrumbs->parent('students');
+//
+//    foreach ($category->ancestors as $ancestor) {
+//        $breadcrumbs->push($ancestor->title, route('category', $ancestor->id));
+//    }
+//
+//    $breadcrumbs->push($category->title, route('category', $category->id));
+//});
 
-    foreach ($category->ancestors as $ancestor) {
-        $breadcrumbs->push($ancestor->title, route('category', $ancestor->id));
-    }
-
-    $breadcrumbs->push($category->title, route('category', $category->id));
+Breadcrumbs::register('studentpage', function($breadcrumbs, $student) {
+    $breadcrumbs->parent('students');
+    $breadcrumbs->push($student->name, route('student_page', $student->url()));
 });
 
 Breadcrumbs::register('page', function($breadcrumbs, $page) {

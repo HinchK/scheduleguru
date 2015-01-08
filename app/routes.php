@@ -163,7 +163,22 @@ Route::group(array('prefix' => 'guru', 'before' => 'auth'), function() {
     ]);
     Route::resource('google_calendars', 'GoogleCalendarsController');
 });
+Route::group(array('prefix' => 'student', 'before' => 'auth'), function() {
 
+    Route::get('{studentSlug}',[
+        'as' => 'student_page',
+        'uses' => 'StudentsController@studentPage'
+
+    ]);
+
+    Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
+
+    Route::post('svc/convert', [
+        'as' => 'convert_package_sessions',
+        'uses' => 'StudentsController@postCreatePackageSessions'
+    ]);
+
+});
 Route::group(array('prefix' => 'dash', 'before' => 'auth'), function() {
 
     Route::get('/', [
@@ -181,14 +196,7 @@ Route::group(array('prefix' => 'dash', 'before' => 'auth'), function() {
         'uses' => 'StudentsController@manage'
     ]);
 
-    Route::get('{studentSlug}', 'StudentsController@studentPage');
 
-    Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
-
-    Route::post('svc/convert', [
-        'as' => 'convert_package_sessions',
-        'uses' => 'StudentsController@postCreatePackageSessions'
-    ]);
 
     Route::get('tutors', [
         'as' => 'tutor_management',

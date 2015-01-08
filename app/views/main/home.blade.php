@@ -2165,6 +2165,13 @@
 @section('scripts')
     {{--<script src="../../assets/admin/pages/scripts/table-managed.js"></script>--}}
     {{--JS_PLUGINS--}}
+    {{ HTML::script('metro/plugins/jqvmap/jqvmap/jquery.vmap.js') }}
+    {{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js') }}
+    {{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js') }}
+    {{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js') }}
+    {{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js') }}
+    {{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js') }}
+    {{ HTML::script('metro/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js') }}
     {{ HTML::script('metro/plugins/select2/select2.min.js') }}
     {{ HTML::script('metro/plugins/datatables/media/js/jquery.dataTables.min.js') }}
     {{ HTML::script('metro/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js') }}
@@ -2173,6 +2180,12 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged.init();
+            Index.initJQVMAP(); // init index page's custom scripts
+            Index.initCharts(); // init index page's custom scripts
+            Index.initChat();
+            Index.initMiniCharts();
+            Index.initIntro();
+            Tasks.initDashboardWidget();
             if ($('#gcal_importer').size() != 0) {
                 $('#gcal_import_loading').hide();
                 $('#gcal_import_content').show();

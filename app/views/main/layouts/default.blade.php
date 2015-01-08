@@ -75,7 +75,7 @@ Metronic Version: 3.1.3
 <!-- CONTAINER -->
 <div class="page-container">
 
-    @include('main.partials.sidebar')
+    @include('main.slice.sidebar')
 
 
     <div class="page-content-wrapper">
@@ -93,7 +93,7 @@ Metronic Version: 3.1.3
             {{-- BREADCRUMB ROUTES --}}
             <div class="page-bar">
 
-                    @yield('breadcrumbs')
+            @yield('breadcrumbs')
 
             </div>
 
@@ -105,21 +105,12 @@ Metronic Version: 3.1.3
     <!-- QUICK SIDEBAR -->
     <a href="javascript:;" class="page-quick-sidebar-toggler"><i class="icon-close"></i></a>
 
-    @include('main.partials.quickside')
+    @include('main.slice.quickside')
 
 </div>
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->
-<div class="page-footer">
-    <div class="page-footer-inner">
-        2015 &copy; ScheduleGuru by Studio H Skunkworks.
-    </div>
-    <div class="page-footer-tools">
-		<span class="go-top">
-		<i class="fa fa-angle-up"></i>
-		</span>
-    </div>
-</div>
+@include('main.slice.footer')
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
@@ -140,13 +131,7 @@ Metronic Version: 3.1.3
 {{ HTML::script('metro/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-{{ HTML::script('metro/plugins/jqvmap/jqvmap/jquery.vmap.js') }}
-{{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js') }}
-{{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js') }}
-{{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js') }}
-{{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js') }}
-{{ HTML::script('metro/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js') }}
-{{ HTML::script('metro/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js') }}
+
 {{ HTML::script('metro/plugins/flot/jquery.flot.min.js') }}
 {{ HTML::script('metro/plugins/flot/jquery.flot.resize.min.js') }}
 {{ HTML::script('metro/plugins/flot/jquery.flot.categories.min.js') }}
@@ -176,13 +161,9 @@ Metronic Version: 3.1.3
         Demo.init(); // init demo features
         Index.init();
         Index.initDashboardDaterange();
-        Index.initJQVMAP(); // init index page's custom scripts
+
         Index.initCalendar(); // init index page's custom scripts
-        Index.initCharts(); // init index page's custom scripts
-        Index.initChat();
-        Index.initMiniCharts();
-        Index.initIntro();
-        Tasks.initDashboardWidget();
+
     });
 </script>
 @yield('scripts')

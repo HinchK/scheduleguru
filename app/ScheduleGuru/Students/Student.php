@@ -20,7 +20,8 @@ class Student extends \Eloquent {
      */
     public function url()
     {
-        return URL::to('guru/' . $this->slug);
+//        return URL::to('guru/' . $this->slug);
+        return URL::to('student/' . $this->slug);
     }
 
     public function convertpkgURL()

@@ -1,4 +1,6 @@
-@extends('site.layouts.gurubase')
+@extends('main.layouts.default')
+@section('breadcrumbs', Breadcrumbs::render('studentpage', $student))
+@stop
 
 {{-- Web site Title --}}
 @section('title')

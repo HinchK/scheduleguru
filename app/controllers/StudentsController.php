@@ -103,8 +103,8 @@ class StudentsController extends \BaseController {
             \Debugbar::info('NO PACKAGEID FOR STUDENT');
         }
 
-
-        return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
+        return View::make('students.student', compact('student','events','convertedTPGevents'));
+//        return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
     }
 
     /**

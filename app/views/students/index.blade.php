@@ -3,125 +3,65 @@
 @stop
 
 @section('content')
+    @include('main.partials.statheader')
 
-    <!--Start Dashboard 1-->
-    <div id="dashboard-header" class="row">
-        <div class="col-xs-12 col-sm-4 col-md-5">
-            <h3>Dashboard Setup</h3><small>Student Management</small>
+    <div class="clearfix">
+    </div>
 
-        </div>
-        <div class="clearfix visible-xs"></div>
-        <div class="col-xs-12 col-sm-8 col-md-7 pull-right">
-            <div class="row">
-                <div class="col-xs-4">
-                    <a href="/guru/tutors" class="btn btn-success btn-lg">
-                    <i class="fa fa-user"> </i> Tutors: {{ count($tutorCals) }}
-                    </a>
-                </div>
-                <div class="col-xs-4">
-                    <a href="/guru/students" class="btn btn-success btn-lg">
-                    <i class="fa fa-pencil"> </i> Students: {{ count($studentCals) }}
-                    </a>
-                </div>
-                <div class="col-xs-4">
-                    <div class="sparkline-dashboard" id="sparkline-3"></div>
-                    <div class="sparkline-dashboard-info">
-                        <i class="fa fa-usd"></i>107.83M
-                        <span>Appointments</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
-        <br/><br/>
-        <div class="col-xs-12 col-sm-4">
-            <h4>{{ link_to_route('student_management', 'Student Management') }}</h4>
-        </div>
-        <div class="col-xs-12 col-sm-4">
-            <h4>{{ link_to_route('tutor_management', 'Tutor Management') }}</h4>
-        </div>
-        <div class="col-xs-12 col-sm-4">
-            <h4>{{ link_to_route('event_management', 'Event Management') }}</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <div class="box-name">
-                        <i class="fa fa-table"></i>
-                        <span>Students</span>
+        <div class="col-md-6">
+            <div class="portlet box purple">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-comments"></i>Striped Table
                     </div>
-                    <div class="box-icons">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="expand-link">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                        <a href="javascript:;" class="reload"></a>
+                        <a href="javascript:;" class="remove"></a>
                     </div>
-                    <div class="no-move"></div>
                 </div>
-                <div class="box-content no-padding">
-                    <div class="bs-callout">
-                        <button class="close" data-dismiss="alert">&times;</button>
-                        <h4>Student Management</h4>
-                        <p>The list of current active students</p>
-                    </div>
-                    <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
-                        <thead>
-                            <tr>
-                                <th>Student Name</th>
-                                <th>Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <div class="portlet-body">
+                    <div class="table-scrollable">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             @foreach($students as $student)
-                            <tr>
-                                <td><a href="{{{ $student->url() }}}">{{ $student->student_id}}</a></td>
-                                <td>{{ date($student->created_at) }}</td>
-                            </tr>
+                                <tr>
+                                    <td><a href="{{{ $student->url() }}}">{{ $student->student_id}}</a></td>
+                                    <td>{{ date($student->created_at) }}</td>
+                                </tr>
                             @endforeach
-                        </tbody>
-                    </table>
+                            </tbody>
+
+                         </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <div class="box-name">
-                        <i class="fa fa-table"></i>
-                        <span>Student-Calendars</span>
+         </div>
+        <div class="col-md-6">
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-comments"></i>Student-Calendars
                     </div>
-                    <div class="box-icons">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="expand-link">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                        <a href="javascript:;" class="reload"></a>
+                        <a href="javascript:;" class="remove"></a>
                     </div>
-                    <div class="no-move"></div>
                 </div>
-                <div class="box-content no-padding">
-                    <div class="bs-callout">
-                        <button class="close" data-dismiss="alert">&times;</button>
-                        <h4>Student Calendar Management</h4>
-                        <p><code>.table-striped</code>, <code>.table-bordered</code>, <code>.table-hover</code> and <code>.table-heading</code></p>
-                        <p>The list of current active students</p>
-                    </div>
-                    <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
-                        <thead>
+                <div class="portlet-body">
+                    <div class="table-scrollable">
+                        <table class="table table-striped table-hover">
+                            <thead>
                             <tr>
                                 <th>Summary</th>
                                 <th>Description</th>
@@ -129,79 +69,41 @@
                                 <th>Calendar Link</th>
                                 <th>Profile Status</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             @foreach($studentCals as $scal)
-                            <tr>
-                                <td>{{ $scal->summary }}</td>
-                                <td>{{ $scal->description }}</td>
-                                <td>{{ $scal->etag }}</td>
-                                <td><a href="{{ $scal->cal_id }}">Cal Link</a></td>
-                                <td>STATUS - TODO</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $scal->summary }}</td>
+                                    <td>{{ $scal->description }}</td>
+                                    <td>{{ $scal->etag }}</td>
+                                    <td><a href="{{ $scal->cal_id }}">Cal Link</a></td>
+                                    <td>STATUS - TODO</td>
+                                </tr>
                             @endforeach
-                            <tr class="active">
-                                <td>class</td>
-                                <td><code>active</code></td>
-                                <td>to</td>
-                                <td>color</td>
-                                <td>row</td>
-                            </tr>
-                            <tr class="primary">
-                                <td>class</td>
-                                <td><code>primary</code></td>
-                                <td>to</td>
-                                <td>color</td>
-                                <td>row</td>
-                            </tr>
-                            <tr class="success">
-                                <td>class</td>
-                                <td><code>success</code></td>
-                                <td>to</td>
-                                <td>color</td>
-                                <td>row</td>
-                            </tr>
-                            <tr class="info">
-                                <td>class</td>
-                                <td><code>info</code></td>
-                                <td>to</td>
-                                <td>color</td>
-                                <td>row</td>
-                            </tr>
-                            <tr class="warning">
-                                <td>class</td>
-                                <td><code>warning</code></td>
-                                <td>to</td>
-                                <td>color</td>
-                                <td>row</td>
-                            </tr>
-                            <tr class="danger">
-                                <td>class</td>
-                                <td><code>danger</code></td>
-                                <td>to</td>
-                                <td>color</td>
-                                <td>row</td>
-                            </tr>
-                            <tr>
-                                <td class="active"><code>active</code> class to color cell</td>
-                                <td class="success"><code>success</code> class to color cell</td>
-                                <td class="info"><code>info</code> class to color cell</td>
-                                <td class="warning"><code>warning</code> class to color cell</td>
-                                <td class="danger"><code>danger</code> class to color cell</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @stop
-
 @section('scripts')
-    <script type="text/javascript">
-    $(document).ready(function() {
-        // Drag-n-Drop feature
-        WinMove();
-    });
+    {{--<script src="../../assets/admin/pages/scripts/table-managed.js"></script>--}}
+    {{--JS_PLUGINS--}}
+    {{ HTML::script('metro/plugins/select2/select2.min.js') }}
+    {{ HTML::script('metro/plugins/datatables/media/js/jquery.dataTables.min.js') }}
+    {{ HTML::script('metro/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js') }}
+    {{--JS_CUSTOM_SCRIPTS--}}
+    {{ HTML::script('metro/pages/scripts/table-managed.js') }}
+    <script>
+        jQuery(document).ready(function() {
+            TableManaged.init();
+            if ($('#gcal_importer').size() != 0) {
+                $('#gcal_import_loading').hide();
+                $('#gcal_import_content').show();
+            }
+
+        });
     </script>
 @stop
