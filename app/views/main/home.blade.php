@@ -1,23 +1,11 @@
 @extends('main.layouts.default')
 
-@section('content')
-    <!-- PAGE HEADER-->
-    <h3 class="page-title">
-        TestPrepGurus <small>dashboard & statistics</small>
-    </h3>
+@section('breadcrumbs', Breadcrumbs::render('home'))
+@stop
 
-    <div class="page-bar">
-        @section('breadcrumbs', Breadcrumbs::render('home'))
-        @yield('breadcrumbs')
-        <div class="page-toolbar">
-            <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height grey-salt" data-placement="top" data-original-title="Change dashboard date range">
-                <i class="icon-calendar"></i>&nbsp; <span class="thin uppercase visible-lg-inline-block"></span>&nbsp; <i class="fa fa-angle-down"></i>
-            </div>
-        </div>
-    </div>
+@section('content')
 
     <!-- DASHBOARD STATS -->
-    {{-- TODO: BREADCRUMB ROUTES--}}
     @include('main.partials.statheader')
     <!-- END DASHBOARD STATS -->
     <div class="clearfix">

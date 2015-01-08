@@ -13,4 +13,14 @@
             @endif
         @endforeach
     </ul>
+    @foreach ($breadcrumbs as $breadcrumb)
+        @if ($breadcrumb->last && $breadcrumb->title == 'home')
+            <div class="page-toolbar">
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height grey-salt" data-placement="top" data-original-title="Change dashboard date range">
+                    <i class="icon-calendar"></i>&nbsp; <span class="thin uppercase visible-lg-inline-block"></span>&nbsp; <i class="fa fa-angle-down"></i>
+                </div>
+            </div>
+        @endif
+    @endforeach
 @endif
+

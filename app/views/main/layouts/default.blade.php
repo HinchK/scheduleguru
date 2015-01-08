@@ -74,19 +74,28 @@ Metronic Version: 3.1.3
 </div>
 <!-- CONTAINER -->
 <div class="page-container">
-     <!--SIDEBAR -->
 
     @include('main.partials.sidebar')
 
-    <!-- BEGIN CONTENT -->
+
     <div class="page-content-wrapper">
         <div class="page-content">
 
-            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM -->
             @include('main.partials.dashconfig')
 
              <!-- BEGIN STYLE CUSTOMIZER -->
             @include('main.partials.stylecustomizer')
+            <!-- PAGE HEADER -->
+            <h3 class="page-title">
+                TestPrepGurus <small>schedule management portal</small>
+            </h3>
+            {{-- BREADCRUMB ROUTES --}}
+            <div class="page-bar">
+
+                    @yield('breadcrumbs')
+
+            </div>
 
             @yield('content')
 

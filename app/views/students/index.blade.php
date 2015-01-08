@@ -1,30 +1,14 @@
 @extends('main.layouts.default')
+@section('breadcrumbs', Breadcrumbs::render('students'))
+@stop
 
 @section('content')
-    <div class="row">
-        <div id="breadcrumb" class="col-xs-12">
-            <a href="#" class="show-sidebar">
-                <i class="fa fa-bars"></i>
-            </a>
-            <ol class="breadcrumb pull-left">
-                <li>{{ link_to_route('dashboard_primary', 'Dashboard') }}</li>
-                <li>{{ link_to_route('dashboard_primary', 'Setup') }}</li>
-                <li><a href="#">Student Management</a></li>
-            </ol>
-            <div id="social" class="pull-right">
-                <a href="#"><i class="fa fa-google-plus"></i></a>
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-linkedin"></i></a>
-                <a href="#"><i class="fa fa-youtube"></i></a>
-            </div>
-        </div>
-    </div>
+
     <!--Start Dashboard 1-->
     <div id="dashboard-header" class="row">
         <div class="col-xs-12 col-sm-4 col-md-5">
-            <h3>Dashboard Setup</h3>
-            <h4>Student Management</h4>
+            <h3>Dashboard Setup</h3><small>Student Management</small>
+
         </div>
         <div class="clearfix visible-xs"></div>
         <div class="col-xs-12 col-sm-8 col-md-7 pull-right">
