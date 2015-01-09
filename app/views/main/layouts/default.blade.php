@@ -72,35 +72,29 @@ Metronic Version: 3.1.3
 
 <div class="clearfix">
 </div>
+
+
+@include('main.partials.dashconfig')
 <!-- CONTAINER -->
 <div class="page-container">
-
     @include('main.slice.sidebar')
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                @include('main.partials.stylecustomizer')
+                <h3 class="page-title">
+                    TestPrepGurus <small>schedule management portal</small>
+                </h3>
+                {{-- BREADCRUMB ROUTES --}}
+                <div class="page-bar">
 
+                @yield('breadcrumbs')
 
-    <div class="page-content-wrapper">
-        <div class="page-content">
+                </div>
 
-            <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM -->
-            @include('main.partials.dashconfig')
-
-             <!-- BEGIN STYLE CUSTOMIZER -->
-            @include('main.partials.stylecustomizer')
-            <!-- PAGE HEADER -->
-            <h3 class="page-title">
-                TestPrepGurus <small>schedule management portal</small>
-            </h3>
-            {{-- BREADCRUMB ROUTES --}}
-            <div class="page-bar">
-
-            @yield('breadcrumbs')
+                @yield('content')
 
             </div>
-
-            @yield('content')
-
         </div>
-    </div>
     <!-- END CONTENT -->
     <!-- QUICK SIDEBAR -->
     <a href="javascript:;" class="page-quick-sidebar-toggler"><i class="icon-close"></i></a>
@@ -162,7 +156,7 @@ Metronic Version: 3.1.3
         Index.init();
         Index.initDashboardDaterange();
 
-        Index.initCalendar(); // init index page's custom scripts
+
 
     });
 </script>

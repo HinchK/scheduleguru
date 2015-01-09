@@ -10,132 +10,158 @@
 
 
 @section('content')
-    <script type="text/css" src="{{ asset('devoops/plugins/fullcalendar/fullcalendar.css') }}"></script>
-
+    <div class="clearfix"></div>
+    @if(!$convertedTPGevents)
+        <h4>This student has loose events, would you like to create a TPG-Package for them?</h4>
+        <a href="{{{ $student->convertpkgURL()  }}}"><p>convert to package</p></a>
+    @endif
+    <h3>{{ $student->student_id }}</h3>
+    <p>FullCal--CalendarID: {{ $student->calendarId }}</p>
+    <p>FullCal--GoogleAPIKey: {{ getenv('GOOG_PUB_KEY') }}</p>
     <div class="row">
-        <div id="breadcrumb" class="col-xs-12">
-            <a href="#" class="show-sidebar">
-                <i class="fa fa-bars"></i>
-            </a>
-            <ol class="breadcrumb pull-left">
-                <li>{{ link_to_route('student_management', 'Students') }}</li>
-                <li><a href="#">Student Management</a></li>
-            </ol>
-            <div id="social" class="pull-right">
-                <a href="#"><i class="fa fa-google-plus"></i></a>
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-linkedin"></i></a>
-                <a href="#"><i class="fa fa-youtube"></i></a>
-            </div>
-        </div>
-    </div>
-    <!--Start Dashboard 1-->
-    <div id="dashboard-header" class="row">
-        <div class="col-xs-12 col-sm-4 col-md-5">
-            <h3>{{ $student->student_id }}</h3>
-            <p>FullCal--CalendarID: {{ $student->calendarId }}</p>
-            <p>FullCal--GoogleAPIKey: {{ getenv('GOOG_PUB_KEY') }}</p>
-        </div>
-        <div class="clearfix visible-xs"></div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <div class="box-name">
-                        <i class="fa fa-table"></i>
-                        <span>Tutoring Package for {{ $student->name }}</span>
+        <div class="col-md-6 col-sm-6">
+           <!--Calendar Box-->`
+            <div class="portlet box blue-madison calendar">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-calendar"></i>Calendar for {{{ $student->name }}}
                     </div>
-                    <div class="box-icons">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="expand-link">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+                </div>
+                <div class="portlet-body light-grey">
+                    <div id="calendar">
                     </div>
-                    <div class="no-move"></div>
-                </div>
-                <div class="box-content">
-
-                @if(!$convertedTPGevents)
-                    <h4>This student has loose events, would you like to create a TPG-Package for them?</h4>
-                    <a href="{{{ $student->convertpkgURL()  }}}"><p>convert to package</p></a>
-                @endif
-
-                @if (count($events))
-                    <h3>found {{ count($events)  }} events</h3>
-                    <ul>
-                    @foreach ($events as $event)
-                        @if($event->status != 'cancelled')
-                            <li>{{ $event->status }}|{{{  Carbon::parse($event->getStart()->dateTime,$event->getStart()->timeZone)->toDayDateTimeString() }}}: <a href="{{ $event->htmlLink }}">{{ $event->getSummary() }}</a></li>
-                        @endif
-                    @endforeach
-                    </ul>
-                @endif
-
                 </div>
             </div>
         </div>
+        @if (count($events))
+            <div class="col-md-6 col-sm-6">
+                <div class="portlet box green-haze tasks-widget">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-check"></i>found {{ count($events)  }} events
+                        </div>
+                        <div class="tools">
+                            <a href="#portlet-config" data-toggle="modal" class="config">
+                            </a>
+                            <a href="" class="reload">
+                            </a>
+                        </div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn btn-default btn-sm" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    More <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a href="#">
+                                            <i class="i"></i> All Project </a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            AirAsia </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Cruise </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            HSBC </a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Pending <span class="badge badge-danger">
+                                                4 </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Completed <span class="badge badge-success">
+                                                12 </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Overdue <span class="badge badge-warning">
+                                                9 </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="task-content">
+                            <div class="scroller" style="height: 305px;" data-always-visible="1" data-rail-visible1="1">
+                                <ul class="task-list">
+                                    @foreach ($events as $event)
+                                        @if($event->status != 'cancelled')
+                                            <li><div class="task-checkbox">
+                                                    <input type="hidden" value="1" name="test"/>
+                                                    <input type="checkbox" class="liChild" value="2" name="test"/>
+                                                </div>
+                                                <div class="task-title">
+                                                    <span class="task-title-sp">{{ $event->status }}|<a href="{{ $event->htmlLink }}">{{ $event->getSummary() }}</a>
+                                            </span>
+                                                    <span class="label label-sm label-success">
+                                                        {{{  Carbon::parse($event->getStart()->dateTime,$event->getStart()->timeZone)->toDayDateTimeString() }}}
+                                                    </span>
+                                                    <span class="task-bell">
+                                                        <i class="fa fa-bell-o"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="task-config">
+                                                    <div class="task-config-btn btn-group">
+                                                        <a class="btn btn-xs default" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                                            <i class="fa fa-cog"></i><i class="fa fa-angle-down"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="#">
+                                                                    <i class="fa fa-check"></i> Complete </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <i class="fa fa-pencil"></i> Edit </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <i class="fa fa-trash-o"></i> Cancel </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                                <!-- END START TASK LIST -->
+                            </div>
+                        </div>
+                        <div class="task-footer">
+                            <div class="btn-arrow-link pull-right">
+                                <a href="#">See All Records</a>
+                                <i class="icon-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
-
-    <div class="row full-calendar">
-        <div class="col-sm-3">
-            <div id="add-new-event">
-                <h4 class="page-header">Add new event</h4>
-                <div class="form-group">
-                    <label>Event title</label>
-                    <input type="text" id="new-event-title" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Event description</label>
-                    <textarea class="form-control" id="new-event-desc" rows="3"></textarea>
-                </div>
-                <a href="#" id="new-event-add" class="btn btn-primary pull-right">Add event</a>
-                <div class="clearfix"></div>
-            </div>
-            <div id="external-events">
-                <h4 class="page-header" id="events-templates-header">Draggable Events</h4>
-                <div class="external-event">Work time</div>
-                <div class="external-event">Conference</div>
-                <div class="external-event">Meeting</div>
-                <div class="external-event">Restaurant</div>
-                <div class="external-event">Launch</div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="drop-remove"> remove after drop
-                        <i class="fa fa-square-o small"></i>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-9">
-            <div id="calendar"></div>
-        </div>
-    </div>
-
 @stop
 
 @section('scripts')
-    <script src="{{ asset('devoops/plugins/fullcalendar/lib/moment.min.js') }}"></script>
-    <script src="{{ asset('devoops/plugins/fullcalendar/lib/jquery.min.js') }}"></script>
-    <script src="{{ asset('devoops/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('devoops/plugins/fullcalendar/fullcalendar.js') }}"></script>
-    <script  src="{{ asset('devoops/plugins/fullcalendar/gcal.js') }}"></script>
+    {{ HTML::script('metro/kjs/gcal.js') }}
+    {{ HTML::script('metro/kjs/gfullcal.js') }}
     <script type="text/javascript">
         $(document).ready(function() {
-            // Set Block Height
-            SetMinBlockHeight($('#calendar'));
             // Create Calendar
-            DrawGoogleFullCal('{{ $student->calendarId  }}');
-            //Devoops handy cal draw piece
-    //        DrawFullCalendar();
-            // Drag-n-Drop feature
-            WinMove();
+            HalfFullCal('{{ $student->calendarId  }}');
         });
     </script>
 @parent

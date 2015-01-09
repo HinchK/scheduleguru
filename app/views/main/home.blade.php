@@ -2186,6 +2186,7 @@
             Index.initMiniCharts();
             Index.initIntro();
             Tasks.initDashboardWidget();
+            Index.initCalendar(); // init index page's custom scripts
             if ($('#gcal_importer').size() != 0) {
                 $('#gcal_import_loading').hide();
                 $('#gcal_import_content').show();
