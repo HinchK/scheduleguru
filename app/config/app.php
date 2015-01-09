@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 //	TODO: change TZ to 'America/Los_Angeles'
-	'timezone' => 'UTC',
+    'timezone' => 'America/Los_Angeles',
 
 	/*
 	|--------------------------------------------------------------------------
