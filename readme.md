@@ -1,6 +1,10 @@
 #scheduleGuru: a unique business problem that is not spiraling out of control
 
-this is what happens when you decide to slow-cook a interesting new project with some spiceyness by throwing in a dash of learning a new framework. 'hey, you haven't used php since 5.2 but laravel seems pretty cool - lets do this!'
+this is what i tell myself "everything's fine - don't worry about those features creeping in from everywhere.  totes-magotes!"
+
+##Laravel is to blame
+
+"hey, you haven't used php since 5.2 but laravel is all the rage on the streets - lets do this!"
 
 aaaaaand...
 i have
@@ -12,7 +16,7 @@ i have
 
 if i knew where he lived, i'd probably toiletpaper andrewelkins's house for keeping the fire going on  [laravel4-starter-kit](https://github.com/andrewelkins/laravel4-starter-kit)
 
-IMHO [laracasts](https://laracasts.com) are way too helpful; IMHO jeff way and the pillars of the hand in laravel are genuinely changing the game for php.
+IMHO [laracasts](https://laracasts.com) are simply amazing. IMHO jeff, taylor, and the merry bands of laravel evangelists are genuinely changing the game for php
 
 
 ## Features
