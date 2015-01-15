@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/HinchK/scheduleguru.png?label=ready&title=Ready)](https://waffle.io/HinchK/scheduleguru)
 #scheduleGuru: a unique business problem that is not spiraling out of control
 
 this is what i tell myself "everything's fine - don't worry about those features creeping in from everywhere.  totes-magotes!"
