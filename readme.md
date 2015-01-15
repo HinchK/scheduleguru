@@ -22,6 +22,6 @@ IMHO [laracasts](https://laracasts.com) are simply amazing. IMHO jeff, taylor, a
 
 ## Features
 
-* more
-* to
-* come
+* lots
+* of
+* sarcasm
