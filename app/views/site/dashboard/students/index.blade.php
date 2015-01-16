@@ -1,4 +1,9 @@
 @extends('site.layouts.gurubase')
+{{-- Web site Title --}}
+@section('title')
+    @parent
+    |  Student Index
+@stop
 
 @section('content')
     <div class="row">

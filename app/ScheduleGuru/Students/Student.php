@@ -12,7 +12,7 @@ class Student extends \Eloquent {
 
     public function tutoringSessions()
     {
-        return $this->hasMany('ScheduledSession');
+        return $this->hasMany('ScheduledTutorSession');
     }
 
     /**
@@ -20,7 +20,8 @@ class Student extends \Eloquent {
      */
     public function url()
     {
-        return URL::to('guru/' . $this->slug);
+//        return URL::to('guru/' . $this->slug);
+        return URL::to('student/' . $this->slug);
     }
 
     public function convertpkgURL()

@@ -2,11 +2,10 @@
 
 
 use Illuminate\Support\Str;
-use ScheduleGuru\Student;
 
 class StudentRepository {
 
-    public  function buildEventSessionConversionArray($events, $student)
+    public function buildEventSessionConversionArray($events, $student)
     {
         $tutoringPackageEvents =  $this->buildTutoringPackageEvents($events);
 
@@ -118,4 +117,4 @@ class StudentRepository {
 
         return $newStudent;
     }
-} 
+}

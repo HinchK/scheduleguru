@@ -36,6 +36,9 @@ app/config/packages/atticmedia/anvard/hybridauth.php
 *.png
 *.img
 *.yaml
+*.jpg
+*.gif
+*.svg
 
 
 frznNodeAdmin_composer.json
@@ -51,3 +54,6 @@ public/bs_dtp
 public/devoops/plugins
 
 public/.htaccess
+
+public/assets/admin/layout/img
+public/metro/layout/img

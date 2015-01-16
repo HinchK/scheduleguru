@@ -88,6 +88,7 @@
                                 <th>Summary</th>
                                 <th>Google ID</th>
                                 <th>Is a...</th>
+                                <th>Converted</th>
                             </tr>
                         </thead>
                         <tbody>

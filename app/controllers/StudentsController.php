@@ -3,6 +3,7 @@
 use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
+use ScheduleGuru\Events\TutorSessionEventRepository;
 use ScheduleGuru\Students\Student;
 use ScheduleGuru\Students\StudentRepository;
 
@@ -10,16 +11,29 @@ class StudentsController extends \BaseController {
 
     protected $studentRepository;
 
+    protected $tutorSessionRepository;
+
     protected $student;
 
-    function __construct(StudentRepository $studentRepository, Student $student, CalendarRepository $calendarRepository)
+    /**
+     * @param StudentRepository $studentRepository
+     * @param Student $student
+     * @param CalendarRepository $calendarRepository
+     * @param TutorSessionEventRepository $tutorSessionRepository
+     */
+    function __construct(StudentRepository $studentRepository, Student $student, CalendarRepository $calendarRepository, TutorSessionEventRepository $tutorSessionRepository)
     {
         parent::__construct();
         $this->calendarRepository = $calendarRepository;
         $this->studentRepository = $studentRepository;
         $this->student = $student;
+        $this->tutorSessionRepository = $tutorSessionRepository;
     }
 
+    /**
+     * @param $studentslug
+     * @return \Illuminate\View\View|void
+     */
     public function convertEventsToPackage($studentslug)
     {
         $student = $this->student->where('slug', '=', $studentslug)->first();
@@ -37,14 +51,22 @@ class StudentsController extends \BaseController {
         return View::make('site.dashboard.students.convertpkg', compact('scheduledSessions', 'student'));
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postCreatePackageSessions()
     {
-        $tutoringEvents = Input::all();
 
-        \Debugbar::info('StudentController.postCreatePackageSessions:');
-        \Debugbar::info($tutoringEvents);
+        $tutoringEvents = Input::get('eventsJSON');
+        $events = json_decode($tutoringEvents);
+        $studentID =  $events->pkgStudentId;
+        $package =  $this->tutorSessionRepository->convertExistingEventsToPackage($events, $studentID);
 
-        return Redirect::back();
+        $slug = $this->student->findOrFail($studentID)->slug;
+        Session::put('package_id',$package->id);
+
+
+        return Redirect::action('StudentsController@studentPage', $slug)->with(['package_id' => $package->id]);
     }
 
     /**
@@ -70,17 +92,24 @@ class StudentsController extends \BaseController {
             return Googlavel::logout('/');
         }
 
-        if($student->packageid){
-            \Debugbar::info($student->packageid);
+        //TODO: NEEDS TO CHECK IF STUDENT HAS PKG, NOT IF PKG
+//        if($student->packageid){
+        if(Session::has('package_id')){
+            $convertedTPGevents = Session::get('package_id');
+            \Debugbar::info('PACKAGE!!!!!!');
+            \Debugbar::info($convertedTPGevents);
         }else{
             $convertedTPGevents = false;
             \Debugbar::info('NO PACKAGEID FOR STUDENT');
         }
 
-
-        return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
+        return View::make('students.student', compact('student','events','convertedTPGevents'));
+//        return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function manage()
     {
         $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
@@ -90,7 +119,8 @@ class StudentsController extends \BaseController {
         \Debugbar::info('Student cals Eloquent grab:');
         \Debugbar::info($studentCals);
 
-        return View::make('site.dashboard.students.index', compact('studentCals', 'tutorCals', 'students'));
+//OLD   return View::make('site.dashboard.students.index', compact('studentCals', 'tutorCals', 'students'));
+        return View::make('students.index', compact('studentCals', 'tutorCals', 'students'));
     }
 
 }

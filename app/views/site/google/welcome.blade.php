@@ -1,4 +1,6 @@
 @extends('site.layouts.kickoff')
+
+{{--TODO: REORG LOGIN/AUTH PROCESS--}}
 @section('styles')
 @parent
     <style>
