@@ -1,4 +1,4 @@
-@extends('main.layouts.default')
+@extends('layouts.default')
 
 @section('breadcrumbs', Breadcrumbs::render('home'))
 @stop
@@ -6,7 +6,7 @@
 @section('content')
 
     <!-- DASHBOARD STATS -->
-    @include('main.partials.statheader')
+    @include('partials.statheader')
     <!-- END DASHBOARD STATS -->
     <div class="clearfix">
     </div>

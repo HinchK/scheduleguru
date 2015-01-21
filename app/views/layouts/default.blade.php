@@ -68,19 +68,19 @@ Metronic Version: 3.1.3
 <!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
 <body class="page-header-fixed page-quick-sidebar-over-content">
 <!-- HEADER -->
-@include('main.partials.header')
+@include('partials.header')
 
 <div class="clearfix">
 </div>
 
 
-@include('main.partials.dashconfig')
+@include('partials.dashconfig')
 <!-- CONTAINER -->
 <div class="page-container">
-    @include('main.slice.sidebar')
+    @include('sidebar')
         <div class="page-content-wrapper">
             <div class="page-content">
-                @include('main.partials.stylecustomizer')
+                @include('partials.stylecustomizer')
                 <h3 class="page-title">
                     TestPrepGurus <small>schedule management portal</small>
                 </h3>
@@ -99,12 +99,12 @@ Metronic Version: 3.1.3
     <!-- QUICK SIDEBAR -->
     <a href="javascript:;" class="page-quick-sidebar-toggler"><i class="icon-close"></i></a>
 
-    @include('main.slice.quickside')
+    @include('quickside')
 
 </div>
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->
-@include('main.slice.footer')
+@include('footer')
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->

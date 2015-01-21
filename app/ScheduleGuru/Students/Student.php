@@ -26,7 +26,8 @@ class Student extends \Eloquent {
 
     public function convertpkgURL()
     {
-        return URL::to('guru/' . $this->slug . '/convert-events');
+//        return URL::to('guru/' . $this->slug . '/convert-events');
+        return URL::to('student/' . $this->slug . '/convert-events');
     }
 
 

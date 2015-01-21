@@ -1,4 +1,4 @@
-@extends('main.layouts.default')
+@extends('layouts.default')
 @section('breadcrumbs', Breadcrumbs::render('studentpage', $student))
 @stop
 

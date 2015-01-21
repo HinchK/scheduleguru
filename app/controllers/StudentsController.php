@@ -30,6 +30,8 @@ class StudentsController extends \BaseController {
         $this->tutorSessionRepository = $tutorSessionRepository;
     }
 
+//TODO convertEventsToPackage returns the old view....
+    //
     /**
      * @param $studentslug
      * @return \Illuminate\View\View|void
@@ -48,7 +50,7 @@ class StudentsController extends \BaseController {
         $events = $this->calendarRepository->fetchEvents($student->calendarId);
         $scheduledSessions = $this->studentRepository->buildEventSessionConversionArray($events, $student);
 
-        return View::make('site.dashboard.students.convertpkg', compact('scheduledSessions', 'student'));
+        return View::make('students.convertpkg', compact('scheduledSessions', 'student'));
     }
 
     /**
@@ -62,9 +64,13 @@ class StudentsController extends \BaseController {
         $studentID =  $events->pkgStudentId;
         $package =  $this->tutorSessionRepository->convertExistingEventsToPackage($events, $studentID);
 
+        Debugbar::info("package->id value");
+        Debugbar::info($package->id);
+
         $slug = $this->student->findOrFail($studentID)->slug;
         Session::put('package_id',$package->id);
 
+        Debugbar::info("studentPage");
 
         return Redirect::action('StudentsController@studentPage', $slug)->with(['package_id' => $package->id]);
     }
