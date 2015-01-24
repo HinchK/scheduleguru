@@ -128,18 +128,13 @@
                                 </div>
                             </div>
                         </div>
-
-
                         {{ Form::hidden('events[' . $sessionCount . ']' . '.gcal_status',  $tpgsession['gcal_status']) }}
-
                         {{ Form::hidden('events[' . $sessionCount . ']' . '.gcal_event_ical_id', $tpgsession['gcal_event_ical_id']) }}
                         {{ Form::hidden('events[' . $sessionCount . ']' . '.gcal_event_etag', $tpgsession['gcal_event_etag']) }}
                         {{ Form::hidden('events[' . $sessionCount . ']' . '.gcal_html_link', $tpgsession['gcal_html_link']) }}
                         {{ Form::hidden('events[' . $sessionCount . ']' . '.gcal_event_id', $tpgsession['gcal_event_id']) }}
-
-                        {{--{{{ $tpgsession['summary_raw'] }}}--}}
-
-                    {{-- */$sessionCount++;/* --}}
+                        {{ Form::hidden('events[' . $sessionCount . ']' . '.gcal_summary', $tpgsession['summary_raw']) }}
+                        {{-- */$sessionCount++;/* --}}
                     @endforeach
                     <div class="form-actions">
                         <div class="row">
@@ -162,8 +157,8 @@
 @section('scripts')
 
     {{ HTML::script('metro/plugins/select2/select2.min.js') }}
-    {{ HTML::script('metro/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js') }}
-    {{ HTML::script('metro/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js') }}
+    {{--{{ HTML::script('metro/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js') }}--}}
+    {{--{{ HTML::script('metro/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js') }}--}}
     {{ HTML::script('metro/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}
     {{ HTML::script('metro/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js') }}
     {{ HTML::script('metro/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}

@@ -61,6 +61,8 @@ class StudentsController extends \BaseController {
 
         $tutoringEvents = Input::get('eventsJSON');
         $events = json_decode($tutoringEvents);
+        //Todo: "message=Trying to get property of non-object"
+        //...occuring on a healthy POST
         $studentID =  $events->pkgStudentId;
         $package =  $this->tutorSessionRepository->convertExistingEventsToPackage($events, $studentID);
 
