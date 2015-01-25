@@ -146,8 +146,6 @@ Route::group(array('prefix' => 'dash', 'before' => 'auth'), function() {
         'uses' => 'StudentsController@manage'
     ]);
 
-
-
     Route::get('tutors', [
         'as' => 'tutor_management',
         'uses' => 'TutorsController@manage'
@@ -173,10 +171,10 @@ Route::group(array('prefix' => 'student', 'before' => 'auth'), function() {
 
     Route::get('{studentSlug}/convert-events', 'StudentsController@convertEventsToPackage');
 
-    Route::post('{studentSlug}/convert-events', [
-        'as' => 'convert_package_sessions',
-        'uses' => 'StudentsController@postCreatePackageSessions'
-    ]);
+//    Route::post('{studentSlug}/convert-events', [
+//        'as' => 'convert_package_sessions',
+//        'uses' => 'StudentsController@postCreatePackageSessions'
+//    ]);
 
     Route::post('convert-events', [
         'as' => 'convert_package_sessions',
@@ -204,6 +202,8 @@ Route::get('contact-us', function()
 });
 
 # TODO: all the buillshit below here has gotta go
+
+# todo: also add a better landing page for pre-dash login
 //below is handled in filters.php, can probably go
 
 

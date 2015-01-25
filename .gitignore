@@ -57,3 +57,7 @@ public/.htaccess
 
 public/assets/admin/layout/img
 public/metro/layout/img
+
+node_modules
+
+public/metro

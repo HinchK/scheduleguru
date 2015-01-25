@@ -74,6 +74,7 @@ class StudentsController extends \BaseController {
 
         Debugbar::info("studentPage");
 
+
         return Redirect::action('StudentsController@studentPage', $slug)->with(['package_id' => $package->id]);
     }
 
@@ -101,9 +102,8 @@ class StudentsController extends \BaseController {
         }
 
         //TODO: NEEDS TO CHECK IF STUDENT HAS PKG, NOT IF PKG
-//        if($student->packageid){
-        if(Session::has('package_id')){
-            $convertedTPGevents = Session::get('package_id');
+        if($student->packageid){
+            $convertedTPGevents = $student->packageid;
             \Debugbar::info('PACKAGE!!!!!!');
             \Debugbar::info($convertedTPGevents);
         }else{
@@ -112,7 +112,6 @@ class StudentsController extends \BaseController {
         }
 
         return View::make('students.student', compact('student','events','convertedTPGevents'));
-//        return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
     }
 
     /**
