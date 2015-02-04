@@ -33,12 +33,16 @@ class GoogleCalendarsController extends \BaseController {
             Flash::error('Inactivity timeout, please login again (google_auth_exception)');
             return Googlavel::logout('/');
         }
-        $currentCals = GoogleCalendar::all();
+        //$hintStudents returns 3 arrays in 1 [students, tutors, TAs];
+        $hintMultiArray = $this->calendarRepository->summaryHintAnalysis($gCals);
+        $possStudents = $hintMultiArray[0];
+        $possTutors = $hintMultiArray[1];
+        $possTAs = $hintMultiArray[2];
 
         $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
         $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
-        return View::make('home', compact('gCals','currentCals','studentCals','tutorCals'));
+        return View::make('home', compact('gCals','possStudents','possTutors','possTAs','studentCals','tutorCals'));
 	}
 
     /**

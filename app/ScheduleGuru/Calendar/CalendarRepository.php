@@ -61,4 +61,50 @@ class CalendarRepository {
         }
         return array_values($calarray);
     }
+
+    /**
+     * based on TPG's calendar-summary naming conventions
+     * created panels for batching student/tutor/etc sorting operations
+     * based on the presence of the '*' identifier
+     *
+     * returns 3 arrays in one [students, tutors, TAs]
+     *
+     * @param $googleCals
+     * @return array
+     */
+    public function summaryHintAnalysis($googleCals)
+    {
+        $possibleStudents = [];
+        $possibleTutors = [];
+        $possibleTAs = [];
+
+        $stkey = 0;
+        $tukey = 0;
+        $takey = 0;
+
+        foreach($googleCals as $cal)
+        {
+            $tpg_employee_identifier = "*";
+            $tpg_ta_identifier = "*(";
+            $summary = $cal['summary'];
+            $tpg_check = strpos($summary, $tpg_employee_identifier);
+            $ta_check = strpos($summary, $tpg_ta_identifier);
+
+            if ($tpg_check === false)   //if no "*", might be a student
+            {
+                $possibleStudents[$stkey] = $cal;
+                $stkey++;
+            }elseif ($ta_check !== false)  //looking for "*(TA)"
+            {
+                $possibleTAs[$takey] = $cal;
+                $takey++;
+            }elseif ($tpg_check !== false && $ta_check === false)
+            {
+                $possibleTutors[$tukey] = $cal;
+                $tukey++;
+            }
+
+        }
+        return [$possibleStudents, $possibleTutors, $possibleTAs];
+    }
 }
