@@ -6,6 +6,7 @@ use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
 use ScheduleGuru\Calendar\PostPersonaBuilderCommand;
+use ScheduleGuru\Students\StudentRepository;
 use ScheduleGuru\Tutor;
 
 class GoogleCalendarsController extends \BaseController {
@@ -13,9 +14,12 @@ class GoogleCalendarsController extends \BaseController {
 
     protected $calendarRepository;
 
-    function __construct(CalendarRepository $calendarRepository)
+    protected $studentRepostiory;
+
+    function __construct(CalendarRepository $calendarRepository, StudentRepository $studentRepository)
     {
         $this->calendarRepository = $calendarRepository;
+        $this->studentRepository = $studentRepository;
     }
 
 
@@ -55,6 +59,32 @@ class GoogleCalendarsController extends \BaseController {
 		return View::make('googlecalendars.create');
 	}
 
+    /**
+     * Batch import students
+     *
+     */
+    public function studentImporter()
+    {
+        $incomingCalIDs = Input::all();
+
+        $calDataArray = [];
+        $key = 0;
+
+        //TODO: [CURRENT] MUST ADD TO BOTH GOOGLECALENDAR AND STUDENTS - OR FRONTDASH IS FUBAR
+        foreach($incomingCalIDs as $ids){
+            foreach($ids as $id) {
+
+                $calData = Googlavel::getService('Calendar')->calendarList->get($id);
+                $summary = $calData->getSummary();
+                $newStu = $this->studentRepository->buildStudentProfile($id, $summary);
+                $calDataArray[$key] = $newStu->student_id;
+                $key++;
+            }
+        }
+        Session::put('newStudents', $calDataArray);
+        return Redirect::refresh();
+
+    }
 	/**
 	 * Store a newly created googlecalendar in storage.
 	 *

@@ -2456,8 +2456,19 @@
                     return $(this).val();
                 }
             }).get();
-
             console.log(studentCalIDs);
+
+            var url = '{{ URL::route('student_importer') }}';
+            console.log('url: ' + url);
+
+            $.ajax({
+                url: url,
+                data: {studentCalIDs:studentCalIDs},
+                type: 'post',
+                success: function(response) {
+                    console.log(response);
+                }
+            });
         });
 
         jQuery(document).ready(function() {
