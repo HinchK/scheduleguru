@@ -5,7 +5,7 @@ class Tutor extends \Eloquent {
         'past_students', 'freebusy','message_bag','photo','name',
         'notes','admin_notes','tutor_type','scheduledAppointments'];
 
-    public function student()
+    public function students()
     {
         return $this->belongsToMany('Student');
     }

@@ -13,6 +13,8 @@
     <!-- BEGIN PAGE CONTENT-->
     <div class="row">
         <!-- Main Google Analysis Tool -->
+        <!--TODO:(2) MASS STUDENT IMPORTER-->
+        <!--TODO:(3) MASS TUTOR/TA IMPORTERS-->
         <div class="col-md-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET -->
             <div class="portlet box purple-wisteria">
@@ -36,8 +38,9 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="btn-group">
-                                    <button id="sample_editable_1_new" class="btn green">
-                                        Add New <i class="fa fa-plus"></i>
+                                    {{--<button id="sample_editable_1_new" class="btn green">--}}
+                                    <button id="add_students_btn" class="btn green">
+                                        Add Students <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
@@ -82,7 +85,7 @@
                                 @foreach($possStudents as $cal)
                                     <tr class="odd gradeX">
                                         <td>
-                                            <input type="checkbox" class="checkboxes" value="1"/>
+                                            <input type="checkbox" class="checkboxes" value="{{ $cal['id'] }}"/>
                                         </td>
                                         {{ Form::open(['route' => 'dashboard_primary']) }}
                                         <td>{{ HTML::link('https://www.google.com/calendar/embed?src=' . urlencode($cal['id']), $cal['summary']) }}
@@ -2444,6 +2447,19 @@
     {{--JS_CUSTOM_SCRIPTS--}}
     {{ HTML::script('metro/pages/scripts/table-managed.js') }}
     <script>
+
+
+        $("#add_students_btn").click(function(e){
+            e.preventDefault;
+            var studentCalIDs = $("#student_importer input:checkbox:checked").map(function(){
+                if ($(this).val() !== "on") {
+                    return $(this).val();
+                }
+            }).get();
+
+            console.log(studentCalIDs);
+        });
+
         jQuery(document).ready(function() {
             TableManaged.init();
             Index.initJQVMAP(); // init index page's custom scripts
