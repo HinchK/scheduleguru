@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\URL;
 
 class Student extends \Eloquent {
-	protected $fillable = ['student_id', 'calendarId', 'name', 'slug'];
+	protected $fillable = ['student_id', 'calendarId', 'name', 'slug', 'packageid' ];
 
     public function tutors()
     {
@@ -20,13 +20,13 @@ class Student extends \Eloquent {
      */
     public function url()
     {
-//        return URL::to('guru/' . $this->slug);
         return URL::to('student/' . $this->slug);
     }
 
     public function convertpkgURL()
     {
-        return URL::to('guru/' . $this->slug . '/convert-events');
+//        return URL::to('guru/' . $this->slug . '/convert-events');
+        return URL::to('student/' . $this->slug . '/convert-events');
     }
 
 

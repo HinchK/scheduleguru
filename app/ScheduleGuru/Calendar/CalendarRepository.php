@@ -30,6 +30,12 @@ class CalendarRepository {
         return $eventObjects;
     }
 
+    /**
+     * Build array of Calendars without an Association
+     * (student, tutor, etc)
+     *
+     * @return array|bool
+     */
     public function buildPrimaryCalendarList(){
         $service = Googlavel::getService('Calendar');
         try {
@@ -48,20 +54,11 @@ class CalendarRepository {
             $calarray[$key] = $checkcal;
             foreach($knownCalendars as $knownCals){
                 if($cal->id === $knownCals->cal_id) {
-//                    \Debugbar::info('we have a match here in calendar repo, removing!');
-//                    \Debugbar::info($cal->summary);
                     unset($calarray[$key]);
                 }
-//                }else{
-//                    \Debugbar::info('not a match print to view');
-//                    \Debugbar::info($cal->summary);
-//                }
-
             }
             $key++;
         }
-//        dd(array_values($calarray));
         return array_values($calarray);
-//        return $calendarList;
     }
 }

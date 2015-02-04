@@ -1,9 +1,9 @@
-@extends('main.layouts.default')
+@extends('layouts.default')
 @section('breadcrumbs', Breadcrumbs::render('students'))
 @stop
 
 @section('content')
-    @include('main.partials.statheader')
+    @include('partials.statheader')
 
     <div class="clearfix">
     </div>

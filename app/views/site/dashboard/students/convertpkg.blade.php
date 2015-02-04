@@ -419,18 +419,19 @@
 //                });
 //            });
             $('#process_event_form').on('submit', function() {
-
+                //.....
+                //TODO: show some spinner etc to indicate operation in progress
+                //.....
 
                 var url = $(this).attr('action');
                 console.log('url: '+url);
                 var data = $(this).toObject({mode: 'combine'});
                 $('#jsonTarget').val(JSON.stringify(data));
-                console.log('data:**************************\n');
-                console.log(data);
 
                 $.post( url,
                         JSON.stringify(data),
                         function($response){
+                            //todo: do something with data/response returned by server
                             console.log($response);
                         },
                         'json'
@@ -440,8 +441,8 @@
 
 
             // Create Wysiwig editor for textare
-            TinyMCEStart('#wysiwig_simple', null);
-            //TinyMCEStart('#wysiwig_full', 'extreme');
+            // TinyMCEStart('#wysiwig_simple', null);
+            TinyMCEStart('#wysiwig_full', 'extreme');
             // Add slider for change test input length
             FormLayoutExampleInputLength($( ".slider-style" ));
             // Initialize datepicker

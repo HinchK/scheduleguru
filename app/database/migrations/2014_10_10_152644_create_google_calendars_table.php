@@ -15,7 +15,7 @@ class CreateGoogleCalendarsTable extends Migration {
 		Schema::create('google_calendars', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->text('cal-id');
+			$table->text('cal_id');
 			$table->text('is_a');
 			$table->timestamps();
 		});

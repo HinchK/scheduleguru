@@ -30,6 +30,8 @@ class StudentsController extends \BaseController {
         $this->tutorSessionRepository = $tutorSessionRepository;
     }
 
+//TODO convertEventsToPackage returns the old view....
+    //
     /**
      * @param $studentslug
      * @return \Illuminate\View\View|void
@@ -48,7 +50,7 @@ class StudentsController extends \BaseController {
         $events = $this->calendarRepository->fetchEvents($student->calendarId);
         $scheduledSessions = $this->studentRepository->buildEventSessionConversionArray($events, $student);
 
-        return View::make('site.dashboard.students.convertpkg', compact('scheduledSessions', 'student'));
+        return View::make('students.convertpkg', compact('scheduledSessions', 'student'));
     }
 
     /**
@@ -59,11 +61,18 @@ class StudentsController extends \BaseController {
 
         $tutoringEvents = Input::get('eventsJSON');
         $events = json_decode($tutoringEvents);
+        //Todo: "message=Trying to get property of non-object"
+        //...occuring on a healthy POST
         $studentID =  $events->pkgStudentId;
         $package =  $this->tutorSessionRepository->convertExistingEventsToPackage($events, $studentID);
 
+        Debugbar::info("package->id value");
+        Debugbar::info($package->id);
+
         $slug = $this->student->findOrFail($studentID)->slug;
         Session::put('package_id',$package->id);
+
+        Debugbar::info("studentPage");
 
 
         return Redirect::action('StudentsController@studentPage', $slug)->with(['package_id' => $package->id]);
@@ -93,9 +102,8 @@ class StudentsController extends \BaseController {
         }
 
         //TODO: NEEDS TO CHECK IF STUDENT HAS PKG, NOT IF PKG
-//        if($student->packageid){
-        if(Session::has('package_id')){
-            $convertedTPGevents = Session::get('package_id');
+        if($student->packageid){
+            $convertedTPGevents = $student->packageid;
             \Debugbar::info('PACKAGE!!!!!!');
             \Debugbar::info($convertedTPGevents);
         }else{
@@ -104,7 +112,6 @@ class StudentsController extends \BaseController {
         }
 
         return View::make('students.student', compact('student','events','convertedTPGevents'));
-//        return View::make('site.dashboard.students.student', compact('student','events','convertedTPGevents'));
     }
 
     /**
