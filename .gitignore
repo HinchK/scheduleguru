@@ -61,3 +61,5 @@ public/metro/layout/img
 node_modules
 
 public/metro
+
+public/assets/js/plugins/cal-heatmap
