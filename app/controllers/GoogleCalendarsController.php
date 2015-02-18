@@ -30,6 +30,7 @@ class GoogleCalendarsController extends \BaseController {
 	 */
 	public function index()
 	{
+        //TODO: WORK JUMP POINT - INTEGRATE GCAL FILTER DURING POST OF POSSIBLES->ACTUALS
         $gCals = $this->calendarRepository->buildPrimaryCalendarList();
         //will return false if google auth disconnect
         if( ! $gCals){
@@ -47,16 +48,6 @@ class GoogleCalendarsController extends \BaseController {
         $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
         return View::make('home', compact('gCals','possStudents','possTutors','possTAs','studentCals','tutorCals'));
-	}
-
-    /**
-	 * Show the form for creating a new googlecalendar
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('googlecalendars.create');
 	}
 
     /**
@@ -104,11 +95,22 @@ class GoogleCalendarsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-//        GoogleCalendar::create($data);
-
         return Redirect::refresh();
-//		return Redirect::route('googlecalendars.index');
 	}
+
+// TODO: Below this point is #>php artisan generate::scaffold stuff
+// kept in as a reminder of how hard i zig when like, the man wants me to zag
+// and also for reference/stubs/groudnwork towards TODO: build core new student func
+
+    /**
+     * Show the form for creating a new googlecalendar
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        return View::make('googlecalendars.create');
+    }
 
 	/**
 	 * Display the specified googlecalendar.
@@ -182,6 +184,12 @@ class GoogleCalendarsController extends \BaseController {
 
     }
 
+    /**
+     * Marked for deletion
+     * kept in as fancy datatable reference
+     *
+     * @return mixed
+     */
     public function oldgetdata(){
 
         $users = User::leftjoin('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')

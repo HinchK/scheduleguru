@@ -31,7 +31,8 @@ class CalendarRepository {
     }
 
     /**
-     * Build array of Calendars without an Association
+     * Build array of google Calendars
+     * that have no association within the application
      * (student, tutor, etc)
      *
      * @return array|bool
