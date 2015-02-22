@@ -6,6 +6,7 @@ use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
 use ScheduleGuru\Calendar\PostPersonaBuilderCommand;
+use ScheduleGuru\Students\Student;
 use ScheduleGuru\Students\StudentRepository;
 use ScheduleGuru\Tutor;
 
@@ -30,7 +31,7 @@ class GoogleCalendarsController extends \BaseController {
 	 */
 	public function index()
 	{
-        //TODO: WORK JUMP POINT - INTEGRATE GCAL FILTER DURING POST OF POSSIBLES->ACTUALS
+
         $gCals = $this->calendarRepository->buildPrimaryCalendarList();
         //will return false if google auth disconnect
         if( ! $gCals){
@@ -61,18 +62,22 @@ class GoogleCalendarsController extends \BaseController {
         $calDataArray = [];
         $key = 0;
 
-        //TODO: [CURRENT] MUST ADD TO BOTH GOOGLECALENDAR AND STUDENTS - OR FRONTDASH IS FUBAR
+        //TODO: [20120221] TEST BOTH GOOGLECALENDAR AND STUDENTS - OR FRONTDASH IS FUBAR
         foreach($incomingCalIDs as $ids){
             foreach($ids as $id) {
 
-                $calData = Googlavel::getService('Calendar')->calendarList->get($id);
-                $summary = $calData->getSummary();
-                $newStu = $this->studentRepository->buildStudentProfile($id, $summary);
-                $calDataArray[$key] = $newStu->student_id;
+                $tpgGoogleWorkingCalendar = $this->calendarRepository->fetchCalObjectAttributesAndStore($id, 'Student');
+
+                $newStudent = Student::whereCalendarId($id)->first();  //put in studentRepo
+
+                $calDataArray[$key] = $newStudent->student_id;
                 $key++;
             }
         }
         Session::put('newStudents', $calDataArray);
+
+        //TODO: ALSO NEED TO CLEAN THE POSSIBLE STUDENT LIST PRE-REFRESH
+
         return Redirect::refresh();
 
     }
@@ -81,7 +86,7 @@ class GoogleCalendarsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-    //TODO: EXPAND GOOGLE_CALENDARS DB TO INCLUDE EVERYTHING, BUILD ON BRAH!~
+
 	public function store()
 	{
 		$validator = Validator::make($data = Input::all(), GoogleCalendar::$rules);

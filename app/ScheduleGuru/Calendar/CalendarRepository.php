@@ -63,6 +63,30 @@ class CalendarRepository {
         return array_values($calarray);
     }
 
+    public function fetchCalObjectAttributesAndStore($calendarId, $is_a)
+    {
+        $calObject = Googlavel::getService('Calendar')->calendarList->get($calendarId);
+
+        $tpgWorkingCalendar = GoogleCalendar::post($calendarId, $is_a,
+                                                    $calObject->accessRole,
+                                                    $calObject->backgroundColor,
+                                                    $calObject->colorId,
+                                                    $calObject->deleted,
+                                                    $calObject->description,
+                                                    $calObject->etag,
+                                                    $calObject->foregroundColor,
+                                                    $calObject->hidden,
+                                                    $calObject->kind,
+                                                    $calObject->location,
+                                                    $calObject->primary,
+                                                    $calObject->selected,
+                                                    $calObject->summary,
+                                                    $calObject->summaryOverride,
+                                                    $calObject->timeZone);
+
+        return $tpgWorkingCalendar;
+    }
+
     /**
      * based on TPG's calendar-summary naming conventions
      * created panels for batching student/tutor/etc sorting operations
