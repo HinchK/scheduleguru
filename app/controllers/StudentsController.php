@@ -47,7 +47,7 @@ class StudentsController extends \BaseController {
             // 404 error page.
             return App::abort(404);
         }
-        $events = $this->calendarRepository->fetchEvents($student->calendarId);
+        $events = $this->calendarRepository->fetchEvents($student->calendar_id);
         $scheduledSessions = $this->studentRepository->buildEventSessionConversionArray($events, $student);
 
         return View::make('students.convertpkg', compact('scheduledSessions', 'student'));
@@ -93,7 +93,7 @@ class StudentsController extends \BaseController {
             // 404 error page.
             return App::abort(404);
         }
-        $events = $this->calendarRepository->fetchEvents($student->calendarId);
+        $events = $this->calendarRepository->fetchEvents($student->calendar_id);
 
         if( ! $events){
             Confide::logout();

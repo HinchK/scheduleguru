@@ -19,7 +19,7 @@ class CreateStudentsTable extends Migration {
             $table->increments('id');
             $table->string('student_id')->unique();
             $table->string('email');
-            $table->string('calendarId')->unique();
+            $table->string('calendar_id')->unique();
             $table->text('gmail_message_hits');
             $table->string('photo')->nullable()->default(NULL);
             $table->string('name')->nullable()->default(NULL);

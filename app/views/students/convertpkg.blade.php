@@ -229,7 +229,7 @@
 
         $(document).ready(function() {
 
-            HalfFullCal('{{ $student->calendarId  }}');
+            HalfFullCal('{{ $student->calendar_id  }}');
 
             for(var i = 0; i < {{ count($scheduledSessions) }}; i++) {
                 $('#session_datetime\\['+i+'\\]').datetimepicker();

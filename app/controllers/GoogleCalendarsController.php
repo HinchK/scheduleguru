@@ -48,6 +48,14 @@ class GoogleCalendarsController extends \BaseController {
         $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
         $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
+        if(Session::has('newStudents')){
+            $addedStus = Session::pull('newStudents');
+            \Debugbar::info('new students added');
+            \Debugbar::info($addedStus);
+
+            \Flash::message(implode(',\n', $addedStus));
+        }
+
         return View::make('home', compact('gCals','possStudents','possTutors','possTAs','studentCals','tutorCals'));
 	}
 
@@ -62,7 +70,7 @@ class GoogleCalendarsController extends \BaseController {
         $calDataArray = [];
         $key = 0;
 
-        //TODO: [20120221] TEST BOTH GOOGLECALENDAR AND STUDENTS - OR FRONTDASH IS FUBAR
+        //TODO: [20120222] Brooklyn Boukather-problem [no description, no student?]
         foreach($incomingCalIDs as $ids){
             foreach($ids as $id) {
 
@@ -78,7 +86,10 @@ class GoogleCalendarsController extends \BaseController {
 
         //TODO: ALSO NEED TO CLEAN THE POSSIBLE STUDENT LIST PRE-REFRESH
 
-        return Redirect::refresh();
+        return "Student import complete...";
+
+        //return Redirect::route('dashboard_primary')->with('message', 'Students imported sucessfully!');;
+
 
     }
 	/**

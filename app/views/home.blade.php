@@ -2466,7 +2466,14 @@
                 data: {studentCalIDs:studentCalIDs},
                 type: 'post',
                 success: function(response) {
+
                     console.log(response);
+                    studentTable = $("student_importer").DataTable();
+                    studentTable.draw();
+                    studentTable.focus();
+//                    $(document).ajaxStop(function(){
+//                        window.location.reload();
+//                    });
                 }
             });
         });

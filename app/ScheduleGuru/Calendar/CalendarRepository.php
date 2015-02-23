@@ -4,7 +4,8 @@
 use Googlavel;
 use Google_Auth_Exception;
 
-class CalendarRepository {
+class CalendarRepository
+{
 
     /**
      * ..: method-hints with google services :..
@@ -63,11 +64,11 @@ class CalendarRepository {
         return array_values($calarray);
     }
 
-    public function fetchCalObjectAttributesAndStore($calendarId, $is_a)
+    public function fetchCalObjectAttributesAndStore($calendar_id, $is_a)
     {
-        $calObject = Googlavel::getService('Calendar')->calendarList->get($calendarId);
+        $calObject = Googlavel::getService('Calendar')->calendarList->get($calendar_id);
 
-        $tpgWorkingCalendar = GoogleCalendar::post($calendarId, $is_a,
+        $tpgWorkingCalendar = GoogleCalendar::post($calendar_id, $is_a,
                                                     $calObject->accessRole,
                                                     $calObject->backgroundColor,
                                                     $calObject->colorId,

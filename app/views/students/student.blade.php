@@ -16,7 +16,7 @@
         <a href="{{{ $student->convertpkgURL()  }}}"><p>convert to package</p></a>
     @endif
     <h3>{{ $student->student_id }}</h3>
-    <p>FullCal--CalendarID: {{ $student->calendarId }}</p>
+    <p>FullCal--Calendar_ID: {{ $student->calendar_id }}</p>
     <p>FullCal--GoogleAPIKey: {{ getenv('GOOG_PUB_KEY') }}</p>
     <div class="row">
         <div class="col-md-6 col-sm-6">
@@ -161,7 +161,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             // Create Calendar
-            HalfFullCal('{{ $student->calendarId  }}');
+            HalfFullCal('{{ $student->calendar_id  }}');
         });
     </script>
 @parent

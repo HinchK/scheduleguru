@@ -1,7 +1,7 @@
 <?php namespace ScheduleGuru\Tutors;
 
 class Tutor extends \Eloquent {
-	protected $fillable = [ 'email','calendarId','current_students',
+	protected $fillable = [ 'email','calendar_id','current_students',
         'past_students', 'freebusy','message_bag','photo','name',
         'notes','admin_notes','tutor_type','scheduledAppointments'];
 

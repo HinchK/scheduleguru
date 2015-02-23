@@ -199,7 +199,8 @@ return array(
         'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
         'Debugbar'        => 'Barryvdh\Debugbar\Facade',
         'Googlavel'       => 'Redbaron76\Googlavel\Support\Facades\Googlavel',
-		'Breadcrumbs'	  => 'DaveJamesMiller\Breadcrumbs\Facade'
+		'Breadcrumbs'	  => 'DaveJamesMiller\Breadcrumbs\Facade',
+        'Flash'           => 'Laracasts\Flash\Flash'
     ),
 
     'available_language' => array('en'),
