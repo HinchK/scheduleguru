@@ -48,6 +48,8 @@ class GoogleCalendarsController extends \BaseController {
         $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
         $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
+        $addedStus = null;
+
         if(Session::has('newStudents')){
             $addedStus = Session::pull('newStudents');
             \Debugbar::info('new students added');

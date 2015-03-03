@@ -2444,10 +2444,11 @@
     {{ HTML::script('metro/plugins/select2/select2.min.js') }}
     {{ HTML::script('metro/plugins/datatables/media/js/jquery.dataTables.min.js') }}
     {{ HTML::script('metro/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js') }}
+    {{ HTML::script('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js') }}
     {{--JS_CUSTOM_SCRIPTS--}}
     {{ HTML::script('metro/pages/scripts/table-managed.js') }}
+    {{ HTML::script('metro/pages/scripts/ui-toastr.js') }}
     <script>
-
 
         $("#add_students_btn").click(function(e){
             e.preventDefault;
@@ -2468,12 +2469,27 @@
                 success: function(response) {
 
                     console.log(response);
-                    studentTable = $("student_importer").DataTable();
-                    studentTable.draw();
-                    studentTable.focus();
-//                    $(document).ajaxStop(function(){
-//                        window.location.reload();
-//                    });
+                    $(document).ajaxStop(function(){
+                        window.location.reload();
+                    });
+//                    studentTable = $("student_importer").DataTable();
+//                    studentTable.ajax.reload();
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "onclick": null,
+                        "showDuration": "1000",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    toastr['success']( response, 'Added Student(s)');
+
                 }
             });
         });
@@ -2487,6 +2503,7 @@
             Index.initIntro();
             Tasks.initDashboardWidget();
             Index.initCalendar(); // init index page's custom scripts
+            UIToastr.init();
             if ($('#gcal_importer').size() != 0) {
                 $('#gcal_import_loading').hide();
                 $('#gcal_import_content').show();
