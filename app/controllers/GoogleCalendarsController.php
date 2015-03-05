@@ -6,6 +6,7 @@ use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
 use ScheduleGuru\Calendar\PostPersonaBuilderCommand;
+use ScheduleGuru\Events\TutorSessionEventRepository;
 use ScheduleGuru\Students\Student;
 use ScheduleGuru\Students\StudentRepository;
 use ScheduleGuru\Tutor;
@@ -17,10 +18,13 @@ class GoogleCalendarsController extends \BaseController {
 
     protected $studentRepostiory;
 
-    function __construct(CalendarRepository $calendarRepository, StudentRepository $studentRepository)
+    protected $tutorSessionEventRepository;
+
+    function __construct(CalendarRepository $calendarRepository, StudentRepository $studentRepository, TutorSessionEventRepository $tutorSessionEventRepository)
     {
         $this->calendarRepository = $calendarRepository;
         $this->studentRepository = $studentRepository;
+        $this->tutorSessionEventRepository = $tutorSessionEventRepository;
     }
 
 
@@ -73,14 +77,29 @@ class GoogleCalendarsController extends \BaseController {
         $key = 0;
 
         //TODO: [20120222] Brooklyn Boukather-problem [no description, no student?]
+        // Integrity constraint violation: 1048 Column 'description' cannot be null
+
         foreach($incomingCalIDs as $ids){
             foreach($ids as $id) {
 
                 $tpgGoogleWorkingCalendar = $this->calendarRepository->fetchCalObjectAttributesAndStore($id, 'Student');
 
                 $newStudent = Student::whereCalendarId($id)->first();  //put in studentRepo
+                \Debugbar::info("fetching events:");
 
-                $calDataArray[$key] = $newStudent->student_id;
+                $calEvents =  $this->calendarRepository->fetchEvents($id);
+                \Debugbar::info($calEvents);
+                \Debugbar::info("building conversion array");
+
+                $convertedEvents = $this->studentRepository->buildEventSessionConversionArray($calEvents, $newStudent);
+                \Debugbar::info($convertedEvents);
+                \Debugbar::info('converting events to package');
+
+
+                $tutoringPackage = $this->tutorSessionEventRepository->dashConvertEventsToPackage($convertedEvents, $newStudent->id);
+                \Debugbar::info($tutoringPackage);
+
+                $calDataArray[$key] = "Student: " . $newStudent->student_id . " PackageID: ";// . $tutoringPackage->id;
                 $key++;
             }
         }
@@ -88,7 +107,9 @@ class GoogleCalendarsController extends \BaseController {
 
         //TODO: ALSO NEED TO CLEAN THE POSSIBLE STUDENT LIST PRE-REFRESH
 
-        return "Student import complete...";
+        $response = "Student import complete...".implode(" | ", $calDataArray);
+
+        return $response;
 
         //return Redirect::route('dashboard_primary')->with('message', 'Students imported sucessfully!');;
 

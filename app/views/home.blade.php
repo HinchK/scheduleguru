@@ -2469,9 +2469,9 @@
                 success: function(response) {
 
                     console.log(response);
-                    $(document).ajaxStop(function(){
-                        window.location.reload();
-                    });
+//                    $(document).ajaxStop(function(){
+//                        window.location.reload();
+//                    });
 //                    studentTable = $("student_importer").DataTable();
 //                    studentTable.ajax.reload();
                     toastr.options = {
