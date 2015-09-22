@@ -237,7 +237,7 @@
                 $('#session_endtime\\['+i+'\\]').datetimepicker({
                     pickDate: false
                 });
-            }
+            }act
 
 //            $('input[type=submit]').click(events2json);
             $('#json-tester').on('click', events2json);
