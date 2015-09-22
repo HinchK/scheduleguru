@@ -141,6 +141,11 @@ Route::group(array('prefix' => 'dash', 'before' => 'auth'), function() {
         'uses' => 'GoogleCalendarsController@store'
     ]);
 
+    Route::post('studentimporter', [
+        'as' => 'student_importer',
+        'uses' => 'GoogleCalendarsController@studentImporter'
+    ]);
+
     Route::get('students', [
         'as' => 'student_management',
         'uses' => 'StudentsController@manage'

@@ -47,7 +47,7 @@ class StudentsController extends \BaseController {
             // 404 error page.
             return App::abort(404);
         }
-        $events = $this->calendarRepository->fetchEvents($student->calendarId);
+        $events = $this->calendarRepository->fetchEvents($student->calendar_id);
         $scheduledSessions = $this->studentRepository->buildEventSessionConversionArray($events, $student);
 
         return View::make('students.convertpkg', compact('scheduledSessions', 'student'));
@@ -61,8 +61,7 @@ class StudentsController extends \BaseController {
 
         $tutoringEvents = Input::get('eventsJSON');
         $events = json_decode($tutoringEvents);
-        //Todo: "message=Trying to get property of non-object"
-        //...occuring on a healthy POST
+        //Todo: "message=Trying to get property of non-object"...occuring on a healthy POST
         $studentID =  $events->pkgStudentId;
         $package =  $this->tutorSessionRepository->convertExistingEventsToPackage($events, $studentID);
 
@@ -93,7 +92,7 @@ class StudentsController extends \BaseController {
             // 404 error page.
             return App::abort(404);
         }
-        $events = $this->calendarRepository->fetchEvents($student->calendarId);
+        $events = $this->calendarRepository->fetchEvents($student->calendar_id);
 
         if( ! $events){
             Confide::logout();
@@ -126,7 +125,6 @@ class StudentsController extends \BaseController {
         \Debugbar::info('Student cals Eloquent grab:');
         \Debugbar::info($studentCals);
 
-//OLD   return View::make('site.dashboard.students.index', compact('studentCals', 'tutorCals', 'students'));
         return View::make('students.index', compact('studentCals', 'tutorCals', 'students'));
     }
 

@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\URL;
 
-class Student extends \Eloquent {
-	protected $fillable = ['student_id', 'calendarId', 'name', 'slug', 'packageid' ];
+class Student extends \Eloquent
+{
+	protected $fillable = ['student_id', 'calendar_id', 'name', 'slug', 'packageid' ];
 
     public function tutors()
     {

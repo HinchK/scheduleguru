@@ -24,16 +24,16 @@ class TutorRepository {
 
         foreach($currentTutorList as $currentTutor){
             \Debugbar::info($currentTutor);
-            if($currentTutor->calendarId === $cal_id){
+            if($currentTutor->calendar_id === $cal_id){
                 \Debugbar::info('tutor found in db');
                 return false;
             }
         }
 
-        $newTutor = Tutor::create(['calendarId' => $cal_id,'name' => $cal_summary]);
+        $newTutor = Tutor::create(['calendar_id' => $cal_id,'name' => $cal_summary]);
         \Debugbar::info("TUTREPO.buildTutorProfile|static \$newTutor: ");
         \Debugbar::info($newTutor);
         return $newTutor;
     }
 
-} 
+}

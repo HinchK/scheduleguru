@@ -6,6 +6,9 @@ use Laracasts\Flash\Flash;
 use ScheduleGuru\Calendar\CalendarRepository;
 use ScheduleGuru\Calendar\GoogleCalendar;
 use ScheduleGuru\Calendar\PostPersonaBuilderCommand;
+use ScheduleGuru\Events\TutorSessionEventRepository;
+use ScheduleGuru\Students\Student;
+use ScheduleGuru\Students\StudentRepository;
 use ScheduleGuru\Tutor;
 
 class GoogleCalendarsController extends \BaseController {
@@ -13,9 +16,15 @@ class GoogleCalendarsController extends \BaseController {
 
     protected $calendarRepository;
 
-    function __construct(CalendarRepository $calendarRepository)
+    protected $studentRepostiory;
+
+    protected $tutorSessionEventRepository;
+
+    function __construct(CalendarRepository $calendarRepository, StudentRepository $studentRepository, TutorSessionEventRepository $tutorSessionEventRepository)
     {
         $this->calendarRepository = $calendarRepository;
+        $this->studentRepository = $studentRepository;
+        $this->tutorSessionEventRepository = $tutorSessionEventRepository;
     }
 
 
@@ -26,6 +35,7 @@ class GoogleCalendarsController extends \BaseController {
 	 */
 	public function index()
 	{
+
         $gCals = $this->calendarRepository->buildPrimaryCalendarList();
         //will return false if google auth disconnect
         if( ! $gCals){
@@ -33,30 +43,84 @@ class GoogleCalendarsController extends \BaseController {
             Flash::error('Inactivity timeout, please login again (google_auth_exception)');
             return Googlavel::logout('/');
         }
-        $currentCals = GoogleCalendar::all();
+        //$hintStudents returns 3 arrays in 1 [students, tutors, TAs];
+        $hintMultiArray = $this->calendarRepository->summaryHintAnalysis($gCals);
+        $possStudents = $hintMultiArray[0];
+        $possTutors = $hintMultiArray[1];
+        $possTAs = $hintMultiArray[2];
 
         $studentCals = GoogleCalendar::where('is_a', '=', 'Student')->get();
         $tutorCals = GoogleCalendar::where('is_a', '=', 'Tutor')->get();
 
-        return View::make('home', compact('gCals','currentCals','studentCals','tutorCals'));
+        $addedStus = null;
+
+        if(Session::has('newStudents')){
+            $addedStus = Session::pull('newStudents');
+            \Debugbar::info('new students added');
+            \Debugbar::info($addedStus);
+
+            \Flash::message(implode(',\n', $addedStus));
+        }
+
+        return View::make('home', compact('gCals','possStudents','possTutors','possTAs','studentCals','tutorCals'));
 	}
 
     /**
-	 * Show the form for creating a new googlecalendar
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('googlecalendars.create');
-	}
+     * Batch import students
+     *
+     */
+    public function studentImporter()
+    {
+        $incomingCalIDs = Input::all();
 
+        $calDataArray = [];
+        $key = 0;
+
+        //TODO: [20120222] Brooklyn Boukather-problem [no description, no student?]
+        // Integrity constraint violation: 1048 Column 'description' cannot be null
+
+        foreach($incomingCalIDs as $ids){
+            foreach($ids as $id) {
+
+                $tpgGoogleWorkingCalendar = $this->calendarRepository->fetchCalObjectAttributesAndStore($id, 'Student');
+
+                $newStudent = Student::whereCalendarId($id)->first();  //put in studentRepo
+                \Debugbar::info("fetching events:");
+
+                $calEvents =  $this->calendarRepository->fetchEvents($id);
+                \Debugbar::info($calEvents);
+                \Debugbar::info("building conversion array");
+
+                $convertedEvents = $this->studentRepository->buildEventSessionConversionArray($calEvents, $newStudent);
+                \Debugbar::info($convertedEvents);
+                \Debugbar::info('converting events to package');
+
+
+                $tutoringPackage = $this->tutorSessionEventRepository->dashConvertEventsToPackage($convertedEvents, $newStudent->id);
+                \Debugbar::info($tutoringPackage);
+
+                $calDataArray[$key] = "Student: " . $newStudent->student_id . " PackageID: ";// . $tutoringPackage->id;
+                $key++;
+            }
+        }
+        Session::put('newStudents', $calDataArray);
+
+        //TODO: ALSO NEED TO CLEAN THE POSSIBLE STUDENT LIST PRE-REFRESH
+
+        $response = "Student import complete...".implode(" | ", $calDataArray);
+
+        return $response;
+
+        //return Redirect::route('dashboard_primary')->with('message', 'Students imported sucessfully!');;
+
+
+    }
 	/**
 	 * Store a newly created googlecalendar in storage.
 	 *
 	 * @return Response
 	 */
-    //TODO: EXPAND GOOGLE_CALENDARS DB TO INCLUDE EVERYTHING, BUILD ON BRAH!~
+
 	public function store()
 	{
 		$validator = Validator::make($data = Input::all(), GoogleCalendar::$rules);
@@ -70,11 +134,22 @@ class GoogleCalendarsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-//        GoogleCalendar::create($data);
-
         return Redirect::refresh();
-//		return Redirect::route('googlecalendars.index');
 	}
+
+// TODO: Below this point is #>php artisan generate::scaffold stuff
+// kept in as a reminder of how hard i zig when like, the man wants me to zag
+// and also for reference/stubs/groudnwork towards TODO: build core new student func
+
+    /**
+     * Show the form for creating a new googlecalendar
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        return View::make('googlecalendars.create');
+    }
 
 	/**
 	 * Display the specified googlecalendar.
@@ -148,6 +223,12 @@ class GoogleCalendarsController extends \BaseController {
 
     }
 
+    /**
+     * Marked for deletion
+     * kept in as fancy datatable reference
+     *
+     * @return mixed
+     */
     public function oldgetdata(){
 
         $users = User::leftjoin('assigned_roles', 'assigned_roles.user_id', '=', 'users.id')

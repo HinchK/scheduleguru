@@ -17,7 +17,7 @@ class AddDataCompleteToGoogleCalendarsTable extends Migration {
             $table->text('accessRole');
             $table->text('backgroundColor');
             $table->text('colorId');
-            $table->text('deleted');
+            $table->text('deleted')->nullable();
             $table->text('description');
             $table->text('etag');
             $table->text('foregroundColor');

@@ -96,7 +96,7 @@ class StudentRepository {
 
         foreach($currentStudentList as $currentStudent){
             \Debugbar::info($currentStudent);
-            if($currentStudent->calendarId === $cal_id){
+            if($currentStudent->calendar_id === $cal_id){
                 \Debugbar::info('student found in db');
                 return false;
             }
@@ -112,7 +112,7 @@ class StudentRepository {
         }
         $slug = Str::slug($studentId);
 
-        $newStudent = Student::create(['student_id' => $studentId, 'calendarId' => $cal_id,'name' => $cal_summary, 'slug' => $slug]);
+        $newStudent = Student::create(['student_id' => $studentId, 'calendar_id' => $cal_id,'name' => $cal_summary, 'slug' => $slug]);
         \Debugbar::info($newStudent);
 
         return $newStudent;

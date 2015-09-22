@@ -46,7 +46,7 @@
     <div id="dashboard-header" class="row">
         <div class="col-xs-12 col-sm-4 col-md-5">
             <h3>{{ $student->student_id }}</h3>
-            <p>FullCal--CalendarID: {{ $student->calendarId }}</p>
+            <p>FullCal--Calendar_ID: {{ $student->calendar_id }}</p>
         </div>
         <div class="clearfix visible-xs"></div>
     </div>
